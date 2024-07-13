@@ -15,9 +15,10 @@ $email_no_err = $general_err = "";
 // Check if the form is submitted
 if(isset($_POST['submit'])){
     $user_ip=getIPAddress();
-    $email = $_POST['email'];
+    $email = strtolower(trim($_POST['email']));
     $student_no = $_POST['student_no'];
     $user_password = $_POST['user_password'];
+    $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
     $fname = $_POST['fname'];
     $lname = $_POST['lname'];
     $bday = $_POST['bday'];
@@ -77,9 +78,9 @@ if(isset($_POST['submit'])){
                 }if($result_student_no > 0){
                     break;
                 }else {
-                    $query = "INSERT INTO user_registration (user_ID, user_ip, email, student_no, user_password, fname, lname, bday, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $query = "INSERT INTO user_registration (user_ip, user_ID, email, student_no, user_password, fname, lname, bday, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     $stmt_insert = mysqli_prepare($con, $query);
-                    mysqli_stmt_bind_param($stmt_insert, "sssssssss", $user_id, $user_ip, $email, $student_no, $user_password, $formattedFirstName, $formattedLastName, $bday, $gender);
+                    mysqli_stmt_bind_param($stmt_insert, "sssssssss", $user_ip, $user_id, $email, $student_no, $hashed_password, $formattedFirstName, $formattedLastName, $bday, $gender);
                     $sql = mysqli_stmt_execute($stmt_insert);
                     if($sql){
                         echo "<script>alert

@@ -111,3 +111,103 @@ if($result_email>0){
 }
 
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+session_start();
+require_once "./connect.php";
+
+$ums = $email_no_err = $general_err = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $ums = strtolower(trim($_POST['ums']));
+    $user_password = $_POST['user_password'];
+
+    // Prepare the SQL query
+    $query = "SELECT * FROM user_registration WHERE user_ID = ? OR email = ? OR student_no = ?";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param('sss', $ums, $ums, $ums);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+
+    if ($user) {
+        // Log the password values before verification
+        echo "Entered Password: " . htmlspecialchars($user_password) . "<br>";
+
+        // Verify the password
+        if ($user_password == $user['user_password']) {
+            // Password is correct, set session variables
+            $_SESSION['fname'] = $user['fname'];
+            echo "Welcome, " . $user['fname'];
+            $ums = ""; // Reset form
+        } else {
+            // Password is incorrect
+            echo "The password is incorrect.";
+        }
+    } else {
+        // User does not exist
+        echo "The username, email, or student number does not exist in our records.";
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <?php require_once "./include/bootsrap.php"; ?>
+</head>
+<body>
+    <?php if ($email_no_err): ?>
+        <div class="alert alert-danger"><?php echo $email_no_err; ?></div>
+    <?php endif; ?>
+    <?php if ($general_err): ?>
+        <div class="alert alert-danger"><?php echo $general_err; ?></div>
+    <?php endif; ?>
+    <form action="login.php" method="post">
+        <div class="form-group">
+            <label for="ums">Username, Email, or Student Number</label>
+            <input type="text" id="ums" name="ums" value="<?php echo htmlspecialchars($ums); ?>" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="user_password">Password</label>
+            <input type="password" id="user_password" name="user_password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <!-- Button to Open the Register Modal -->
+    <button type="button" class="btn btn-primary" onclick="openRegisterModal()" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Open modal for @mdo</button>
+    </div>
+</body>
+</html>
