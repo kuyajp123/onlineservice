@@ -48,7 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user'] = $row['fname'];
                 echo "welcome " .$_SESSION['user'];
             }else{
-                $errors[] = "Invalid username or password";
                 echo "incorrect password";
             }
         }else{
