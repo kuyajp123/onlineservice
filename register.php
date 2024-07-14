@@ -24,6 +24,7 @@ if(isset($_POST['submit'])){
     $bday = $_POST['bday'];
     $gender = $_POST['gender'];
     
+    
     //capitalize the word
     $formattedFirstName = formatName($fname);
     $formattedLastName = formatName($lname);
