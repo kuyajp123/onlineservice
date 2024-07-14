@@ -2,51 +2,8 @@
 session_start();
 require_once "./connect.php";
 require_once './register.php';
-
-
-$ums = $email_no_err = $general_err = "";;
-
-
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $ums = $_POST['ums'];
-    $user_password = $_POST['user_password'];   
-
-    $query = "SELECT * FROM user_registration WHERE email = ?";
-    $stmt = mysqli_prepare($con, $query);
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, 's', $ums);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-        $user = mysqli_fetch_assoc($result);
-
-        if ($user) {
-            // Log the password values before verification
-            echo "Entered Password: " . htmlspecialchars($user_password) . "<br>";
-
-            // Verify the password
-            if (password_verify($user_password, $user['user_password'])) {
-                // Password is correct, set session variables
-                $_SESSION['email'] = $user['email'];
-                echo "Login successfully. Welcome, " . htmlspecialchars($user['fname']);
-            } else {
-                // Password is incorrect
-                echo "The password is incorrect.";
-            }
-        } else {
-            echo "No user found with that email address.";
-        }
-        
-        mysqli_stmt_close($stmt);
-    } else {
-        echo "Failed to prepare the SQL statement.";
-    }
-
-    mysqli_close($con); // Close the connection
-}
-
+require_once './functions/common_function.php';
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,10 +19,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <?php if ($general_err): ?>
                     <div class="alert alert-danger"><?php echo $general_err; ?></div>
                 <?php endif; ?>
+    <div>
 <form action="login.php" method="post">
             <div class="form-group">
                 <label for="ums">Username</label>
-                <input type="text" id="ums" name="ums" value="<?php echo htmlspecialchars($ums); ?>" class="form-control" required>
+                <input type="text" id="ums" name="ums"  class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="user_password">Password</label>
@@ -78,3 +36,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </div>
 </body>
 </html>
+<?php
+
+// $ums = $email_no_err = $general_err = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $ums = $_POST['ums'];
+    $user_password = $_POST['user_password'];
+    
+    $sql = "select * from user_registration where email = ? or user_ID = ? or student_no = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param('sss', $ums, $ums, $ums);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if($row = $result->fetch_assoc()){
+        if($result->num_rows > 0){
+            if(password_verify($user_password, $row['user_password'])){
+                $_SESSION['user'] = $row['fname'];
+                echo "welcome " .$_SESSION['user']. "!";
+            }else{
+                echo "incorrect password";
+            }
+        }else{
+            echo "theres no account existing in our recored";
+        }
+    }else{
+        echo "error";
+    }
+
+}
+
+?>
