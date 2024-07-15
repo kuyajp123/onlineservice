@@ -1,0 +1,82 @@
+body {
+  height: 100%;
+  width: auto;
+  margin: 0; /* Removes default margins */
+  padding: 0; /* Removes default padding */
+
+}
+
+.bod2{
+  height: 100%;
+  width: auto;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin: 0; /* Removes default margins */
+  padding: 0; /* Removes default padding */
+}
+
+.container{
+  margin: 0; /* Removes default margins */
+  padding: 0; /* Removes default padding */
+}
+
+.column1{
+  height: 130%;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.column2{
+  height: 20%;
+}
+.container2{  
+  height: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.row{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* flex-direction: column; in small screen size */ 
+}
+.col{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container-fluid{
+  border: 1px solid rgb(255, 25, 0);
+  height: 60%;
+  width: 70%;
+}
+.form-container1{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+/* responsive for phones */
+@media (max-width: 768px) {
+  .row {
+      flex-direction: column; /* Stack rows as columns on smaller screens */
+  }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .row {
+      flex-direction: row; /* Revert to rows in landscape orientation */
+  }
+}

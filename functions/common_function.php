@@ -66,6 +66,7 @@ function formatName($name) {
     return ucwords(strtolower($name));
 }
 
+
 // get ip address function
 function getIPAddress() {  
     //whether ip is from the share internet  
@@ -88,21 +89,39 @@ function getIPAddress() {
 
 
 
+
 ?>
+<!-- <script>
+    function validateForm($gender) {
+    var genders = document.getElementsByName('gender');
+    var genderSelected = false;
 
-
-<script>
-        // kaya hindi nag co close ang modal after unssuccesful ang pag register dahil naoopen ang modal base sa function na ito at hindi sya na rerefresh
-        function openRegisterModal() {
-            // Load the register modal content using AJAX
-            $.get('register.php', function(data) {
-                $('body').append(data);
-                $('#exampleModal').modal('show');
-            });
-                // reset the input field form if close the modal *hindi pa nagana*
-                $('#exampleModal').on('hidden.bs.modal', function () {
-                $('#exampleModal')[0].reset();
-                $('.alert-danger').remove(); // Remove error messages
-            });
+    for (var i = 0; i < genders.length; i++) {
+        if (genders[i].checked) {
+            genderSelected = true;
+            break;
         }
-    </script>
+    }
+
+    if (!genderSelected) {
+        showAlert('Please select a gender.');
+        return false; // Prevent form submission
+    }
+
+    return true; // Allow form submission
+}
+
+function showAlert(message) {
+    var alertPlaceholder = document.getElementById('liveAlertPlaceholder');
+    var wrapper = document.createElement('div');
+    wrapper.innerHTML = [
+        '<div class="alert alert-warning alert-dismissible" role="alert">',
+        '   <div>' + message + '</div>',
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+    ].join('');
+    alertPlaceholder.append(wrapper);
+}
+
+</script> -->
+

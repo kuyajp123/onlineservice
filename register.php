@@ -161,14 +161,14 @@ if(isset($_POST['submit'])){
         </div>
         <div class="col pt-2">
         <label>Gender &nbsp; &nbsp;</label>
-            <input class="form-check-input" type="radio" name="gender" id="gender_male" value="Male">
-            <label class="form-check-label" for="gender_male">Male</label>
+            <input class="form-check-input" type="radio" name="gender" id="gender" value="Male" required>
+            <label class="form-check-label" for="gender">Male</label>
 
-            <input class="form-check-input" type="radio" name="gender" id="gender_female" value="Female">
-            <label class="form-check-label" for="gender_female">Female</label>
+            <input class="form-check-input" type="radio" name="gender" id="gender" value="Female" required>
+            <label class="form-check-label" for="gender">Female</label>
         </div>
         </div>
-        
+
         <div class="col-12 t-2 pt-4 px-3">
     <button type="submit" value="Sign up" name="submit" class="btn btn-primary">Sign up</button>
   </div>
@@ -176,7 +176,7 @@ if(isset($_POST['submit'])){
       </div>
     </div>
   </div>
-</div>
+</div> 
 
 
 <?php if ($emailInvalid || $studentNoInvalid || $emailExist || $studentNoExist): ?>
@@ -200,8 +200,9 @@ if(isset($_POST['submit'])){
                                 <h5 class="modal-title" id="exampleModalLabel">Invalid Email</h5>
                             </div>
                             <div class="modal-body text-center">
-                                <div class="alert alert-warning" role="alert">
-                                    Please use your CVSU Email!
+                                <div class="alert alert-warning text-center" role="alert">
+                                <i class="bi bi-info-circle"></i>
+                                Please use your CVSU Email!
                                 </div>
                             </div>
                         </div>
@@ -226,7 +227,8 @@ if(isset($_POST['submit'])){
                                 <h5 class="modal-title" id="exampleModalLabel">Invalid Email</h5>
                             </div>
                             <div class="modal-body text-center">
-                                <div class="alert alert-warning" role="alert">
+                                <div class="alert alert-warning text-center" role="alert">
+                                <i class="bi bi-info-circle"></i>
                                     This email is already used!
                                 </div>
                             </div>                       
@@ -250,14 +252,14 @@ if(isset($_POST['submit'])){
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Invalid Student Number</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Invalid Email</h5>
                             </div>
                             <div class="modal-body text-center">
-                                <div class="alert alert-warning d-flex align-items-center" role="alert">
-                                    <div class="alert alert-warning" role="alert">
-                                    This student number is already used!
-                                    </div>
-                            </div>
+                                <div class="alert alert-warning text-center" role="alert">
+                                <i class="bi bi-info-circle"></i>
+                                    This Student number is already used!
+                                </div>
+                            </div>                       
                         </div>
                     </div>
                 </div>
@@ -281,10 +283,10 @@ if(isset($_POST['submit'])){
                             </div>
                             <div class="modal-body text-center">
                             <div class="alert alert-warning d-flex align-items-center" role="alert">
-                                    <div class="alert alert-warning" role="alert">
+                                    <div class="alert alert-warning text-center" role="alert">
+                                    <i class="bi bi-info-circle"></i>
                                     Please provide the right Format of Student Number!
                                     </div>
-                                
                             </div>
                         </div>
                     </div>

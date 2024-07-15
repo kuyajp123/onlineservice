@@ -10,28 +10,55 @@ require_once './functions/common_function.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="include/style.css">
     <?php require_once "./include/bootsrap.php"; ?>
 </head>
 <body>
-    <div>
+    <div class="bod2">
+        <div class="container text-center">
+
+            
+            <div class="p-3 column1">
+                <div class="container container2">
+                    <div class="row">
+                            <div class="col">
+                            Column
+                            </div>
+                            <div class="col">
+                                <div class="container-fluid">
+
+                        <div class="form-container1">
+                            <div class="form-container2">
 <form action="login.php" method="post">
-            <div class="form-group">
-                <label for="user">Username</label>
-                <input type="text" id="user" name="user" value="<?php echo isset($_POST['user']) ? htmlspecialchars($_POST['user']) : ''; ?>" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="user_password">Password</label>
-                <input type="password" id="user_password" name="user_password" class="form-control" required>
-            </div>
-            <button type="submit" name="login" class="btn btn-primary">Login</button>
-        </form>
+                <div class="form-group">
+                    <label for="user">Username</label>
+                    <input type="text" id="user" name="user" value="<?php echo isset($_POST['user']) ? htmlspecialchars($_POST['user']) : ''; ?>" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="user_password">Password</label>
+                    <input type="password" id="user_password" name="user_password" class="form-control" required>
+                </div>
+                <button type="submit" name="login" class="btn btn-primary">Login</button>
+</form>
         <!-- Button to Open the Register Modal -->
         <button type="button" class="btn btn-primary" onclick="openRegisterModal()" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Open modal for @mdo</button>
+                            </div>
+                        </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="p-3 column2">Custom column padding</div>
+            
+        
+        </div>
     </div>
 </body>
 </html>
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST['login'])) {
     $ums = $_POST['user'];
     $user_password = $_POST['user_password'];
 
@@ -48,7 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user'] = $row['fname'];
                 echo "welcome " .$_SESSION['user'];
             }else{
-                $errors[] = "Invalid username or password";
                 echo "incorrect password";
             }
         }else{
