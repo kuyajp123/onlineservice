@@ -66,9 +66,9 @@ if (isset($_POST['login'])) {
                                             <span class="toggle-password"><i class="fa-solid fa-eye"></i></span>
                                         </div>
                                         <div>
-                                            <button style="margin-top:15px;" id="liveAlertBtn" type="submit" name="login" class="btn btn-primary">Login</button>
+                                            <button style="margin-top:15px;" type="submit" name="login" class="btn btn-primary">Login</button>
                                         </div>
-                
+     //php code here
                                     </form>
                                     <!-- div here for "forgot password" here remove margin top from the button if lalagyan na ng forgot password-->
                                 </div>
