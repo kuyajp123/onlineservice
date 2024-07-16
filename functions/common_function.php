@@ -87,41 +87,25 @@ function getIPAddress() {
 //   echo $ip; 
 
 
-
-
-
 ?>
-<!-- <script>
-    function validateForm($gender) {
-    var genders = document.getElementsByName('gender');
-    var genderSelected = false;
-
-    for (var i = 0; i < genders.length; i++) {
-        if (genders[i].checked) {
-            genderSelected = true;
-            break;
-        }
-    }
-
-    if (!genderSelected) {
-        showAlert('Please select a gender.');
-        return false; // Prevent form submission
-    }
-
-    return true; // Allow form submission
+<!-- show password -->
+<?php
+function show_hide_password_script() {
+    echo '
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector(".toggle-password").addEventListener("click", function() {
+                var passwordField = document.getElementById("user_password");
+                var type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+                passwordField.setAttribute("type", type);
+                this.querySelector("i").classList.toggle("fa-eye");
+                this.querySelector("i").classList.toggle("fa-eye-slash");
+            });
+        });
+    </script>
+    ';
 }
+?>
 
-function showAlert(message) {
-    var alertPlaceholder = document.getElementById('liveAlertPlaceholder');
-    var wrapper = document.createElement('div');
-    wrapper.innerHTML = [
-        '<div class="alert alert-warning alert-dismissible" role="alert">',
-        '   <div>' + message + '</div>',
-        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-        '</div>'
-    ].join('');
-    alertPlaceholder.append(wrapper);
-}
 
-</script> -->
 

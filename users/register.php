@@ -1,7 +1,7 @@
 <?php
-require_once "./connect.php";
-require_once "./include/bootsrap.php";
-require_once './functions/common_function.php';
+require_once '../include/connect.php';
+require_once "../include/bootsrap.php";
+require_once '../functions/common_function.php';
 
 // Variable to track of functions
 $emailInvalid = false;
@@ -117,12 +117,18 @@ if(isset($_POST['submit'])){
     }
 }
 ?>
+<style>
+    #btn-signup2{
+        background-color:#00A400;
+        border:none;
+    }
+</style>
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Register</h1>
-        <button id="close_button" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- <button id="close_button" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
       </div>
       <div class="modal-body">
       <?php if ($email_no_err): ?>
@@ -144,6 +150,7 @@ if(isset($_POST['submit'])){
         <div class="mb-3 px-3">
         <label for="formGroupExampleInput2" class="form-label"></label>
         <input type="password" class="form-control" name="user_password" id="formGroupExampleInput2" value="<?php echo htmlspecialchars($user_password); ?>" placeholder="Password" required="required">
+        
         </div>
 
                 <div class="row g-3 px-3 pt-2">
@@ -170,7 +177,7 @@ if(isset($_POST['submit'])){
         </div>
 
         <div class="col-12 t-2 pt-4 px-3">
-    <button type="submit" value="Sign up" name="submit" class="btn btn-primary">Sign up</button>
+    <button type="submit" id="btn-signup2" value="Sign up" name="submit" class="btn btn-primary">Sign up</button>
   </div>
     </form>
       </div>
@@ -252,7 +259,7 @@ if(isset($_POST['submit'])){
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Invalid Email</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Invalid Student Number</h5>
                             </div>
                             <div class="modal-body text-center">
                                 <div class="alert alert-warning text-center" role="alert">
