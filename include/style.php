@@ -1,4 +1,5 @@
-body {
+<style>
+    body {
     height: 100%;
     width: auto;
     margin: 0; /* Removes default margins */
@@ -129,9 +130,24 @@ body {
     background-color: #00A400;
     border: none;
   }
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   
   
@@ -167,3 +183,4 @@ body {
         flex-direction: row; /* Revert to rows in landscape orientation */
     }
   }
+</style>

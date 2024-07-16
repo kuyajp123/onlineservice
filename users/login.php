@@ -38,11 +38,10 @@ if (isset($_POST['login'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../include/style.php?v=<?php echo time(); ?>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    
     <?php require_once "../include/bootsrap.php"; ?>
 </head>
 <body>
@@ -68,6 +67,7 @@ if (isset($_POST['login'])) {
     <div class="form-group">
                     <input type="password" id="user_password" name="user_password" placeholder="Password" class="form-control" required>
                     <span class="toggle-password"><i class="fa-solid fa-eye"></i></span>
+                    
     </div>
     <div>
                 <button style="margin-top:15px;" type="submit" name="login" class="btn btn-primary">Login</button>
