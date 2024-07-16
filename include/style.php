@@ -6,7 +6,6 @@
     padding: 0; /* Removes default padding */
   
   }
-  
   .bod2{
     height: 100%;
     width: auto;
@@ -16,12 +15,10 @@
     margin: 0;
     padding: 0;
   }
-  
   .container-form{
     margin: 0;
     padding: 0;
   }
-  
   .column1{
     height: 130%;
     width: auto;
@@ -45,7 +42,6 @@
     padding: 0;
   }
   .row-form{
-    
     height: 100%;
     width: 100%;
     display: flex;
@@ -130,11 +126,18 @@
     background-color: #00A400;
     border: none;
   }
+  /* Fade in and out transitions for the alert */
+  .alert {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
 
-
-
-
-
+  .alert.show {
+    opacity: 1;
+  }
+  .alert-container {
+            height: 30px; /* Adjust this height according to your design */
+        }
 
 
 

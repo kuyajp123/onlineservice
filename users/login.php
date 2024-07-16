@@ -4,35 +4,34 @@ require_once '../include/connect.php';
 require_once './register.php';
 require_once '../functions/common_function.php';
 
-
+$error = ''; // Initialize error variable
+$ums = ''; // Initialize $ums variable
+$user_password = ''; // Initialize $user_password variable
+$row = null; // Initialize $row variable
 
 if (isset($_POST['login'])) {
     $ums = $_POST['user'];
     $user_password = $_POST['user_password'];
 
-    
-    $sql = "select * from user_registration where email = ? or user_ID = ? or student_no = ?";
+    $sql = "SELECT * FROM user_registration WHERE email = ? OR user_ID = ? OR student_no = ?";
     $stmt = $con->prepare($sql);
     $stmt->bind_param('sss', $ums, $ums, $ums);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
 
-    if($result->num_rows > 0){
-        if(password_verify($user_password, $row['user_password'])){
+    if ($result->num_rows > 0) {
+        if (password_verify($user_password, $row['user_password'])) {
             $_SESSION['ip'] = getIPAddress();
             $_SESSION['user'] = $row['fname'];
             echo "<script>window.open('../index.php','_self')</script>";
-        }else{
-            echo "incorrect password";
+        } else {
+            $error = "Incorrect password.";
         }
-    }else{
-        echo "no users found";
+    } else {
+        $error = "No users found.";
     }
-    
-
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -57,20 +56,65 @@ if (isset($_POST['login'])) {
                         <div class="container-fluid container-form">
                             <div class="container form-container1">
                                 <div class="container form-container2">
+                                    <!-- Alert container with fixed height -->
+                                    <div id="liveAlertPlaceholder" class="alert-container"></div>
+                                    
                                     <form action="login.php" method="post">
                                         <div class="form-group">
-                                            <input type="text" id="user" name="user" placeholder="Email/Username/Student number" value="<?php echo isset($_POST['user']) ? htmlspecialchars($_POST['user']) : ''; ?>" class="form-control" required>
+                                            <input type="text" id="user" name="user" placeholder="Email/Username/Student number" value="<?php echo htmlspecialchars($ums); ?>" class="form-control" required>
                                         </div>
                                         <div class="form-group">
                                             <input type="password" id="user_password" name="user_password" placeholder="Password" class="form-control" required>
                                             <span class="toggle-password"><i class="fa-solid fa-eye"></i></span>
                                         </div>
                                         <div>
-                                            <button style="margin-top:15px;" id="liveAlertBtn" type="submit" name="login" class="btn btn-primary">Login</button>
+                                            <button style="margin-top:15px;" type="submit" name="login" class="btn btn-primary">Login</button>
                                         </div>
-                
                                     </form>
-                                    <!-- div here for "forgot password" here remove margin top from the button if lalagyan na ng forgot password-->
+                                    <!-- condition if login failed -->
+                                    <?php if ($error): ?>
+                                        <script>
+                                            let alertTimeout;
+
+                                            const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
+
+                                            const showAlert = (message, type) => {
+                                                if (alertTimeout) {
+                                                    clearTimeout(alertTimeout);
+                                                }
+                                                
+                                                while (alertPlaceholder.firstChild) {
+                                                    alertPlaceholder.removeChild(alertPlaceholder.firstChild);
+                                                }
+                                                
+                                                const wrapper = document.createElement('div');
+                                                wrapper.innerHTML = [
+                                                    `<div class="alert alert-${type} alert-dismissible fade show" role="alert">`,
+                                                    `   <div>${message}</div>`,
+                                                    '   ',
+                                                    '</div>'
+                                                ].join('');
+                                                
+                                                alertPlaceholder.append(wrapper);
+
+                                                setTimeout(() => {
+                                                    wrapper.querySelector('.alert').classList.add('show');
+                                                }, 10);
+
+                                                alertTimeout = setTimeout(() => {
+                                                    const alertElement = wrapper.querySelector('.alert');
+                                                    alertElement.classList.remove('show');
+                                                    setTimeout(() => {
+                                                        if (alertElement.parentElement) {
+                                                            alertElement.parentElement.removeChild(alertElement);
+                                                        }
+                                                    }, 500);
+                                                }, 3000);
+                                            }
+
+                                            showAlert('<?php echo $error; ?>', 'danger');
+                                        </script>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="line"></div>
                                 <div class="container form-container3">
@@ -90,4 +134,3 @@ if (isset($_POST['login'])) {
     <?php show_hide_password_script(); ?>
 </body>
 </html>
-

@@ -8,13 +8,11 @@ require_once 'functions/common_function.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Toggle Example</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./include/style.php">
 </head>
 <body>
-<div id="liveAlertPlaceholder"></div>
-<button type="button" class="btn btn-primary" id="liveAlertBtn">Show live alert</button>
+
+
 </body>
-<?php
-login_notification('liveAlertPlaceholder', 'liveAlertBtn');
-?>
+
 </html>
