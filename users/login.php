@@ -70,10 +70,6 @@ if (isset($_POST['login'])) {
                                         <div>
                                             <button style="margin-top:15px;" type="submit" name="login" class="btn btn-primary">Login</button>
                                         </div>
-<<<<<<< HEAD
-=======
-     //php code here
->>>>>>> 35f5d8b268af1884046804c7e05f06a9ec81ac9c
                                     </form>
                                     <!-- condition if login failed -->
                                     <?php if ($error): ?>
