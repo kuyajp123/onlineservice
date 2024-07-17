@@ -37,7 +37,7 @@ if (isset($_POST['login'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="../include/style.php?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="login_style.css?v=<?php echo time(); ?>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>

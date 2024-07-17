@@ -1,5 +1,4 @@
-<style>
-    body {
+body {
     height: 100%;
     width: auto;
     margin: 0; /* Removes default margins */
@@ -139,24 +138,6 @@
             height: 30px; /* Adjust this height according to your design */
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-  
-  
   
   
   /* responsive for phones */
@@ -186,4 +167,3 @@
         flex-direction: row; /* Revert to rows in landscape orientation */
     }
   }
-</style>
