@@ -66,8 +66,10 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 .container_post{
   margin-top: 10px;
   padding: 0;
-  height: 90vh;
+  height: 100vh;
+  max-height: 625px;
   width: 100%;
+  max-width: 100vh;
   background-color: #fff;
   border-radius: 10px;
 }
@@ -166,7 +168,15 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 }
 .container_cap{
   height: 10vh;
+  max-height: 80px;
   width: 100%;
+  max-width: 500px;
+}
+.caption{
+  margin-top: 5px;
+  height: auto;
+  max-height: 60px;
+  padding: 0;
 }
 .lgyan{
   flex-direction: row;
@@ -223,13 +233,13 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 
 /* side nav */
 .sidenav{
-  height: 100%;
+  height: auto;
   align-items: center;
   border-radius: 10px;
   background-color: #fff;
 }
 .considenav{
-  max-height: 100%;
+  max-height: 100px;
   min-height: 90vh;
   width: 100%;
   display: grid;
@@ -237,6 +247,7 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   align-items: center;
   gap: 10px;
   padding: 0;
+  border: 1px solid red;
 }
 .features{
   border-radius: 10px;
@@ -249,6 +260,41 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   height: 100%;
   width: 100%;
   box-shadow: none;
+  border: 1px solid red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.profilepicture{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profilepicture{
+  margin-top: 10px;
+  height: 50%;
+  width: 50%;
+  object-fit: contain;
+}
+.profilepicture img{
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  margin-top: 10px;
+}
+.nameusername{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  border: 1px solid red;
+  flex-direction: column;
 }
 .logout{
   border: 1px solid red;

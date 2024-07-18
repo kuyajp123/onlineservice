@@ -5,7 +5,7 @@ require_once 'functions/common_function.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="index_style.css?v=2">
+<link rel="stylesheet" href="index_style.css?v=1">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Toggle Example</title>
@@ -55,7 +55,13 @@ require_once 'functions/common_function.php';
     <div class="container-fluid ccon"> <!--------3rd container- content container-------->
         <div class="container-fluid sidenav">
             <div class="container-fluid sticky-top considenav">
-                <div class="container-fluid profile"></div>
+                <div class="container-fluid profile">
+                  <div class="container-fluid profilepicture"><img src="include/images/profile.jpg" alt=""></div>
+                    <div class="container-fluid nameusername">
+                      <div class="container-fluid nameko"><span>John Paul Naag</span></div>
+                      <div class="container-fluid username"><small></small><span>@johnpaul12</span></div>
+                    </div>
+                </div>
                 <div class="container-fluid features"></div>
                 <div class="container-fluid logout"></div>
             </div>
@@ -201,7 +207,6 @@ require_once 'functions/common_function.php';
 
 
 
-
             <div class="container-fluid container_post"><!---eto ang simula ng ipapasok mo sa loob ng div sa may comment--------->
 
                   
@@ -232,6 +237,7 @@ height: 40px; border-radius: 50%;" alt=""></div></a>
 <!-- image 1st div -->
 <div class="container-fluid image">
 
+<div class="container-fluid image_container"><img src="include/images/0wzknw7460n31.jpg" alt=""></div>
     
 </div>
 
@@ -285,27 +291,8 @@ height: 40px; border-radius: 50%;" alt=""></div></a>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-               </div><!---------ilalagay mo dito sa loob nato ang bagong .container_post-------------->
+               </div>
+               <!---------ilalagay mo dito sa loob nato ang bagong .container_post-------------->
 
 
 
