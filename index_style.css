@@ -10,9 +10,12 @@ body{
   padding: 0;
   flex-direction: column;
   gap: 10px;
-  background-color: #2E236C;
+  background: rgb(236,195,159);
+background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593723158208596) 48%, rgba(195,118,199,1) 100%);
 }
 .bcon{
+  padding-left: 0;
+  padding-right: 0;
   height: auto;
   width: 100%;
   background-color: #615EFC;
@@ -28,6 +31,8 @@ body{
   align-items: center;
   justify-content: center;
   padding: 10px;
+  padding-left: 0;
+  padding-right: 0;
 }
 .pills-contact-tab{
   color: #fff;
@@ -39,7 +44,7 @@ body{
 .ccon{
   height: 100vh;
   width: 100%;
-  grid-template-columns: 1.5fr 3fr 1fr; /* Responsive columns */
+  grid-template-columns: 2fr 1.1fr 4fr 2fr 2.1fr; /* Responsive columns */
   display: grid;
   padding: 0;
   overflow-x: hidden;
@@ -51,14 +56,167 @@ body{
 
 /* contents */
 .content{
-  height: 100%;
-  border-radius: 10px;
-  background-color: #fff;
+  height: auto;
+  padding: 0;
   -ms-overflow-style: none; /* For Internet Explorer and Edge */
 }
 .content::-webkit-scrollbar {
   display: none; /* For Chrome, Safari, and Opera */
 }
+.container_post{
+  margin-top: 10px;
+  padding: 0;
+  height: 90vh;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.name{
+  gap: 1%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 0;
+  height: 10%;
+  width: 100%;
+  padding: 0;
+}
+.image{
+  height: 60vh;
+  width: 100%;
+  padding: 0;
+  border-bottom: 1px solid #dadde1;
+  border-top: 1px solid #dadde1;
+}
+.image_container{
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  max-height: 100vh;
+  object-fit: contain;
+  max-width: 100%;
+  padding: 0;
+}
+.image_container img{
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  max-height: 100vh;
+  object-fit: contain;
+  max-width: 100%;
+  padding: 0;
+}
+.heart{
+  height: 6vh;
+  width: 100%;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0;
+}
+.thethree{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0;
+}
+.container-fluid {
+  box-sizing: border-box;
+}
+.puso{
+  width: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+.comment{
+  width: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+.share{
+  width: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+.collection {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0;
+}
+.save {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 1.5rem;
+}
+.line{
+  height: 1px;
+  border-bottom: 1px solid #dadde1;
+}
+.container_cap{
+  height: 10vh;
+  width: 100%;
+}
+.lgyan{
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+}
+.prof_pic{
+  height: 100%;
+  width: 9vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0;
+}
+.pangalan{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  object-fit: contain;
+}
+.dots{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  height: 100%;
+  width: 13%;
+}
+.dot{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  height: 100%;
+}
+.picture{
+  height: 60vh;
+  width: 60vh;
+}
+
+
+
+
+
+
 
 
 
@@ -66,25 +224,40 @@ body{
 /* side nav */
 .sidenav{
   height: 100%;
-  width: 100%;
   align-items: center;
   border-radius: 10px;
   background-color: #fff;
 }
 .considenav{
-  height: 580px;
+  max-height: 100%;
+  min-height: 90vh;
   width: 100%;
   display: grid;
-  grid-template-rows: 2fr 4fr;
+  grid-template-rows: 2fr 4fr 1fr;
   align-items: center;
-  
+  gap: 10px;
+  padding: 0;
 }
-.features, .profile{
+.features{
   border-radius: 10px;
-  height: 90%;
+  height: 100%;
   width: 100%;
   box-shadow: 1px 1px 30px #aaaaaa;
+  background-color: #aaaaaa;
 }
+.profile{
+  height: 100%;
+  width: 100%;
+  box-shadow: none;
+}
+.logout{
+  border: 1px solid red;
+  height: 100%;
+  width: 100%;
+}
+
+
+
 
 
 
@@ -93,24 +266,32 @@ body{
 /* olservices */
 .olservices{
   height: 100%;
-  background-color: #fff;
   border-radius: 10px;
   align-items: center;
+  padding: 0;
+  margin: 0;
 }
 .conolservice{
   display: grid;
   grid-template-rows: 2fr 2fr;
   align-items: center;
   align-content: center;
-  height: 580px;
+  max-height: 10%;
+  min-height: 80vh;
   width: 100%;
+  margin: 0;
 }
 .cvsustore, .books{
-  height: 90%;
+  max-height: 20vh;
+  min-height: 30vh;
   width: 100%;
-  box-shadow: 1px 1px 30px #aaaaaa;
+  background-color: #fff;
   border-radius: 10px;
 }
+
+
+
+
 
 
 
