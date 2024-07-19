@@ -3,6 +3,16 @@ body{
   padding: 0;
   font-family: Arial, sans-serif;
 }
+a{
+  text-decoration: none;
+  color: black;
+}
+ul{
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 0;
+
+}
 .acon{
   display: flex;
   height: 100vh;
@@ -44,7 +54,7 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 .ccon{
   height: 100vh;
   width: 100%;
-  grid-template-columns: 2fr 1.1fr 4fr 2fr 2.1fr; /* Responsive columns */
+  grid-template-columns: 3fr 2fr 5fr 2.9fr 2.1fr; /* Responsive columns */
   display: grid;
   padding: 0;
   overflow-x: hidden;
@@ -96,7 +106,6 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   width: 100%;
   padding: 0;
   max-height: 100vh;
-  object-fit: contain;
   max-width: 100%;
   padding: 0;
 }
@@ -119,48 +128,57 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   padding: 0;
 }
 .thethree{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+
+}
+.threeicon{
+  border: 1px solid red;
   height: 100%;
   width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  padding: 0;
-}
-.container-fluid {
-  box-sizing: border-box;
 }
 .puso{
-  width: 10vh;
+  width: 20%;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
 }
 .comment{
-  width: 10vh;
+  width: 20%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
+  padding: 0;
 }
 .share{
-  width: 10vh;
+  width: 20%;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
 }
 .collection {
-  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   padding: 0;
 }
 .save {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   font-size: 1.5rem;
+}
+.bookmarkicon{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  align-content: flex-end;
 }
 .line{
   height: 1px;
@@ -235,71 +253,176 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 .sidenav{
   height: auto;
   align-items: center;
-  border-radius: 10px;
   background-color: #fff;
+  padding: 0;
 }
 .considenav{
   max-height: 100px;
   min-height: 90vh;
   width: 100%;
   display: grid;
-  grid-template-rows: 2fr 4fr 1fr;
+  grid-template-rows: 2fr 0fr 4fr 1fr;
   align-items: center;
-  gap: 10px;
   padding: 0;
-  border: 1px solid red;
+  gap: 10px;
 }
 .features{
   border-radius: 10px;
   height: 100%;
   width: 100%;
-  box-shadow: 1px 1px 30px #aaaaaa;
-  background-color: #aaaaaa;
+  padding-right: 0;
+}
+.linesidenav{
+  border-bottom: 1px solid #dadde1;
 }
 .profile{
-  height: 100%;
+  height: 100%; 
   width: 100%;
-  box-shadow: none;
-  border: 1px solid red;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding: 0;
 }
-.profilepicture{
+.contprofname{
   height: 100%;
   width: 100%;
+  flex-direction: column;
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 10px;
+  box-shadow: 1px 1px 30px #aaaaaa;
+}
+.profile a{
+  height: 80%;
+  width: 70%;
 }
 .profilepicture{
-  margin-top: 10px;
-  height: 50%;
-  width: 50%;
+  height: 60%;
+  width: 45%;
+  padding: 0;
   object-fit: contain;
 }
 .profilepicture img{
   height: 100%;
   width: 100%;
-  object-fit: contain;
   border-radius: 50%;
-  margin-top: 10px;
 }
 .nameusername{
+  display: flex;
+  padding: 0;
+  flex-direction: column;
+}
+.username, .nameko{
+  display: flex;
+  justify-content: center;
+}
+.logout{
+  border-top: 1px solid #dadde1;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.contbuttons{
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   width: 100%;
-  padding: 0;
-  border: 1px solid red;
-  flex-direction: column;
+  padding-right: 0;
 }
-.logout{
-  border: 1px solid red;
+.buttonlinks ul li a .container-fluid{
+  display: flex;
+  align-items: center;
+}
+.dropup{
+  height: 50%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dropup .btn .container{
   height: 100%;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+.dropup .btn{
+  background-color: #615EFC;
+}
+.dropup .btn:hover{
+  background-color: #4E4BCB;
+}
+.dropup .dropdown-menu .logoutbut:hover, .dropup .dropdown-menu .dropdown-item:hover {
+  background-color: #F0F0F0;
+}
+.btn-group.dropup .dropdown-toggle::after {
+  display: none;
+}
+.dropup ul li{
+  height: 3rem;
+  width: 100%;
+}
+.buttonlinks{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  
+  height: 100%;
+  width: 100%;
+  padding: 0;
+}
+.buttonlinks ul li, .logoutbut{
+  height: 3rem;
+  width: 100%;
+}
+.buttonlinks ul li a .container-fluid:hover, .services a:hover{
+  background-color: #F0F0F0;
+  border-radius: 10px 0 0 10px;
+}
+.logoutcont{
+  width: 90%;
+}
+.logoutbut{
+  border: none;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+
+}
+.settings,
+.services,
+.collect,
+.notification,
+.post, .dropdown-toggle,
+.dropdown-item{
+  width: 100%;
+  height: 100%;
+}
+.dropdown-toggle::after {
+  display: none;
+}
+.services a .container{
+  width: 100%;
+  padding: 0;
+}
+.services a{
+  display: flex;
+  align-items: center;
+}
+.dropdown-menu .dropdown-item{
+  display: flex;
+  align-items: center;
+}
+.dropdown-menu li a .container, .dropdown-menu li button{
+  display: flex;
+  justify-content: center;
 }
 
 
@@ -351,6 +474,9 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 @media (max-width: 768px) {
   .ccon {
     grid-template-columns: 1fr;
+  }
+  .navcon{
+    display: none;
   }
   .sidenav, .olservices {
     display: none;
