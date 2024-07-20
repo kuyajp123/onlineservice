@@ -6,6 +6,7 @@ body{
 a{
   text-decoration: none;
   color: black;
+  
 }
 ul{
   list-style-type: none;
@@ -48,6 +49,9 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   padding: 10px;
   padding-left: 0;
   padding-right: 0;
+}
+.navmobilecon{
+  display: none;
 }
 .pills-contact-tab{
   color: #fff;
@@ -318,6 +322,7 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 .profile a{
   height: 80%;
   width: 70%;
+  text-decoration: none;
 }
 .profilepicture{
   height: 60%;
@@ -406,6 +411,10 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 .buttonlinks ul li a .container-fluid:hover, .services a:hover{
   background-color: #F0F0F0;
   border-radius: 10px 0 0 10px;
+}
+.buttonlinks ul li a{
+  text-decoration: none;
+  color: black;
 }
 .logoutcont{
   width: 90%;
@@ -571,7 +580,30 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   .sidenav, .olservices {
     display: none;
   }
+  .services a .container{
+    padding: 10px;
+  }
+  .carousel-control-prev, .carousel-control-next{
+    display: none;
+  }
+  .navmobilecon{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      width: 100%;
+  }
+  .bcon{
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sidenavmobile{
+    
+  }
 }
+
 
 /* for ipad prtrait */
 @media (min-width: 768px) and (max-width: 1024px) {
@@ -654,10 +686,23 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 .timetext{
   font-size: 10px;
 }
+}
 
-
-
-
-
-
+/* for ipad landscape */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+  
+  .considenav{
+    max-height: 50px;
+    min-height: 70vh;
+    grid-template-rows: 10fr 1fr 5fr 8fr;
+  }
+  .ccon{
+    grid-template-columns: 3fr 1fr 5fr 0fr 3fr;
+  }
+  .profilepicture{
+    height: 50%;
+    width: 25%;
+    padding: 0;
+    object-fit: contain;
+  }
 }

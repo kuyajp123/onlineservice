@@ -94,11 +94,11 @@ if(isset($_POST['submit'])){
                                         <div class='modal-header'>
                                             <h5 class='modal-title' id='exampleModalLabel'>Registration Successful</h5>
                                         </div>
-                                        <div class='modal-body text-center'>
-                                        <div class='alert alert-success' role='alert'>
-                                            Registration successful! 
-                                        </div>
-                                        </div>
+
+                                            <div class='alert alert-success' role='alert'>
+    Registration successful! 
+                                            </div>                                          
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -164,13 +164,15 @@ if(isset($_POST['submit'])){
 
         <div class="row g-3 px-3 pt-4">
         <div class="col ">
+        <label for="date-input">Date of birth</label>
             <input type="date" id="bday" name="bday" class="form-control" value="<?php echo htmlspecialchars($bday); ?>"  placeholder="Date of Birth" aria-label="Date of Birth" required="required">
         </div>
         <div class="col pt-2">
-        <label>Gender &nbsp; &nbsp;</label>
+        <label>Gender &nbsp; &nbsp;</label><br>
+        
             <input class="form-check-input" type="radio" name="gender" id="gender" value="Male" required>
             <label class="form-check-label" for="gender">Male</label>
-
+            &nbsp; &nbsp;
             <input class="form-check-input" type="radio" name="gender" id="gender" value="Female" required>
             <label class="form-check-label" for="gender">Female</label>
         </div>
@@ -207,10 +209,10 @@ if(isset($_POST['submit'])){
                                 <h5 class="modal-title" id="exampleModalLabel">Invalid Email</h5>
                             </div>
                             <div class="modal-body text-center">
-                                <div class="alert alert-warning text-center" role="alert">
-                                <i class="bi bi-info-circle"></i>
-                                Please use your CVSU Email!
+                                <div class='alert alert-warning' role='alert'>
+     Please use your CVSU Email!
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -234,10 +236,11 @@ if(isset($_POST['submit'])){
                                 <h5 class="modal-title" id="exampleModalLabel">Invalid Email</h5>
                             </div>
                             <div class="modal-body text-center">
-                                <div class="alert alert-warning text-center" role="alert">
-                                <i class="bi bi-info-circle"></i>
-                                    This email is already used!
+                                <div class='alert alert-warning' role='alert'>
+  This email is already used!
                                 </div>
+                                    
+                                
                             </div>                       
                         </div>
                     </div>
@@ -262,10 +265,11 @@ if(isset($_POST['submit'])){
                                 <h5 class="modal-title" id="exampleModalLabel">Invalid Student Number</h5>
                             </div>
                             <div class="modal-body text-center">
-                                <div class="alert alert-warning text-center" role="alert">
-                                <i class="bi bi-info-circle"></i>
-                                    This Student number is already used!
+
+                                <div class='alert alert-warning' role='alert'>
+  This Student number is already used!
                                 </div>
+                                                                    
                             </div>                       
                         </div>
                     </div>
@@ -289,11 +293,11 @@ if(isset($_POST['submit'])){
                                 <h5 class="modal-title" id="exampleModalLabel">Invalid Student Number</h5>
                             </div>
                             <div class="modal-body text-center">
-                            <div class="alert alert-warning d-flex align-items-center" role="alert">
-                                    <div class="alert alert-warning text-center" role="alert">
-                                    <i class="bi bi-info-circle"></i>
-                                    Please provide the right Format of Student Number!
-                                    </div>
+
+                                <div class='alert alert-warning' role='alert'>
+  Please provide the right Format of Student Number!
+                                </div>
+
                             </div>
                         </div>
                     </div>
