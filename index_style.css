@@ -560,7 +560,7 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 
 
 
-
+/* for mobile devices */
 @media (max-width: 768px) {
   .ccon {
     grid-template-columns: 1fr;
@@ -571,4 +571,93 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   .sidenav, .olservices {
     display: none;
   }
+}
+
+/* for ipad prtrait */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+  .considenav{
+    min-height: 0vh;
+  }
+  .considenav{
+    max-height: 50px;
+    min-height: 70vh;
+    grid-template-rows: 5fr 3fr 6fr 10fr;
+  }
+  .ccon{
+    grid-template-columns: 4fr 0fr 6fr 0fr 3fr;
+  }
+  .profile{
+    margin-top: 30px;
+    padding: 0;
+  }
+  .container_post{
+    margin-top: 10px;
+    padding: 0;
+    height: 100vh;
+    max-height:62vh;
+    width: 100%;
+    max-width: 100vh;
+    /* background-color: #fff; */
+    border-radius: 10px;
+
+  }
+  .image{
+    height: 40vh;
+    max-height: 60vh;
+    width: 100%;
+    padding: 0;
+  }
+  .name{
+    height: 10%;
+    max-height: 10%;
+    width: 100%;
+  }
+  .ipadname1{
+    font-size: 14px;
+  }
+  .ipadname2{
+    font-size: 10px;
+  }
+  .prof_pic{
+    max-width: 8vh;
+    width: 8vh;
+  }
+.puso, .share, .comment, .bookmarkicon{
+  font-size: 20px;
+}
+.nametextpost{
+  gap: 1%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 0;
+  height: 25%;
+  width: 100%;
+  padding: 0;
+}
+.pangalantextpost{
+  font-size: 14px;
+}
+.timetextpost{
+  font-size: 10px;
+}
+.captiontextpost{
+  height: 15vh;
+  max-height: 20vh;
+  width: 100%;
+}
+.nametext{
+  font-size: 14px;
+}
+.timetext{
+  font-size: 10px;
+}
+
+
+
+
+
+
 }

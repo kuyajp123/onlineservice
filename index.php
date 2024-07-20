@@ -5,7 +5,7 @@ require_once 'functions/common_function.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="index_style.css?v=1">
+<link rel="stylesheet" href="index_style.css?v=2">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Toggle Example</title>
@@ -176,9 +176,9 @@ height: 40px; border-radius: 50%;" alt=""></div></a>
       </div>
       <div class="container-fluid pangalan">
         <!-- profile name in post -->
-        <div><a href="" style="font-size:1rem; text-decoration: none; color: black;">John Paul Naag</span></a>
+        <div><a href="" style="font-size:1rem; text-decoration: none; color: black;"><span class="ipadname1">John Paul Naag</span></a>
         <!-- time in post -->
-        <div><small style="font-size:13px;">Just now</small></div></div></div>
+        <div><small style="font-size:13px;"><span class="ipadname2">Just now</span></small></div></div></div>
       </div>
       
 
@@ -270,9 +270,9 @@ height: 40px; border-radius: 50%;" alt=""></div></a>
       </div>
       <div class="container-fluid pangalan">
         <!-- profile name in post -->
-        <div><a href="" style="font-size:1rem; text-decoration: none; color: black;">John Paul Naag</span></a>
+        <div><a href="" style="font-size:1rem; text-decoration: none; color: black;"><span class="pangalantextpost">John Paul Naag</span></a>
         <!-- time in post -->
-        <div><small style="font-size:13px;">Just now</small></div></div></div>
+        <div><small style="font-size:13px;"><span class="timetextpost">Just now</span></small></div></div></div>
       </div>
       
 
@@ -350,9 +350,9 @@ height: 40px; border-radius: 50%;" alt=""></div></a>
       </div>
       <div class="container-fluid pangalan">
         <!-- profile name in post -->
-        <div><a href="" style="font-size:1rem; text-decoration: none; color: black;">John Paul Naag</span></a>
+        <div><a href="" style="font-size:1rem; text-decoration: none; color: black;"><span class="nametext">John Paul Naag</span></span></a>
         <!-- time in post -->
-        <div><small style="font-size:13px;">Just now</small></div></div></div>
+        <div><small style="font-size:13px;"><span class="timetext">Just now</span></small></div></div></div>
       </div>
       
 
