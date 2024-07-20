@@ -13,6 +13,11 @@ ul{
   margin-left: 0;
 
 }
+button{
+  border: none;
+  background-color: transparent;
+  border-radius: 50%;
+}
 .acon{
   display: flex;
   height: 100vh;
@@ -77,7 +82,7 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   margin-top: 10px;
   padding: 0;
   height: 100vh;
-  max-height: 625px;
+  max-height:85vh;
   width: 100%;
   max-width: 100vh;
   background-color: #fff;
@@ -91,11 +96,13 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   align-items: flex-end;
   padding: 0;
   height: 10%;
+  max-height: 10%;
   width: 100%;
   padding: 0;
 }
 .image{
   height: 60vh;
+  max-height: 60vh;
   width: 100%;
   padding: 0;
 }
@@ -133,6 +140,7 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 .heart{
   height: 6vh;
   width: 100%;
+  max-height: 6vh;
   flex-direction: row;
   display: flex;
   align-items: center;
@@ -146,13 +154,9 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   padding: 0;
 
 }
-.threeicon{
-  border: 1px solid red;
-  height: 100%;
-  width: 100%;
-}
 .puso{
   width: 20%;
+  max-width: 20%;
   padding: 0;
   display: flex;
   align-items: center;
@@ -161,6 +165,7 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 }
 .comment{
   width: 20%;
+  max-width: 20%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -169,6 +174,7 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 }
 .share{
   width: 20%;
+  max-width: 20%;
   padding: 0;
   display: flex;
   align-items: center;
@@ -220,6 +226,7 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 }
 .prof_pic{
   height: 100%;
+  max-width: 9vh;
   width: 9vh;
   display: flex;
   align-items: center;
@@ -228,10 +235,10 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 }
 .pangalan{
   height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  object-fit: contain;
 }
 .dots{
   display: flex;
@@ -366,6 +373,7 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+
 }
 .dropup .btn{
   background-color: #615EFC;
@@ -407,7 +415,7 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   background-color: transparent;
   display: flex;
   align-items: center;
-
+  border-radius: 1px;
 }
 .settings,
 .services,
@@ -482,16 +490,45 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 
 
 /* ************************************************text post content ****************************************************/
-
-
-
-
-
-
-
-
-
-
+.containertextpostpost{
+  margin-top: 10px;
+  padding: 0;
+  height: 28vh;
+  max-height: 30vh;
+  width: 100%;
+  max-width: 100vh;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.nametextpost{
+  gap: 1%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 0;
+  height: 25%;
+  width: 100%;
+  padding: 0;
+}
+.captiontextpost{
+  height: 15vh;
+  max-height: 20vh;
+  width: 100%;
+}
+.captiontextpost::after{
+  width: 100%;
+  border-bottom: 1px solid #dadde1;  
+  display: flex;
+  content: '';
+}
+.textcontainerpost{
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  max-height: 100vh;
+  max-width: 100%;
+}
 
 
 
