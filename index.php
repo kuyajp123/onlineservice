@@ -1,6 +1,7 @@
 <?php
 require_once 'include/bootsrap.php';
 require_once 'functions/common_function.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,9 +69,6 @@ require_once 'functions/common_function.php';
 <!-- ------------------------------------------------------------------------ -->
 
 
-
-
-
         
 
 
@@ -81,7 +79,7 @@ require_once 'functions/common_function.php';
             <div class="container-fluid sticky-top considenav">
                 
             <div class="container-fluid profile">
-                <a href="" style="color: black;">
+                <a href="#" style="color: black;" data-open-modal="profilemodal">
                     <div class="container-fluid contprofname">
                         <div class="container-fluid profilepicture">
                           <!-- prifle image in sidenav -->
@@ -100,7 +98,7 @@ require_once 'functions/common_function.php';
                     </div>
                 </a>
             </div>
-
+            <?php include 'users/profile_modal.php'; ?>
 
                 <div class="container-fluid linesidenav"></div>
 
