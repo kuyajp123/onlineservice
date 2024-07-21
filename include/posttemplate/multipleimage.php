@@ -9,7 +9,7 @@
       <div class="container-fluid prof_pic">
         <!-- profile image inpost -->
           <div><a href=""><img src="include/images/profile.jpg" style="object-fit:contain; width: 40px;
-height: 40px; border-radius: 50%;" alt=""></div></a>
+height: 40px; border-radius: 50%;" alt=""></a></div>
       </div>
       <div class="container-fluid pangalan">
         <!-- profile name in post -->

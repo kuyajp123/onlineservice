@@ -107,6 +107,7 @@ if(isset($_POST['submit'])){
                             var registrationSuccessModal = new bootstrap.Modal(document.getElementById('registrationSuccessModal'));
                             registrationSuccessModal.show();
                         }); </script>";
+                        addModalScript('registrationSuccessModal');
                         $email = $student_no = $user_password = $fname = $lname = $bday = $gender = ''; // Reset form
                         break;
                     }
@@ -199,6 +200,7 @@ if(isset($_POST['submit'])){
 
 
     <?php if ($emailInvalid): ?>
+        
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 var modalHtml = `

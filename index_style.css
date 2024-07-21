@@ -2,6 +2,7 @@ body{
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
+  overflow-x: hidden;
 }
 a{
   text-decoration: none;
@@ -33,6 +34,9 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   padding-left: 0;
   padding-right: 0;
   height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   background-color: #615EFC;
   padding: 0;
@@ -42,7 +46,6 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   display: none; /* For Chrome, Safari, and Opera */
 }
 .navcon{
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,11 +53,18 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   padding-left: 0;
   padding-right: 0;
 }
-.navmobilecon{
+.navmobilecon,.navconmobileasb,.navconmobileaff{
   display: none;
 }
 .pills-contact-tab{
   color: #fff;
+}
+.navcon li{
+  background-color: #4BCBCB;
+  display: flex;
+    border-radius: 7px;
+    margin: 10px 10px;
+    background-color: #4BCBCB;
 }
 
 
@@ -281,18 +291,18 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   padding: 0;
 }
 .considenav{
-  max-height: 100px;
-  min-height: 90vh;
+  max-height: 87vh;
+  min-height: 87vh;
   width: 100%;
   display: grid;
-  grid-template-rows: 2fr 0fr 4fr 1fr;
+  grid-template-rows: 2fr 0fr 1fr 1fr;
   align-items: center;
   padding: 0;
   gap: 10px;
 }
 .features{
   border-radius: 10px;
-  height: 100%;
+  height: 10%;
   width: 100%;
   padding-right: 0;
 }
@@ -596,11 +606,37 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   .bcon{
     height: 10vh;
     display: flex;
+    overflow: hidden;
+  }
+  .considenav{
+    grid-template-rows: 3fr 0fr 0fr 3fr;
+    overflow: hidden;
+  }
+  .contprofname{
+    width: 90%;
+  }
+  .logout{
+    height: 40%;
+  }
+  .navconmobileaff{
+    height: 50%;
+    width: 100%;
+    display: flex;
     align-items: center;
     justify-content: center;
   }
-  .sidenavmobile{
-    
+  .navconmobileasb{
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nfmobile li{
+    display: flex;
+    border-radius: 10px;
+    margin: 10px 10px;
+    background-color: #4BCBCB;
   }
 }
 
