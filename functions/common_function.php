@@ -89,58 +89,5 @@ function getIPAddress() {
 
 ?>
 
-<!-- function for to go back if user click back button -->
-<?php
-function addModalScript($exampleModal) {
-    echo '
-    <script>
-    $(document).ready(function() {
-        // Function to show the modal
-        function showModal() {
-            $("#{$exampleModal}").modal("show");
-            history.pushState({ modalOpen: true }, null, null);
-        }
-
-        // Function to close the modal
-        function closeModal() {
-            $("#{$exampleModal}").modal("hide");
-            history.back();
-        }
-
-        // Open the modal and push state when the button is clicked
-        $("#{$exampleModal}").on("show.bs.modal", function() {
-            showModal();
-        });
-
-        // Close the modal when the back button is pressed
-        window.onpopstate = function(event) {
-            if ($("#{$exampleModal}").hasClass("show")) {
-                closeModal();
-            }
-        };
-
-        // Close the modal and go back in history when the modal is manually closed
-        $("#{$exampleModal}").on("hide.bs.modal", function() {
-            if (history.state && history.state.modalOpen) {
-                history.back();
-            }
-        });
-    });
-    </script>
-    ';
-}
-?>
-
-
-
-
-
-<?php
-
-
-
-
-?>
-
 
 
