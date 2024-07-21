@@ -1,3 +1,24 @@
+
+
+
+
+
+
+// show password
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector(".toggle-password").addEventListener("click", function() {
+        var passwordField = document.getElementById("user_password");
+        var type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+        passwordField.setAttribute("type", type);
+        this.querySelector("i").classList.toggle("fa-eye");
+        this.querySelector("i").classList.toggle("fa-eye-slash");
+    });
+});
+
+
+
+
+// show modal
 function openModal(modalId) {
     const modalElement = document.getElementById(modalId);
     if (modalElement) {

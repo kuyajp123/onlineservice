@@ -98,7 +98,7 @@ require_once 'functions/common_function.php';
                     </div>
                 </a>
             </div>
-            <?php include 'users/profile_modal.php'; ?>
+            
 
                 <div class="container-fluid linesidenav"></div>
 
@@ -199,6 +199,9 @@ require_once 'functions/common_function.php';
     <!-- ------------------------------------------------------------------------ -->
 </div>
 
+<!-- modal -->
+<?php include 'users/profile_modal.php'; ?>
+<script src="functions/JsFunction.js"></script>
 </body>
 
 </html>

@@ -88,33 +88,6 @@ function getIPAddress() {
 
 
 ?>
-<!-- show password -->
-<?php
-function show_hide_password_script() {
-    echo '
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelector(".toggle-password").addEventListener("click", function() {
-                var passwordField = document.getElementById("user_password");
-                var type = passwordField.getAttribute("type") === "password" ? "text" : "password";
-                passwordField.setAttribute("type", type);
-                this.querySelector("i").classList.toggle("fa-eye");
-                this.querySelector("i").classList.toggle("fa-eye-slash");
-            });
-        });
-    </script>
-    ';
-}
-?>
-
-
-
-
-
-
-
-
-
 
 <!-- function for to go back if user click back button -->
 <?php
@@ -158,6 +131,16 @@ function addModalScript($exampleModal) {
 }
 ?>
 
+
+
+
+
+<?php
+
+
+
+
+?>
 
 
 

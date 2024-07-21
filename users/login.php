@@ -131,6 +131,6 @@ if (isset($_POST['login'])) {
     </div>
 </div>
     <!-- show password -->
-    <?php show_hide_password_script(); ?>
+    <script src="../functions/JsFunction.js"></script>
 </body>
 </html>
