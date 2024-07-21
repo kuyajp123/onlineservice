@@ -6,9 +6,9 @@
     <h5 class="offcanvas-title text-light" id="offcanvasTopLabel">Choose your prefered newsfeed</h5>
     <button type="button" class="btn-close" style="background-color:#fff;" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  <div class="offcanvas-body">
+  <div class="offcanvas-body" style="padding:0;">
     <!--  -->
-    <div class="container-fluid navconmobile"> 
+    <div class="container-fluid navconmobile" style="padding:0;"> 
 
 
 <div class="container-fluid navconmobileaff"> 

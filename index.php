@@ -5,7 +5,7 @@ require_once 'functions/common_function.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="index_style.css?v=1">
+<link rel="stylesheet" href="index_style.css?v=2">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Toggle Example</title>
@@ -16,7 +16,7 @@ require_once 'functions/common_function.php';
     <!-- ----------------------------navbar-------------------------------------------- -->
     <div class="container-fluid sticky-top bcon"> <!--------2nd container nav--------->
 
-<!-- sidenav for mobile -->
+<!--  for mobile -->
 <div class="container-fluid navmobilecon">
 <!-------------------------------------------- sidenav  mobile-------------------------------- -->
 <?php include 'include/navbar/sidenav.php' ?>
