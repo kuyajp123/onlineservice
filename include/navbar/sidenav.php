@@ -15,7 +15,7 @@
             <div class="container-fluid sticky-top considenav">
                 
             <div class="container-fluid profile">
-                <a href="" style="color: black;">
+                <a href="#" style="color: black;" data-open-modal="profilemodal">
                     <div class="container-fluid contprofname">
                         <div class="container-fluid profilepicture">
                           <!-- prifle image in sidenav -->

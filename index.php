@@ -199,7 +199,7 @@ require_once 'functions/common_function.php';
     <!-- ------------------------------------------------------------------------ -->
 </div>
 
-<!-- modal -->
+<!-- modal profile -->
 <?php include 'users/profile_modal.php'; ?>
 <script src="functions/JsFunction.js"></script>
 </body>

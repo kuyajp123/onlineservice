@@ -8,12 +8,12 @@
       
       <div class="container-fluid prof_pic">
         <!-- profile image inpost -->
-          <div><a href=""><img src="include/images/profile.jpg" style="object-fit:contain; width: 40px;
+          <div><a href="#" data-open-modal="profilemodal"><img src="include/images/profile.jpg" style="object-fit:contain; width: 40px;
 height: 40px; border-radius: 50%;" alt=""></a></div>
       </div>
       <div class="container-fluid pangalan">
         <!-- profile name in post -->
-        <div><a href="" style="font-size:1rem; text-decoration: none; color: black;"><span class="nametext">John Paul Naag</span></span></a>
+        <div><a href="#" data-open-modal="profilemodal" style="font-size:1rem; text-decoration: none; color: black;"><span class="nametext">John Paul Naag</span></span></a>
         <!-- time in post -->
         <div><small style="font-size:13px;"><span class="timetext">Just now</span></small></div></div></div>
       </div>
