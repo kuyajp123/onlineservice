@@ -100,3 +100,33 @@
     <script src="modal.js"></script>
 </body>
 </html>
+<style>
+    body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)),
+              url('your-image-url.jpg') no-repeat center center;
+  background-size: cover;
+}
+.btn-close::before {
+    content: '\00d7';
+    font-size: 1.5rem;
+    color: #ffffff; 
+    /*  */
+    height: 100%;
+    width: 100%;
+    border-radius: 7px;
+    margin: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+    background-size: cover;
+    position: absolute;
+  }
+</style>
+<div class="container-fluid coverphotoblurd">
+                  <div class="container-fluid profcontainermodal">
+                    <div class="container-fluid containermodalprof">
+                      <img src="include/images/profile.jpg" alt="">
+                    </div>
+                  </div>
+                </div>
