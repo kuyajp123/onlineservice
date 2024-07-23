@@ -9,7 +9,7 @@ require_once '../include/bootsrap.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="profile.css?v=1">
+    <link rel="stylesheet" href="profile.css?v=2">
 </head>
 <body>
     <div class="container-fluid body">
@@ -39,23 +39,23 @@ require_once '../include/bootsrap.php';
                     <div class="container-fluid sticky-top navbar">
                         <div class="dropdown-center">
                           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Store
+                            Connection
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Action two</a></li>
-                            <li><a class="dropdown-item" href="#">Action three</a></li>
+                            <li><a class="dropdown-item" href="#">All</a></li>
+                            <li><a class="dropdown-item" href="#">Friends</a></li>
+                            <li><a class="dropdown-item" href="#">Following</a></li>
                           </ul>
                         </div>
 
                         <div class="dropdown-center">
                           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Books
+                            Services
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Action two</a></li>
-                            <li><a class="dropdown-item" href="#">Action three</a></li>
+                            <li><a class="dropdown-item" href="#">All</a></li>
+                            <li><a class="dropdown-item" href="#">Store</a></li>
+                            <li><a class="dropdown-item" href="#">Books</a></li>
                           </ul>
                         </div>
                     </div>
@@ -64,13 +64,23 @@ require_once '../include/bootsrap.php';
                         <div class="container-fluid contcontent">
 
 
+
                         <!-- dito ang mga included -->
 
                             <?php 
-                            include '../include/profileincluded.php/userspost.php';
+                            // include '../include/profileincluded/userspost.php';
                              ?>
                             
                             
+                            <!-- edit details -->
+                             <!-- for own profile -->
+                            <?php 
+                            // include '../include/profileincluded/editdetails.php'; 
+                            ?>
+
+
+
+
                             
 
 
@@ -128,33 +138,21 @@ require_once '../include/bootsrap.php';
 
                             </div>
 
+
                             <div class="container-fluid line"></div>
 
                             <!-- other profile user -->
+                             <!-- follow button -->
                             <?php
-                            //  include '../include/profileincluded.php/profilefollow.php';
+                            //  include '../include/profileincluded/profilefollow.php';
                               ?>
-
-                            <!-- own profile user -->
-                            <div class="container-fluid features">
-                    <div class="container-fluid contbuttons">
-                      <div class="container-fluid buttonlinks">
-                       <ul>
-                        <li><a href=""><div class="container-fluid post">Create post</div></a></li>
-                        <li><a href=""><div class="container-fluid notification">Notification</div></a></li>
-                        <li><a href=""><div class="container-fluid collect">Collection</div></a></li>
-                        <li><div class="container-fluid services" style="padding:0;">
-                          <a class="nav-link dropdown-toggle" style="padding:none;" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><div class="container" style="padding:none;">Services<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i></div></a>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#"><div class="container">Store</div></a></li>
-                              <li><a class="dropdown-item" href="#"><div class="container">Books</div></a></li>
-                              <li><a class="dropdown-item" href="#"><div class="container">Student Dashboard</div></a></li>
-                            </ul></div></li>
-                        <li><a href=""><div class="container-fluid settings">Edit details</div></a></li>
-                       </ul>
-                      </div>
-                    </div>
-                </div>
+                            
+                            
+                            <!-- users own features button -->
+                            <?php
+                            //  include '../include/profileincluded/featuresprofile.php'; 
+                            ?>
+                            
 
 
                         </div>
@@ -177,6 +175,21 @@ require_once '../include/bootsrap.php';
             <div class="container-fluid grid4"></div>
         </div>
     </div>
+<!-- edit section -->
+ <?php
+  include '../users/user_operation/editdetails/editname.php'; 
+  include '../users/user_operation/editdetails/editusername.php'; 
+  include '../users/user_operation/editdetails/editbirthdate.php'; 
+  include '../users/user_operation/editdetails/editgender.php'; 
+  include '../users/user_operation/editdetails/editpassword.php'; 
+  include '../users/user_operation/editdetails/editstdnum.php'; 
+  include '../users/user_operation/editdetails/editemail.php'; 
+  ?>
+
+
+
+
     <script src="../functions/JsFunction.js"></script>
+    <script src="../include/modal.js"></script>
 </body>
 </html>

@@ -239,7 +239,52 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
 
 
 
-/*  */
+
+
+
+
+/* edit details */
+.edicont{
+    height: 45vh;
+    width: 100%;
+}
+.email,.studentnumedit,.password,.lineedit,.gender,.birthdate,.usernameedit,.nameedit{
+    height: 10%;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+.lineedit{
+    height: 5%;
+    border-bottom: 3px solid #dadde1;  
+}
+.editdetails{
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 2rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* side nav */
 .features{
     border-radius: 10px;
     height: 50%;

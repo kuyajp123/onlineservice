@@ -154,7 +154,7 @@ if(isset($_POST['submit'])){
         
         </div>
 
-                <div class="row g-3 px-3 pt-2">
+        <div class="row g-3 px-3 pt-2">
         <div class="col">
             <input type="text" id="fname" name="fname" class="form-control" value="<?php echo htmlspecialchars($fname); ?>"  placeholder="First name" aria-label="First name" required="required">
         </div>
