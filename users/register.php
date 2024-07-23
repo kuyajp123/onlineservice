@@ -107,7 +107,7 @@ if(isset($_POST['submit'])){
                             var registrationSuccessModal = new bootstrap.Modal(document.getElementById('registrationSuccessModal'));
                             registrationSuccessModal.show();
                         }); </script>";
-                        addModalScript('registrationSuccessModal');
+                        
                         $email = $student_no = $user_password = $fname = $lname = $bday = $gender = ''; // Reset form
                         break;
                     }

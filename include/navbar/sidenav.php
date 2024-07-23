@@ -68,7 +68,7 @@
 
                 <div class="container-fluid logout">
                   <div class="container-fluid logoutcont">
-                      <div class="btn-group dropup">
+                      <div class="btn-group dropup dropdown-center">
                         <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                           <div class="container">more</div>
                         </button>

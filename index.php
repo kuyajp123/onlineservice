@@ -7,10 +7,11 @@ require_once 'functions/common_function.php';
 <html lang="en">
 <head>
 <link rel="stylesheet" href="index_style.css?v=1">
-<link rel="stylesheet" href="users/profile.css?v=4">
+<link rel="stylesheet" href="users/profilemodal.css?v=3">
+<link rel="stylesheet" href="./users/user_operation/createpost.css?v=3">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Toggle Example</title>
+    <title>Main</title>
 </head>
 <body>
 
@@ -115,11 +116,11 @@ require_once 'functions/common_function.php';
                             <button class="btn btn-outline-success" type="submit">Search</button>
                           </form>
                         </div>
-                        <li><a href=""><div class="container-fluid post">Create post</div></a></li>
+                        <li><a href="#" data-open-modal="createpost"><div class="container-fluid post">Create post</div></a></li>
                         <li><a href=""><div class="container-fluid notification">Notification</div></a></li>
                         <li><a href=""><div class="container-fluid collect">Collection</div></a></li>
-                        <li><div class="container-fluid services" style="padding-right:0;">
-                          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><div class="container">Services<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i></div></a>
+                        <li><div class="container-fluid services" style="padding:0;">
+                          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><div class="container" >Services<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i></div></a>
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item" href="#"><div class="container">Store</div></a></li>
                               <li><a class="dropdown-item" href="#"><div class="container">Books</div></a></li>
@@ -134,7 +135,7 @@ require_once 'functions/common_function.php';
 
                 <div class="container-fluid logout">
                   <div class="container-fluid logoutcont">
-                      <div class="btn-group dropup">
+                      <div class="btn-group dropup dropdown-center">
                         <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                           <div class="container">more</div>
                         </button>
@@ -199,7 +200,8 @@ require_once 'functions/common_function.php';
     </div>
     <!-- ------------------------------------------------------------------------ -->
 </div>
-
+<!-- create post modal -->
+ <?php include 'users/user_operation/createpostmodal.php'; ?>
 <!-- modal profile -->
 <?php include 'users/profile_modal.php'; ?>
 <script src="functions/JsFunction.js"></script>
