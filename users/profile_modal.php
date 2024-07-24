@@ -23,13 +23,18 @@
                 <div class="container-fluid nbp">
                     <div class="container-fluid namebiomodalprof">
                       <!-- name/bio here -->
-                      <div class="container-fluid namemodalprof">John Paul Naag</div>
+                      <div class="container-fluid namemodalprof">
+                      <?php if(isset($_SESSION['fname']) || isset($_SESSION['lname'])){
+                                  echo "".$_SESSION['fname']." ".$_SESSION['lname']."";
+                                }
+                                ?>
+                      </div>
                       <div class="container-fluid biomodalprof">Hello world</div>
                     </div>
                     <div class="container-fluid buttonmodalprof">
                       <div class="container-fluid profbuttonmodal">
                         <!-- profile here -->
-                      <a href=""><button class="btn">
+                      <a href="users/profile.php"><button class="btn">
                       Profile</button></a>
                       </div>
                     </div>

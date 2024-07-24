@@ -23,7 +23,13 @@ if (isset($_POST['login'])) {
     if ($result->num_rows > 0) {
         if (password_verify($user_password, $row['user_password'])) {
             $_SESSION['ip'] = getIPAddress();
-            $_SESSION['user'] = $row['fname'];
+            $_SESSION['user_ID'] = $row['user_ID'];
+            $_SESSION['email'] = $row['email'];
+            $_SESSION['student_no'] = $row['student_no'];
+            $_SESSION['fname'] = $row['fname'];
+            $_SESSION['lname'] = $row['lname'];
+            $_SESSION['bday'] = $row['bday'];
+            $_SESSION['gender'] = $row['gender'];
             echo "<script>window.open('../index.php','_self')</script>";
         } else {
             $error = "Incorrect password.";

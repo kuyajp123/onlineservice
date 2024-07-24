@@ -1,5 +1,58 @@
+<?php
+// Initialize an empty string for error messages
+$error = "";
 
-<!-- Button trigger modal -->
+// Prepare SQL query to fetch user data
+$sql = "SELECT * FROM user_registration WHERE user_ID = ? OR email = ? OR student_no = ?";
+$stmt = $con->prepare($sql);
+$stmt->bind_param('sss', $_SESSION['user_ID'], $_SESSION['email'], $_SESSION['student_no']);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+
+$_SESSION['user_no'] = $row['user_no'];
+
+if (isset($_POST['submit'])) {
+    // Initialize flags to check if any content is provided
+    $is_ff_set = isset($_POST['ff']) && !empty($_POST['ff']);
+    $is_sb_set = isset($_POST['sb']) && !empty($_POST['sb']);
+    $is_caption_set = isset($_POST['caption']) && !empty(trim($_POST['caption']));
+    $is_postphoto_set = isset($_FILES['postphoto']['name']) && !empty($_FILES['postphoto']['name']);
+
+    // Check if category fields (ff and sb) are empty
+    if (!$is_ff_set || !$is_sb_set) {
+        $error = "Please provide a category to post.";
+    }
+
+    // Check if both caption and postphoto are empty
+    if (!$is_caption_set && !$is_postphoto_set) {
+        $error = "Please provide content for your post.";
+    }
+
+    // If no errors, process the post
+    if (empty($error)) {
+      $user_no = $_SESSION['user_no'];
+      $ff = $_POST['ff'];
+      $sb = $_POST['sb'];
+      $caption = $_POST['caption'];
+      $postphoto = $_POST['postphoto']['name'];
+
+      // Handle file upload
+      $tmp_postphoto = $_FILES['postphoto']['tmp_name'];
+      $upload_path = "./include/posts_images/$postphoto";
+
+      if(move_uploaded_file($tmp_postphoto, $upload_path)){
+        $sql = "insert into posts (user_no, ff, sb, caption, postphoto) value (?, ?, ?, ?, ?)";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param('issss', $user_no, $ff, $sb, $caption, $postphoto);
+        $stmt->execute();
+
+      }
+
+
+    }
+}
+?>
 
 
 <!-- Modal -->
@@ -16,17 +69,18 @@
             <div class="container-fluid chil1">
               <div class="container-fluid category">Select Category</div>
               <div class="container-fluid store">
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>All</option>
-                  <option value="1">Friends</option>
-                  <option value="2">Followers</option>
+                <form action="" method="post" enctype="multipart/form-data">
+                <select class="form-select" name="ff" aria-label="Default select example">
+                  <option selected value="friendsfollowers">All</option>
+                  <option value="Friends">Friends</option>
+                  <option value="Followers">Followers</option>
                 </select>
               </div>
               <div class="container-fluid bookspost">
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>all</option>
-                  <option value="1">Store</option>
-                  <option value="2">Books</option>
+                <select class="form-select" name="sb" aria-label="Default select example">
+                  <option selected value="storebooks">all</option>
+                  <option value="Store">Store</option>
+                  <option value="Books">Books</option>
                 </select>
               </div>
             </div>
@@ -34,23 +88,60 @@
               <div class="container-fluid addcaptionpost">Add Captions</div>
               <div class="container-fluid captionpost">
                 <div class="mb-3">
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  <textarea class="form-control" name="caption" id="exampleFormControlTextarea1" rows="3"></textarea>
                 </div>
               </div>
             </div>
             <div class="container-fluid chil3">
               <div class="mb-3">
                 <label for="formFile" class="form-label" style="margin-left:10px;margin-top:10px;">Upload your photo here</label>
-                <input class="form-control" type="file" id="formFile">
+                <input class="form-control" name="postphoto" type="file" id="formFile">
               </div>
             </div>
         </div>
       </div>
 
       <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-        <button type="button" class="btn btn-primary">Post</button>
+        <button type="submit" name="submit" class="btn btn-primary">Post</button>
+        </form>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  
+
+
+    <div class="toast-header">
+      <strong class="me-auto">Notification</strong>
+      <small>Just now</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="alert alert-danger" role="alert">
+    <div class="toast-body">
+      
+      <!-- Toast message will be inserted here -->
+    </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    <?php if (!empty($error)): ?>
+        // Set the toast message
+        var toastBody = document.querySelector('#liveToast .toast-body');
+        toastBody.textContent = '<?php echo addslashes($error); ?>';
+        
+        // Initialize and show the toast
+        var toastEl = document.getElementById('liveToast');
+        var toast = new bootstrap.Toast(toastEl, { delay: 5000 }); // 5 seconds delay
+
+        // Show the toast
+        toast.show();
+    <?php endif; ?>
+});
+</script>

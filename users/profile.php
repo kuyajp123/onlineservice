@@ -1,7 +1,9 @@
 <?php
+session_start();
 require_once '../include/connect.php';
 require_once '../functions/common_function.php';
 require_once '../include/bootsrap.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +34,7 @@ require_once '../include/bootsrap.php';
                         <div class="container-fluid imgcontainer"><img src="../include/images/0wzknw7460n31.jpg" alt=""></div>
                         <!-- profile photo here -->
                         <div class="container-fluid profilecontainer"><img src="../include/images/433610472_1427797164763718_6516813264608892964_n.jpg" alt=""></div>
-                        <div class="container-fluid backbutton"><button type="button" class="btn btn-primary">Back</button>
+                        <div class="container-fluid backbutton"><a href="../index.php"><button type="button" class="btn btn-primary">Back</button></a>
                         </div>
                     </div>
                     <!-- navbar -->

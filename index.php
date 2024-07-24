@@ -1,6 +1,10 @@
 <?php
+session_start();
 require_once 'include/bootsrap.php';
 require_once 'functions/common_function.php';
+require_once 'include/connect.php';
+
+
 
 ?>
 <!DOCTYPE html>
@@ -11,7 +15,7 @@ require_once 'functions/common_function.php';
 <link rel="stylesheet" href="./users/user_operation/createpost.css?v=3">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main</title>
+    <title>News feed</title>
 </head>
 <body>
 
@@ -90,11 +94,20 @@ require_once 'functions/common_function.php';
                         <div class="container-fluid nameusername">
                           <!-- profile name in side nav -->
                             <div class="container-fluid nameko">
-                                <span>John Paul Naag</span>
+                                <span>
+                                <?php if(isset($_SESSION['fname']) || isset($_SESSION['lname'])){
+                                  echo "".$_SESSION['fname']." ".$_SESSION['lname']."";
+                                }
+                                ?>
+                                </span>
                             </div>
                             <!-- profile username in side nav -->
                             <div class="container-fluid username">
-                                <small><span style="font-size:13px;">@johnpaul12</span></small>
+                                <small><span style="font-size:13px;">
+                                  <?php if(isset($_SESSION['user_ID'])){
+                                    echo "".$_SESSION['user_ID']."";
+                                  } ?>
+                                </span></small>
                             </div>
                         </div>
                     </div>
@@ -174,6 +187,7 @@ require_once 'functions/common_function.php';
 
 
 <!-------------------------------------------------- post with 1 image------------------------------------------------ -->
+<div id="liveAlertPlaceholder" class="alert-container"></div>
 <?php require_once 'include/posttemplate/post.php'; ?>
 <!--------------------------------------- text post ------------------------------------------------------->
 <?php require_once 'include/posttemplate/textpost.php'; ?>
@@ -200,6 +214,24 @@ require_once 'functions/common_function.php';
     </div>
     <!-- ------------------------------------------------------------------------ -->
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- create post modal -->
  <?php include 'users/user_operation/createpostmodal.php'; ?>
 <!-- modal profile -->
