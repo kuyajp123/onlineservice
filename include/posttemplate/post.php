@@ -1,5 +1,5 @@
-             <!---eto ang simula ng ipapasok mo sa loob ng div sa may comment--------->
-             <div class="container-fluid container_post">
+ <!---eto ang simula ng ipapasok mo sa loob ng div sa may comment--------->
+ <div class="container-fluid container_post" data-post-id="<?php echo htmlspecialchars($post_id); ?>">
 
 <!-- lagayan ng pangalan 1st div -->
 <div class="container-fluid name">
@@ -13,9 +13,9 @@ height: 40px; border-radius: 50%;" alt=""></div></a>
       </div>
       <div class="container-fluid pangalan">
         <!-- profile name in post -->
-        <div><a href="#" data-open-modal="profilemodal" style="font-size:1rem; text-decoration: none; color: black;"><span class="ipadname1">John Paul Naag</span></a>
+        <div><a href="#" data-open-modal="profilemodal" style="font-size:1rem; text-decoration: none; color: black;"><span class="ipadname1"><?php echo htmlspecialchars($fname . ' ' . $lname); ?></span></a>
         <!-- time in post -->
-        <div><small style="font-size:13px;"><span class="ipadname2">Just now</span></small></div></div></div>
+        <div><small style="font-size:13px;"><span class="ipadname2"><?php echo htmlspecialchars($formattedDate . ' at ' . $formattedTime); ?></span></small></div></div></div>
       </div>
       
 
@@ -28,7 +28,7 @@ height: 40px; border-radius: 50%;" alt=""></div></a>
 <!-- image 1st div -->
 <div class="container-fluid image">
 <!-- image in post -->
-<div class="container-fluid image_container"><img src="include/images/d6cdf2a5daaf96462127cc31fb621851.jpg" alt=""></div>
+<div class="container-fluid image_container"><img src="include/posts_images/<?php echo htmlspecialchars($postphoto); ?>" alt=""></div>
     
 </div>
 
@@ -57,7 +57,7 @@ height: 40px; border-radius: 50%;" alt=""></div></a>
 
 <!-- caption 1st div -->
 <div class="container-fluid container_cap">
-    <div class="container-fluid caption">This is post with image</div>
+    <div class="container-fluid caption"><?php echo htmlspecialchars($caption) ?></div>
 </div>
 
 </div>

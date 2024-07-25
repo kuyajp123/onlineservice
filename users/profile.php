@@ -4,6 +4,39 @@ require_once '../include/connect.php';
 require_once '../functions/common_function.php';
 require_once '../include/bootsrap.php';
 
+if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SESSION['student_no']))){
+    header('location: login.php');
+    exit();
+  }
+
+  
+
+
+
+
+
+
+// Sanitize and validate the 'user_no' parameter
+// $profile_user_no = filter_var($profile_user_no, FILTER_SANITIZE_NUMBER_INT);
+// if (!filter_var($profile_user_no, FILTER_VALIDATE_INT, array("options" => array("min_range" => 1)))) {
+//     die("Invalid user ID.");
+// }
+
+// Fetch profile data from the database
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,15 +102,23 @@ require_once '../include/bootsrap.php';
 
                         <!-- dito ang mga included -->
 
+                            <!-- user posts -->
                             <?php 
                             // include '../include/profileincluded/userspost.php';
                              ?>
                             
                             
-                            <!-- edit details -->
-                             <!-- for own profile -->
+                            
+                              
                             <?php 
-                            // include '../include/profileincluded/editdetails.php'; 
+                           
+                            //     <!-- edit details -->
+                            //  <!-- for own profile -->
+                                // include '../include/profileincluded/editdetails.php'; 
+
+
+                       
+                            
                             ?>
 
 
@@ -109,14 +150,10 @@ require_once '../include/bootsrap.php';
                                 </div>
                             </div>
 
-                            <div class="container-fluid identity">
-                                <!-- image to be upload profile here -->
-                                <div class="container-fluid profilepic"></div>
-                                <!-- name to be upload here -->
-                                <div class="container-fluid name">John Paul Naag</div>
-                                <div class="container-fluid username">@johnpaul12</div>
-                                <div class="container-fluid bio">Hello world!</div>
-                            </div>
+
+                            <?php
+                            getName();
+                            ?>
 
 
                             <div class="container-fluid ff">
@@ -143,16 +180,23 @@ require_once '../include/bootsrap.php';
 
                             <div class="container-fluid line"></div>
 
-                            <!-- other profile user -->
-                             <!-- follow button -->
+                            
                             <?php
-                            //  include '../include/profileincluded/profilefollow.php';
+                            
                               ?>
                             
                             
-                            <!-- users own features button -->
+                            
                             <?php
-                            //  include '../include/profileincluded/featuresprofile.php'; 
+                           
+                                // <!-- users own features button -->
+                                //  include '../include/profileincluded/featuresprofile.php'; 
+                         
+                                // <!-- other profile user -->
+                            //  <!-- follow button -->
+                                //  include '../include/profileincluded/profilefollow.php';
+                           
+                            
                             ?>
                             
 
@@ -192,6 +236,5 @@ require_once '../include/bootsrap.php';
 
 
     <script src="../functions/JsFunction.js"></script>
-    <script src="../include/modal.js"></script>
 </body>
 </html>

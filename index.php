@@ -4,13 +4,63 @@ require_once 'include/bootsrap.php';
 require_once 'functions/common_function.php';
 require_once 'include/connect.php';
 
+if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SESSION['student_no']))){
+      header('location: ./users/login.php');
+      exit();
+    }
+
+    // Assume connection is already established
+
+// $sql = "SELECT p.post_id, p.user_no, u.fname, u.lname, p.timestamp, p.postphoto, p.caption
+// FROM posts p
+// JOIN user_registration u ON p.user_no = u.user_no";
+
+// $stmt = $con->prepare($sql);
+// $stmt->execute();
+// $result = $stmt->get_result();
+// $row = $result->fetch_assoc();
+
+
+// $current_user_no = $_SESSION['user_no'];
+// $post_id = isset($_GET['post_id']) ? $_GET['post_id'] : '';
+
+// // Fetch profile data from the database
+// // Fetch post data from the database
+// $query = "SELECT * FROM posts WHERE post_id = ?";
+// $stmt = $con->prepare($query);
+// $stmt->bind_param('i', $post_id);
+// $stmt->execute();
+// $result = $stmt->get_result();
+// $post = $result->fetch_assoc();
+
+
+
+
+  $sql = "SELECT * FROM user_registration WHERE user_no = ?";
+  $stmt = $con->prepare($sql);
+  $stmt->bind_param('i', $_SESSION['user_no']);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $row = $result->fetch_assoc();
+
+  
+
+
+
+
+
+
+
+
+
+
 
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="index_style.css?v=1">
+<link rel="stylesheet" href="index_style.css?v=3">
 <link rel="stylesheet" href="users/profilemodal.css?v=3">
 <link rel="stylesheet" href="./users/user_operation/createpost.css?v=3">
     <meta charset="UTF-8">
@@ -182,22 +232,30 @@ require_once 'include/connect.php';
 
 
             <!---eto ang simula ng ipapasok mo sa loob ng div sa may comment--------->
-                <div class="container-fluid content">
-
-
-
-<!-------------------------------------------------- post with 1 image------------------------------------------------ -->
-<div id="liveAlertPlaceholder" class="alert-container"></div>
-<?php require_once 'include/posttemplate/post.php'; ?>
-<!--------------------------------------- text post ------------------------------------------------------->
-<?php require_once 'include/posttemplate/textpost.php'; ?>
-<!-------------------------------------------------- post with multiple images------------------------------------------------ -->
-<?php require_once 'include/posttemplate/multipleimage.php'; ?>
+            <div class="container-fluid content">
 
 
 
 
-               </div>
+      <?php
+
+            // require 'include/posttemplate/post.php';
+    
+    
+        // Post with text only
+        // require 'include/posttemplate/textpost.php';
+
+        // Post with image only
+        // You can create a separate template for image-only posts if needed
+        // require 'include/posttemplate/imagepost.php';
+    
+      ?>
+
+      
+
+
+
+</div>
                <!---------ilalagay mo dito sa loob nato ang bagong .container_post eto ang pinaka huling div-------------->
 
 
@@ -234,9 +292,25 @@ require_once 'include/connect.php';
 
 <!-- create post modal -->
  <?php include 'users/user_operation/createpostmodal.php'; ?>
+ 
 <!-- modal profile -->
 <?php include 'users/profile_modal.php'; ?>
 <script src="functions/JsFunction.js"></script>
 </body>
 
 </html>
+<?php
+
+
+
+
+// $sql = "select * from user_registration where user_no = ?";
+// $stmt = $con->prepare($sql);
+// $stmt->bind_param('i', $_SESSION['user_no']);
+// $stmt->execute();
+// $result = $stmt->get_result();
+// $row = $result->fetch_assoc();
+
+
+
+?>

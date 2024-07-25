@@ -87,6 +87,95 @@ function getIPAddress() {
 //   echo $ip; 
 
 
+
+
+
+function getName(){
+    global $con;
+
+    $current_user_no = $_SESSION['user_no'];
+    // Retrieve the 'user_no' parameter from the URL
+    $profile_user_no = isset($_GET['user_no']) ? $_GET['user_no'] : '';
+
+    $query = "SELECT * FROM user_registration WHERE user_no = ?";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param('i', $profile_user_no);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $profile = $result->fetch_assoc();
+
+    $fname = $_SESSION['fname'];
+    $lname = $_SESSION['lname'];
+    $user_ID = $_SESSION['user_ID'];
+
+
+    
+    if ($profile) {
+        // Check if the profile belongs to the current user
+        $current_user_no = $_SESSION['user_no'];
+        if ($profile_user_no == $current_user_no) {
+            echo "
+            <div class='container-fluid identity'>
+              <!-- Image to be uploaded profile here -->
+             <div class='container-fluid profilepic'></div>
+                                    
+             <!-- Name to be uploaded here -->
+              <div class='container-fluid name'>
+                $fname $lname
+             </div>
+                                    
+             <div class='container-fluid username'>
+             $user_ID
+            </div>
+                                    
+            <div class='container-fluid bio'>Hello world!</div>
+            </div>                    
+            ";
+            
+        } else {
+            echo "
+            <div class='container-fluid identity'>
+              <!-- Image to be uploaded profile here -->
+             <div class='container-fluid profilepic'></div>
+                                    
+             <!-- Name to be uploaded here -->
+              <div class='container-fluid name'>
+              " . htmlspecialchars($profile['fname']) . " " . htmlspecialchars($profile['lname']) . "
+             </div>
+                                    
+             <div class='container-fluid username'>
+             " . htmlspecialchars($profile['user_ID'])."
+            </div>
+                                    
+            <div class='container-fluid bio'>Hello world!</div>
+            </div>                    
+            ";
+        }
+    
+    } else {
+        echo "Profile not found.";
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>
 
 

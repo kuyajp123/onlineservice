@@ -1,5 +1,5 @@
   <!---eto ang simula ng ipapasok mo sa loob ng div sa may comment--------->
-  <div class="container-fluid containertextpostpost">
+  <div class="container-fluid containertextpostpost" data-post-id="<?php echo htmlspecialchars($post_id); ?>">
 
 <!-- lagayan ng pangalan 1st div -->
 <div class="container-fluid nametextpost">
@@ -13,9 +13,9 @@ height: 40px; border-radius: 50%;" alt=""></div></a>
       </div>
       <div class="container-fluid pangalan">
         <!-- profile name in post -->
-        <div><a href="#" data-open-modal="profilemodal" style="font-size:1rem; text-decoration: none; color: black;"><span class="pangalantextpost">John Paul Naag</span></a>
+        <div><a href="#" data-open-modal="profilemodal" style="font-size:1rem; text-decoration: none; color: black;"><span class="pangalantextpost"><?php echo htmlspecialchars($fname . ' ' . $lname); ?></span></a>
         <!-- time in post -->
-        <div><small style="font-size:13px;"><span class="timetextpost">Just now</span></small></div></div></div>
+        <div><small style="font-size:13px;"><span class="timetextpost"><?php echo htmlspecialchars($formattedDate . ' at ' . $formattedTime); ?></span></small></div></div></div>
       </div>
       
 
@@ -30,7 +30,7 @@ height: 40px; border-radius: 50%;" alt=""></div></a>
 <!-- caption in post -->
 <div class="container-fluid textcontainerpost">
   <figure>
-    <figcaption>This is text post</figcaption>
+    <figcaption><?php echo htmlspecialchars($caption) ?></figcaption>
 </figure>
 </div>
     
