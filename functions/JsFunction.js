@@ -57,7 +57,7 @@ function myFunction() {
 
 
 
-// // function for submitting data using ajax d pa nagana
+// function for submitting data using ajax d pa nagana
 // $(document).ready(function() {
 //     // Show the modal on page load
 //     $('#autoOpenModal').modal('show');
@@ -108,3 +108,26 @@ function myFunction() {
 //     });
 // });
 
+
+    
+    
+    
+//     // Function to get query string parameters
+//     function getQueryParam(param) {
+//         const urlParams = new URLSearchParams(window.location.search);
+//         return urlParams.get(param);
+//     }
+    
+//     // When the document is ready
+//     document.addEventListener('DOMContentLoaded', function() {
+//         // Get the user_no from URL
+//         const userNo = getQueryParam('user_no');
+    
+//         // Assuming you have a modal with id 'myModal'
+//         if (userNo) {
+//             document.getElementById('myModal').querySelector('.modal-body').textContent = `User ID: ${userNo}`;
+//         }
+    
+//         // Example for opening modal programmatically
+//         $('#myModal').modal('show');
+//     });

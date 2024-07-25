@@ -1,9 +1,3 @@
-<?php
-
-
-
-?>
-
 
 <div class="modal fade" id="profilemodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
   <div class="modal-dialog modal-dialog-centered">
@@ -27,20 +21,11 @@
                   </div>
                   <!-- <div class="container-fluid profilemodal"></div> -->
                 </div>
-                <div class="container-fluid nbp">
-                    <div class="container-fluid namebiomodalprof">
-                      <!-- name/bio here -->
-                      <div class="container-fluid namemodalprof">name mo</div>
-                      <div class="container-fluid biomodalprof">Hello world</div>
-                    </div>
-                    <div class="container-fluid buttonmodalprof">
-                      <div class="container-fluid profbuttonmodal">
-                        <!-- profile here -->
-                      <a href="users/profile.php?user_no=<?php echo $row['user_no']; ?>"><button class="btn">
-                      Profile</button></a>
-                      </div>
-                    </div>
-                </div>
+
+                <?php
+                profileModalGetData();
+                ?>
+                
             </div>
         </div>
 

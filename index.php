@@ -34,27 +34,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 // $post = $result->fetch_assoc();
 
 
-
-
-  $sql = "SELECT * FROM user_registration WHERE user_no = ?";
-  $stmt = $con->prepare($sql);
-  $stmt->bind_param('i', $_SESSION['user_no']);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  $row = $result->fetch_assoc();
-
-  
-
-
-
-
-
-
-
-
-
-
-
+$current_user_no = $_SESSION['user_no'];
 
 ?>
 <!DOCTYPE html>
@@ -133,36 +113,41 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
     <div class="container-fluid ccon"> <!--------3rd container- content container-------->
         <div class="container-fluid sidenav">
             <div class="container-fluid sticky-top considenav">
-                
-            <div class="container-fluid profile">
-                <a href="#" style="color: black;" data-open-modal="profilemodal">
-                    <div class="container-fluid contprofname">
-                        <div class="container-fluid profilepicture">
-                          <!-- prifle image in sidenav -->
-                            <img src="include/images/d6cdf2a5daaf96462127cc31fb621851.jpg" alt="">
-                        </div>
-                        <div class="container-fluid nameusername">
-                          <!-- profile name in side nav -->
-                            <div class="container-fluid nameko">
-                                <span>
-                                <?php if(isset($_SESSION['fname']) || isset($_SESSION['lname'])){
-                                  echo "".$_SESSION['fname']." ".$_SESSION['lname']."";
-                                }
-                                ?>
-                                </span>
-                            </div>
-                            <!-- profile username in side nav -->
-                            <div class="container-fluid username">
-                                <small><span style="font-size:13px;">
-                                  <?php if(isset($_SESSION['user_ID'])){
-                                    echo "".$_SESSION['user_ID']."";
-                                  } ?>
-                                </span></small>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
+
+          <!-- sidenav and modal for profile -->
+            <?php
+echo '<div class="container-fluid profile">';
+echo '<a href="users/profile.php?user_no=' . urlencode($current_user_no) . '" style="color: black;" class="sidemodal" data-open-modal="profilemodal">';
+echo '        <div class="container-fluid contprofname">';
+echo '            <div class="container-fluid profilepicture">';
+echo '                <!-- profile image in sidenav -->';
+echo '                <img src="include/images/d6cdf2a5daaf96462127cc31fb621851.jpg" alt="">';
+echo '            </div>';
+echo '            <div class="container-fluid nameusername">';
+echo '                <!-- profile name in side nav -->';
+echo '                <div class="container-fluid nameko">';
+echo '                    <span>';
+echo '                    ';
+if (isset($_SESSION['fname']) || isset($_SESSION['lname'])) {
+    echo htmlspecialchars($_SESSION['fname']) . ' ' . htmlspecialchars($_SESSION['lname']);
+}
+echo '                    </span>';
+echo '                </div>';
+echo '                <!-- profile username in side nav -->';
+echo '                <div class="container-fluid username">';
+echo '                    <small><span style="font-size:13px;">';
+echo '                    ';
+if (isset($_SESSION['user_ID'])) {
+    echo htmlspecialchars($_SESSION['user_ID']);
+}
+echo '                    </span></small>';
+echo '                </div>';
+echo '            </div>';
+echo '        </div>';
+echo '    </a>';
+echo '</div>';
+?>
+
             
 
                 <div class="container-fluid linesidenav"></div>
@@ -180,7 +165,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                           </form>
                         </div>
                         <li><a href="#" data-open-modal="createpost"><div class="container-fluid post">Create post</div></a></li>
-                        <li><a href=""><div class="container-fluid notification">Notification</div></a></li>
+                        <li><a href="users/profile.php?user_no=<?php echo urlencode($current_user_no); ?>"><div class="container-fluid notification">Notification</div></a></li>
                         <li><a href=""><div class="container-fluid collect">Collection</div></a></li>
                         <li><div class="container-fluid services" style="padding:0;">
                           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><div class="container" >Services<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i></div></a>
@@ -296,6 +281,20 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 <!-- modal profile -->
 <?php include 'users/profile_modal.php'; ?>
 <script src="functions/JsFunction.js"></script>
+<script>
+  $(document).ready(function() {
+
+// Prevent specific anchor tag clicks from reloading the page
+$('.sidemodal').on('click', function(event) {
+    event.preventDefault(); // Prevent default anchor behavior
+
+    // Handle the modal open here
+    var modalId = $(this).data('sidemodal'); // Get the modal ID from the data attribute
+    openModal(modalId); // Call function to open modal
+});
+
+});
+</script>
 </body>
 
 </html>
