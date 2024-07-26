@@ -286,18 +286,3 @@ echo '</div>';
 </body>
 
 </html>
-<?php
-
-
-
-
-// $sql = "select * from user_registration where user_no = ?";
-// $stmt = $con->prepare($sql);
-// $stmt->bind_param('i', $_SESSION['user_no']);
-// $stmt->execute();
-// $result = $stmt->get_result();
-// $row = $result->fetch_assoc();
-
-
-
-?>

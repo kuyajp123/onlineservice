@@ -13,6 +13,7 @@ $profile = $result->fetch_assoc();
 
 $user_no = $profile['user_no'];
 
+
 if ($profile) {
     $current_user_no = $_SESSION['user_no'];
     if ($profile_user_no == $current_user_no) {
@@ -23,7 +24,7 @@ if ($profile) {
                     <li><a href="profile.php?post=' . urlencode($user_no) . '" class="ajax-link">
                         <div class="container-fluid post">Post</div>
                     </a></li>
-                    <li><a href="">
+                    <li><a href="#" data-open-modal="createpost">
                         <div class="container-fluid post">Create post</div>
                     </a></li>
                     <li><a href="">

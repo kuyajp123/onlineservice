@@ -1,1 +1,0 @@
-<a href='' style='color: black;' data-open-modal='profilemodal'>

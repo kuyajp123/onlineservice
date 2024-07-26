@@ -97,22 +97,25 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                             <?php
 
                             $current_user_no = $_SESSION['user_no'];
-                            $profile_user_no = isset($_GET['user_no']) ? $_GET['user_no'] : '';
+                            $post = isset($_GET['post']) ? $_GET['post'] : '';
 
+                            $query = "SELECT * FROM user_registration WHERE user_no = ?";
+                            $stmt = $con->prepare($query);
+                            $stmt->bind_param('i', $post);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            $profile_post = $result->fetch_assoc();
 
                             if(isset($_GET['post'])){
-                                if ($profile) {
-                                    if ($profile_user_no == $current_user_no) {
+                                if ($profile_post) {
+                                    if ($post == $current_user_no) {                                       
                                         include '../include/profileincluded/userspost.php';
                                     }
                                 }
                             }
+                            
                             if(isset($_GET['editdetails'])){
-                                if ($profile) {
-                                    if ($profile_user_no == $current_user_no) {
-                                        include '../include/profileincluded/editdetails.php';
-                                    }
-                                }
+                                include '../include/profileincluded/editdetails.php';         
                             }
   
 
@@ -239,6 +242,8 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
             <div class="container-fluid grid4"></div>
         </div>
     </div>
+    <!-- create post modal -->
+    <?php include '../users/user_operation/createpostmodal.php'; ?>
 <!-- edit section -->
  <?php
   include '../users/user_operation/editdetails/editname.php'; 
@@ -253,7 +258,6 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 
 
 
-    <script src="../functions/JsFunction.js"></script>
     <script>
 $(document).ready(function() {
     // Intercept click event on elements with class 'ajax-link'
@@ -277,7 +281,11 @@ $(document).ready(function() {
         });
     });
 });
-
+$(document).on('click', '[data-open-modal]', function(event) {
+    event.preventDefault();
+    var modalId = $(this).attr('data-open-modal');
+    $('#' + modalId).modal('show');
+});
     </script>
 </body>
 </html>

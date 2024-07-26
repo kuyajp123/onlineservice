@@ -1,5 +1,5 @@
 <!-- other profile feature user -->
-<div class="container-fluid features">
+                <div class="container-fluid features">
                     <div class="container-fluid contbuttons">
                       <div class="container-fluid buttonlinks">
                        <ul>
