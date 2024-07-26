@@ -11,19 +11,15 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 
   
 
-
-
-
-
-
-// Sanitize and validate the 'user_no' parameter
-// $profile_user_no = filter_var($profile_user_no, FILTER_SANITIZE_NUMBER_INT);
-// if (!filter_var($profile_user_no, FILTER_VALIDATE_INT, array("options" => array("min_range" => 1)))) {
-//     die("Invalid user ID.");
-// }
-
-// Fetch profile data from the database
-
+    $current_user_no = $_SESSION['user_no'];
+    $profile_user_no = isset($_GET['user_no']) ? $_GET['user_no'] : '';
+  
+  $query = "SELECT * FROM user_registration WHERE user_no = ?";
+  $stmt = $con->prepare($query);
+  $stmt->bind_param('i', $profile_user_no);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $profile = $result->fetch_assoc();
 
 
 ?>
@@ -39,10 +35,10 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="profile.css?v=2">
+    <link rel="stylesheet" href="profile.css?v=1">
 </head>
 <body>
-    <div class="container-fluid body">
+    <div class="container-fluid body" id="body">
         <div class="container-fluid bodyprof">
             <div class="container-fluid grid1"></div>
 
@@ -59,10 +55,10 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                 <div class="container-fluid gri1cont">
                     <div class="container-fluid header">
                         <!-- background photo here -->
-                        <div class="container-fluid imgcontainer"><img src="../include/images/0wzknw7460n31.jpg" alt=""></div>
+                        <div class="container-fluid imgcontainer"><img src=""></div>
                         <!-- profile photo here -->
-                        <div class="container-fluid profilecontainer"><img src="../include/images/433610472_1427797164763718_6516813264608892964_n.jpg" alt=""></div>
-                        <div class="container-fluid backbutton"><a href="../index.php"><button type="button" class="btn btn-primary">Back</button></a>
+                        <div class="container-fluid profilecontainer"><img src=""></div>
+                        <div class="container-fluid backbutton"><a href="../index.php?user_no=<?php echo urlencode($current_user_no);?>"><button type="button" class="btn btn-primary">Back</button></a>
                         </div>
                     </div>
                     <!-- navbar -->
@@ -98,24 +94,54 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                         <!-- dito ang mga included -->
 
                             <!-- user posts -->
-                            <?php 
+                            <?php
+
+                            $current_user_no = $_SESSION['user_no'];
+                            $profile_user_no = isset($_GET['user_no']) ? $_GET['user_no'] : '';
+
+
+                            if(isset($_GET['post'])){
+                                if ($profile) {
+                                    if ($profile_user_no == $current_user_no) {
+                                        include '../include/profileincluded/userspost.php';
+                                    }
+                                }
+                            }
+                            if(isset($_GET['editdetails'])){
+                                if ($profile) {
+                                    if ($profile_user_no == $current_user_no) {
+                                        include '../include/profileincluded/editdetails.php';
+                                    }
+                                }
+                            }
+  
+
+
+
+
+
+
+
+
+                            
+
+
+
+
+
                             // include '../include/profileincluded/userspost.php';
-                             ?>
-                            
-                            
-                            
-                              
-                            <?php 
                            
                             //     <!-- edit details -->
                             //  <!-- for own profile -->
                                 // include '../include/profileincluded/editdetails.php'; 
 
+                                // other user details
+                                // include '../include/profileincluded/othereditdetails.php';
+
 
                        
                             
                             ?>
-
 
 
 
@@ -175,23 +201,20 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 
                             <div class="container-fluid line"></div>
 
+      
                             
                             <?php
-                            
-                              ?>
-                            
-                            
-                            
-                            <?php
-                           
-                                // <!-- users own features button -->
-                                //  include '../include/profileincluded/featuresprofile.php'; 
-                         
-                                // <!-- other profile user -->
-                            //  <!-- follow button -->
-                                //  include '../include/profileincluded/profilefollow.php';
-                           
-                            
+                                // <!-- users features button -->
+                                if ($profile) {
+                                    $current_user_no = $_SESSION['user_no'];
+                                        if ($profile_user_no == $current_user_no) {
+                                            include '../include/profileincluded/featuresprofile.php'; 
+                                        }else{
+                                            include '../include/profileincluded/profilefollow.php'; 
+                                            include '../include/profileincluded/otherfeauture.php'; 
+                                        }
+                                    
+                                }
                             ?>
                             
 
@@ -231,5 +254,30 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 
 
     <script src="../functions/JsFunction.js"></script>
+    <script>
+$(document).ready(function() {
+    // Intercept click event on elements with class 'ajax-link'
+    $('.ajax-link').on('click', function(event) {
+        event.preventDefault(); // Prevent the default link behavior
+
+        var url = $(this).attr('href'); // Get the URL from the href attribute
+
+        // Perform the AJAX request
+        $.ajax({
+            url: url,
+            method: 'GET', // Or 'POST' depending on your requirement
+            success: function(response) {
+                // Update the content container with the response
+                $('#body').html(response);
+            },
+            error: function(xhr, status, error) {
+                // Handle errors here
+                console.error('AJAX request failed:', status, error);
+            }
+        });
+    });
+});
+
+    </script>
 </body>
 </html>

@@ -146,44 +146,90 @@ function getName(){
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // profile modal get data
-function profileModalGetData(){
-    global $con;
-    $current_user_no = $_SESSION['user_no'];
-    // Retrieve the 'user_no' parameter from the URL
-    $profile_user_no = isset($_GET['user_no']) ? $_GET['user_no'] : '';
+// function profileModalGetData(){
+//     global $con;
+//     $current_user_no = $_SESSION['user_no'];
+//     // Retrieve the 'user_no' parameter from the URL
+//     $profile_user_no = isset($_GET['user_no']) ? $_GET['user_no'] : '';
     
-    $query = "SELECT * FROM user_registration WHERE user_no = ?";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param('i', $profile_user_no);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $profile = $result->fetch_assoc();
+//     $query = "SELECT * FROM user_registration WHERE user_no = ?";
+//     $stmt = $con->prepare($query);
+//     $stmt->bind_param('i', $profile_user_no);
+//     $stmt->execute();
+//     $result = $stmt->get_result();
+//     $profile = $result->fetch_assoc();
     
-    if ($profile_user_no == $current_user_no) {
-      $current_user_no = $_SESSION['user_no'];
-      $current_fname = $_SESSION['fname'];
-      $current_lname = $_SESSION['lname'];
-      echo"
-                <div class='container-fluid nbp'>
-                    <div class='container-fluid namebiomodalprof'>
-                      <!-- name/bio here -->
-                      <div class='container-fluid namemodalprof'>$current_fname $current_lname</div>
-                      <div class='container-fluid biomodalprof'>Hello world</div>
-                    </div>
-                    <div class='container-fluid buttonmodalprof'>
-                      <div class='container-fluid profbuttonmodal'>
-                        <!-- profile here -->
-                      <a href='users/profile.php?profile=$current_user_no'><button class='btn'>Profile</button></a>
-                      </div>
-                    </div>
-                </div>
-      ";
-    }else{
+//     if ($profile_user_no == $current_user_no) {
+//       $current_user_no = $_SESSION['user_no'];
+//       $current_fname = $_SESSION['fname'];
+//       $current_lname = $_SESSION['lname'];
+//       echo"
+//                 <div class='container-fluid nbp'>
+//                     <div class='container-fluid namebiomodalprof'>
+//                       <!-- name/bio here -->
+//                       <div class='container-fluid namemodalprof'>$current_fname $current_lname</div>
+//                       <div class='container-fluid biomodalprof'>Hello world</div>
+//                     </div>
+//                     <div class='container-fluid buttonmodalprof'>
+//                       <div class='container-fluid profbuttonmodal'>
+//                         <!-- profile here -->
+//                       <a href='users/profile.php?profile=$current_user_no'><button class='btn'>Profile</button></a>
+//                       </div>
+//                     </div>
+//                 </div>
+//       ";
+//     }else{
       
         
-    }
-}
+//     }
+// }
 
 
 

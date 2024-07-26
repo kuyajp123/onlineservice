@@ -165,7 +165,7 @@ echo '</div>';
                           </form>
                         </div>
                         <li><a href="#" data-open-modal="createpost"><div class="container-fluid post">Create post</div></a></li>
-                        <li><a href="users/profile.php?user_no=<?php echo urlencode($current_user_no); ?>"><div class="container-fluid notification">Notification</div></a></li>
+                        <li><a href=""><div class="container-fluid notification">Notification</div></a></li>
                         <li><a href=""><div class="container-fluid collect">Collection</div></a></li>
                         <li><div class="container-fluid services" style="padding:0;">
                           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><div class="container" >Services<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i></div></a>
@@ -279,21 +279,9 @@ echo '</div>';
  <?php include 'users/user_operation/createpostmodal.php'; ?>
  
 <!-- modal profile -->
-<?php include 'users/profile_modal.php'; ?>
 <script src="functions/JsFunction.js"></script>
 <script>
-  $(document).ready(function() {
 
-// Prevent specific anchor tag clicks from reloading the page
-$('.sidemodal').on('click', function(event) {
-    event.preventDefault(); // Prevent default anchor behavior
-
-    // Handle the modal open here
-    var modalId = $(this).data('sidemodal'); // Get the modal ID from the data attribute
-    openModal(modalId); // Call function to open modal
-});
-
-});
 </script>
 </body>
 

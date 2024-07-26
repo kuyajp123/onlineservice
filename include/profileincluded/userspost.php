@@ -1,4 +1,5 @@
-                            
+               
+                                               
                                       <!-- post users content here -->
                               <div class="card" style="width: 18rem;">
                               <img src="../include/images/d6cdf2a5daaf96462127cc31fb621851.jpg" class="card-img-top" alt="...">

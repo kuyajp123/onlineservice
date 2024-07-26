@@ -51,6 +51,49 @@ function myFunction() {
 
 
 
+$(document).ready(function() {
+    // Intercept click event on elements with class 'ajax-link'
+    $('.ajax-link').on('click', function(event) {
+        event.preventDefault(); // Prevent the default link behavior
+
+        var url = $(this).attr('href'); // Get the URL from the href attribute
+
+        // Perform the AJAX request
+        $.ajax({
+            url: url,
+            method: 'GET', // Or 'POST' depending on your requirement
+            success: function(response) {
+                // Update the content container with the response
+                $('#containerDivIDhere').html(response);
+            },
+            error: function(xhr, status, error) {
+                // Handle errors here
+                console.error('AJAX request failed:', status, error);
+            }
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // magagamit moto in future!
@@ -106,28 +149,25 @@ function myFunction() {
 //       event.preventDefault();
 //       // Handle form submission here
 //     });
-// });
-
-
-    
+// }); 
     
     
 //     // Function to get query string parameters
-//     function getQueryParam(param) {
-//         const urlParams = new URLSearchParams(window.location.search);
-//         return urlParams.get(param);
-//     }
+    // function getQueryParam(param) {
+    //     const urlParams = new URLSearchParams(window.location.search);
+    //     return urlParams.get(param);
+    // }
     
-//     // When the document is ready
-//     document.addEventListener('DOMContentLoaded', function() {
-//         // Get the user_no from URL
-//         const userNo = getQueryParam('user_no');
+    // // When the document is ready
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     // Get the user_no from URL
+    //     const userNo = getQueryParam('user_no');
     
-//         // Assuming you have a modal with id 'myModal'
-//         if (userNo) {
-//             document.getElementById('myModal').querySelector('.modal-body').textContent = `User ID: ${userNo}`;
-//         }
+    //     // Assuming you have a modal with id 'myModal'
+    //     if (userNo) {
+    //         document.getElementById('myModal').querySelector('.modal-body').textContent = `User ID: ${userNo}`;
+    //     }
     
-//         // Example for opening modal programmatically
-//         $('#myModal').modal('show');
-//     });
+    //     // Example for opening modal programmatically
+    //     $('#myModal').modal('show');
+    // });
