@@ -8,18 +8,26 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
     header('location: login.php');
     exit();
   }
-
+  $_SESSION['ip'] = getIPAddress();
+  $_SESSION['user_no'];
+  $_SESSION['user_ID'];
+  $_SESSION['email'];
+  $_SESSION['student_no'];
+  $_SESSION['fname'];
+  $_SESSION['lname'];
+  $_SESSION['bday'];
+  $_SESSION['gender'];
+  $_SESSION['user_password'];
+  $current_user_no = $_SESSION['user_no'];
+  $_SESSION['profile_user_no'] = isset($_GET['sideprof']) ? $_GET['sideprof'] : '';
+    
   
-
-    $current_user_no = $_SESSION['user_no'];
-    $profile_user_no = isset($_GET['user_no']) ? $_GET['user_no'] : '';
-  
-  $query = "SELECT * FROM user_registration WHERE user_no = ?";
-  $stmt = $con->prepare($query);
-  $stmt->bind_param('i', $profile_user_no);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  $profile = $result->fetch_assoc();
+//   $query = "SELECT * FROM user_registration WHERE user_no = ?";
+//   $stmt = $con->prepare($query);
+//   $stmt->bind_param('i', $_SESSION['profile_user_no']);
+//   $stmt->execute();
+//   $result = $stmt->get_result();
+//   $profile = $result->fetch_assoc();
 
 
 ?>
@@ -58,7 +66,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                         <div class="container-fluid imgcontainer"><img src=""></div>
                         <!-- profile photo here -->
                         <div class="container-fluid profilecontainer"><img src=""></div>
-                        <div class="container-fluid backbutton"><a href="../index.php?user_no=<?php echo urlencode($current_user_no);?>"><button type="button" class="btn btn-primary">Back</button></a>
+                        <div class="container-fluid backbutton"><a href="../index.php"><button type="button" class="btn btn-primary">Back</button></a>
                         </div>
                     </div>
                     <!-- navbar -->
@@ -96,27 +104,20 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                             <!-- user posts -->
                             <?php
 
-                            $current_user_no = $_SESSION['user_no'];
-                            $post = isset($_GET['post']) ? $_GET['post'] : '';
-
-                            $query = "SELECT * FROM user_registration WHERE user_no = ?";
-                            $stmt = $con->prepare($query);
-                            $stmt->bind_param('i', $post);
-                            $stmt->execute();
-                            $result = $stmt->get_result();
-                            $profile_post = $result->fetch_assoc();
-
-                            if(isset($_GET['post'])){
-                                if ($profile_post) {
-                                    if ($post == $current_user_no) {                                       
-                                        include '../include/profileincluded/userspost.php';
-                                    }
+                            if(isset($current_user_no)){
+                                if(isset($_GET['sideprof'])){
+                                    include '../include/profileincluded/userspost.php';
+                                }
+                            
+                        
+                        
+                                if(isset($_GET['editdetails'])){
+                                    include '../include/profileincluded/editdetails.php';         
                                 }
                             }
+
+
                             
-                            if(isset($_GET['editdetails'])){
-                                include '../include/profileincluded/editdetails.php';         
-                            }
   
 
 
@@ -208,16 +209,15 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                             
                             <?php
                                 // <!-- users features button -->
-                                if ($profile) {
-                                    $current_user_no = $_SESSION['user_no'];
-                                        if ($profile_user_no == $current_user_no) {
+                                    
+                                        if ($current_user_no) {
                                             include '../include/profileincluded/featuresprofile.php'; 
                                         }else{
-                                            include '../include/profileincluded/profilefollow.php'; 
-                                            include '../include/profileincluded/otherfeauture.php'; 
+                                            echo "error";
                                         }
                                     
-                                }
+                                // include '../include/profileincluded/profilefollow.php'; 
+                                // include '../include/profileincluded/otherfeauture.php'; 
                             ?>
                             
 

@@ -8,7 +8,17 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
       header('location: ./users/login.php');
       exit();
     }
-
+  $_SESSION['ip'] = getIPAddress();
+  $_SESSION['user_no'];
+  $_SESSION['user_ID'];
+  $_SESSION['email'];
+  $_SESSION['student_no'];
+  $_SESSION['fname'];
+  $_SESSION['lname'];
+  $_SESSION['bday'];
+  $_SESSION['gender'];
+  $_SESSION['user_password'];
+  $current_user_no = $_SESSION['user_no'];
     // Assume connection is already established
 
 // $sql = "SELECT p.post_id, p.user_no, u.fname, u.lname, p.timestamp, p.postphoto, p.caption
@@ -117,7 +127,7 @@ $current_user_no = $_SESSION['user_no'];
           <!-- sidenav and modal for profile -->
             <?php
 echo '<div class="container-fluid profile">';
-echo '<a href="users/profile.php?user_no=' . urlencode($current_user_no) . '" style="color: black;" class="sidemodal" data-open-modal="profilemodal">';
+echo '<a href="users/profile.php?sideprof=' . urlencode($current_user_no) . '" style="color: black;" class="sidemodal" data-open-modal="profilemodal">';
 echo '        <div class="container-fluid contprofname">';
 echo '            <div class="container-fluid profilepicture">';
 echo '                <!-- profile image in sidenav -->';

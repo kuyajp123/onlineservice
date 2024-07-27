@@ -93,12 +93,10 @@ function getIPAddress() {
 function getName(){
     global $con;
     $current_user_no = $_SESSION['user_no'];
-    // Retrieve the 'user_no' parameter from the URL
-    $profile_user_no = isset($_GET['user_no']) ? $_GET['user_no'] : '';
 
     $query = "SELECT * FROM user_registration WHERE user_no = ?";
     $stmt = $con->prepare($query);
-    $stmt->bind_param('i', $profile_user_no);
+    $stmt->bind_param('i', $current_user_no);
     $stmt->execute();
     $result = $stmt->get_result();
     $profile = $result->fetch_assoc();
@@ -109,8 +107,7 @@ function getName(){
 
     if ($profile) {
         // Check if the profile belongs to the current user
-        $current_user_no = $_SESSION['user_no'];
-        if ($profile_user_no == $current_user_no) {
+        if ($current_user_no) {
             echo "
             <div class='container-fluid identity'>
               <!-- Image to be uploaded profile here -->
@@ -146,6 +143,7 @@ function getName(){
 }
 
 
+ 
 
 
 

@@ -3,14 +3,16 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Enter your new Birth day</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Enter your new Birthday</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
         <div class="row g-3 px-3 pt-2">
         <div class="col">
           <form action="">
-            <input type="date" id="bday" name="bday" class="form-control"  placeholder="Birth date" aria-label="First name" required="required">
+          <div class="mb-0">
+            <input type="date" class="form-control form-control-solid" placeholder="Ebter your birthday" id=""/>
+          </div>
         </div>
         </div>
         <div class="mb-3 px-3">
