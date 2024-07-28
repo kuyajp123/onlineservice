@@ -38,3 +38,4 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script> -->
 
+    <link rel="stylesheet" href="/node_modules/@cevad-tokatli/date-picker/css/date-picker.min.css" />

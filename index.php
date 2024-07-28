@@ -18,6 +18,10 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
   $_SESSION['bday'];
   $_SESSION['gender'];
   $_SESSION['user_password'];
+  $_SESSION['coverphoto'];
+  $_SESSION['profilepicture'];
+  $coverphoto = $_SESSION['coverphoto'];
+  $profilepicture = $_SESSION['profilepicture'];
   $current_user_no = $_SESSION['user_no'];
     // Assume connection is already established
 
@@ -50,12 +54,13 @@ $current_user_no = $_SESSION['user_no'];
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="index_style.css?v=3">
+<link rel="stylesheet" href="index_style.css?v=2">
 <link rel="stylesheet" href="users/profilemodal.css?v=3">
 <link rel="stylesheet" href="./users/user_operation/createpost.css?v=3">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News feed</title>
+    
 </head>
 <body>
 
@@ -130,11 +135,12 @@ echo '<div class="container-fluid profile">';
 echo '<a href="users/profile.php?sideprof=' . urlencode($current_user_no) . '" style="color: black;" class="sidemodal" data-open-modal="profilemodal">';
 echo '        <div class="container-fluid contprofname">';
 echo '            <div class="container-fluid profilepicture">';
-echo '                <!-- profile image in sidenav -->';
-echo '                <img src="include/images/d6cdf2a5daaf96462127cc31fb621851.jpg" alt="">';
+// echo '                <!-- profile image in sidenav -->';
+echo '                <img src="users/images/profilepicture/' . htmlspecialchars($profilepicture, ENT_QUOTES, 'UTF-8') .
+ '">';
 echo '            </div>';
 echo '            <div class="container-fluid nameusername">';
-echo '                <!-- profile name in side nav -->';
+// echo '                <!-- profile name in side nav -->';
 echo '                <div class="container-fluid nameko">';
 echo '                    <span>';
 echo '                    ';
@@ -231,9 +237,10 @@ echo '</div>';
 
 
 
+          
 
       <?php
-
+  
             // require 'include/posttemplate/post.php';
     
     

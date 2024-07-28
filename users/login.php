@@ -33,6 +33,8 @@ if (isset($_POST['login'])) {
             $_SESSION['gender'] = $row['gender'];
             $_SESSION['user_password'] = $row['user_password'];
             $current_user_no = $_SESSION['user_no'];
+            $profilepicture = $row['profilepicture'];
+            $coverphoto = $row['coverphoto'];
             echo "<script>window.open('../index.php?newsfeed=$current_user_no','_self')</script>";
         } else {
             $error = "Incorrect password.";

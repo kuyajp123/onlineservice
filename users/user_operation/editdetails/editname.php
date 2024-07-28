@@ -11,15 +11,17 @@ if (isset($current_user_no)) {
         $lname = $_POST['lname'];
         $user_password = $_POST['user_password'];
 
-        // Check if names contain numbers or special characters
-        if (preg_match('/[^a-zA-Z]/', $fname) || preg_match('/[^a-zA-Z]/', $lname)) {
-            $error = "Names cannot contain numbers or special characters. Please enter valid names.";
-        } else {
-            // Check if the entered password matches the session password
-            if (password_verify($user_password, $_SESSION['user_password'])) {
-                $formattedFirstName = formatName($fname);
-                $formattedLastName = formatName($lname);
+        // Check if the entered password matches the session password
+        if (password_verify($user_password, $_SESSION['user_password'])) {
+            // Format names by removing special characters
+            $formattedFirstName = formatName($fname);
+            $formattedLastName = formatName($lname);
 
+            // Check if formatted names contain at least one letter
+            if (empty($formattedFirstName) || empty($formattedLastName)) {
+                $error = "Names must contain at least one letter.";
+            } else {
+                // Update the database with formatted names
                 $sql = "UPDATE user_registration SET fname = ?, lname = ? WHERE user_no = ?";
                 $stmt = $con->prepare($sql);
                 $stmt->bind_param("ssi", $formattedFirstName, $formattedLastName, $current_user_no);
@@ -32,9 +34,9 @@ if (isset($current_user_no)) {
                 } else {
                     $error = "No changes made";
                 }
-            } else {
-                $error = "Password didn't match";
             }
+        } else {
+            $error = "Password didn't match";
         }
     }
 } else {
@@ -114,40 +116,38 @@ if (!empty($error)): ?>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('editNameForm').addEventListener('submit', function(event) {
-            const fname = document.getElementById('fname').value;
-            const lname = document.getElementById('lname').value;
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     document.getElementById('editNameForm').addEventListener('submit', function(event) {
+    //         const fname = document.getElementById('fname').value;
+    //         const lname = document.getElementById('lname').value;
 
-            // Regex to check if the string contains invalid characters
-            const hasInvalidChars = /[^a-zA-Z]/;
+    //         // // Regex to check if the string contains invalid characters
+    //         // const hasInvalidChars = /[^a-zA-Z]/;
 
-            if (hasInvalidChars.test(fname) || hasInvalidChars.test(lname)) {
-                event.preventDefault(); // Prevent form submission
+    //         // if (hasInvalidChars.test(fname) || hasInvalidChars.test(lname)) {
+    //         //     event.preventDefault(); // Prevent form submission
 
-                // Display error message
-                const alertPlaceholder = document.getElementById('liveAlertPlaceholdername');
-                alertPlaceholder.innerHTML = `
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <div>Names cannot contain numbers or special characters. Please enter valid names.</div>
-                    </div>
-                `;
+    //             // Display error message
+    //             const alertPlaceholder = document.getElementById('liveAlertPlaceholdername');
+    //             alertPlaceholder.innerHTML = `
                 
-                // Show alert
-                const alertElement = alertPlaceholder.querySelector('.alert');
-                setTimeout(() => {
-                    alertElement.classList.add('show');
-                }, 10);
+    //             `;
+                
+    //             // Show alert
+    //             const alertElement = alertPlaceholder.querySelector('.alert');
+    //             setTimeout(() => {
+    //                 alertElement.classList.add('show');
+    //             }, 10);
 
-                setTimeout(() => {
-                    alertElement.classList.remove('show');
-                    setTimeout(() => {
-                        if (alertElement.parentElement) {
-                            alertElement.parentElement.removeChild(alertElement);
-                        }
-                    }, 500);
-                }, 5000);
-            }
-        });
-    });
+    //             setTimeout(() => {
+    //                 alertElement.classList.remove('show');
+    //                 setTimeout(() => {
+    //                     if (alertElement.parentElement) {
+    //                         alertElement.parentElement.removeChild(alertElement);
+    //                     }
+    //                 }, 500);
+    //             }, 5000);
+    //         // }
+    //     });
+    // });
 </script>

@@ -3,8 +3,7 @@ body{
     margin: 0;
     overflow-x: hidden;
     font-family: Arial, Helvetica, sans-serif;
-    background: rgb(236,195,159);
-background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593723158208596) 48%, rgba(195,118,199,1) 100%);
+    background: linear-gradient(89.9deg, rgb(208, 246, 255) 0.1%, rgb(255, 237, 237) 47.9%, rgb(255, 255, 231) 100.2%);
 }
 .body{
     height: 100vh;
@@ -61,6 +60,7 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
     padding: 0;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    background-color: #fff;
 }
 .profilecontainer{
     position: relative;
@@ -80,6 +80,10 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
     object-fit: cover;
     padding: 0;
     border-radius: 50vh;
+    background-image: url('../users/images/profilepicture/profile.jpg');
+    background-size: cover; 
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center;
 }
 .backbutton{
     position: absolute;

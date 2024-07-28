@@ -60,9 +60,23 @@ if(isset($_POST['submit'])){
         $attempt_to_generate_ID = 0;
         while(true){
             $random_number = 10 + rand(0, 999);
-            $user_ID = strtolower($fname) . $random_number; 
-            $strReplace = str_replace(' ', '.', $user_ID);
-            $user_id = "@" . $strReplace;
+            // Remove extra spaces and replace single spaces with dots
+            $clean_fname = preg_replace('/\s+/', ' ', $fname); // Replace multiple spaces with a single space
+            $clean_fname = str_replace(' ', '_', $clean_fname); // Replace single spaces with dots           
+            $user_ID = strtolower($clean_fname) . $random_number;           
+            // Remove all special characters except "@" and dots
+            $clean_user_id = preg_replace('/[^a-z0-9.@_]/', '', $user_ID);           
+            // Ensure only one "@" is present
+            if (substr_count($clean_user_id, '@') > 1) {
+                // Remove all "@" after the first one
+                $parts = explode('@', $clean_user_id);
+                $clean_user_id = $parts[0] . '@' . implode('', array_slice($parts, 1));
+            }        
+            // Ensure the user ID starts with "@"
+            if ($clean_user_id[0] !== '@') {
+                $clean_user_id = '@' . $clean_user_id;
+            }           
+            $user_id = preg_replace('/\s+/', ' ', trim($clean_user_id));
 
             $select_userID = "SELECT user_ID FROM user_registration WHERE user_ID = ?";
             $stmt_userID = mysqli_prepare($con, $select_userID);// 

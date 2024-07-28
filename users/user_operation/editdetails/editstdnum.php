@@ -52,7 +52,7 @@ if (isset($_POST["submit_std_no"])) {
       <form action="" method="post">
         <div class="row g-3 px-3 pt-2">
           <div class="col">
-            <input type="text" name="student_no" class="form-control" placeholder="Student number" aria-label="Student number" required>
+            <input type="text" name="student_no" class="form-control" placeholder="Student number" aria-label="Student number" value="<?php echo htmlspecialchars($student_no); ?>" required>
           </div>
         </div>
         <div class="mb-3 px-3">

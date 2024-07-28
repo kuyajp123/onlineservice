@@ -1,3 +1,4 @@
+
 body{
   margin: 0;
   padding: 0;
@@ -27,8 +28,7 @@ button{
   padding: 0;
   flex-direction: column;
   gap: 10px;
-  background: rgb(236,195,159);
-background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593723158208596) 48%, rgba(195,118,199,1) 100%);
+  background: linear-gradient(89.9deg, rgb(208, 246, 255) 0.1%, rgb(255, 237, 237) 47.9%, rgb(255, 255, 231) 100.2%);
 }
 .bcon{
   padding-left: 0;
@@ -340,12 +340,21 @@ background: linear-gradient(56deg, rgba(236,195,159,1) 0%, rgba(181,168,65,0.593
   height: 60%;
   width: 45%;
   padding: 0;
-  object-fit: contain;
+  object-fit: cover;
+  /* border: 5px solid #242526; */
+  border-radius: 50%;
 }
 .profilepicture img{
   height: 100%;
   width: 100%;
   border-radius: 50%;
+  object-fit: contain;
+  background-image: url('users/images/profilepicture/profile.jpg');
+  background-size: cover; 
+  background-repeat: no-repeat;
+  background-position: center;
+  outline: 5px solid #242526;
+  outline-offset: -2px;
 }
 .nameusername{
   display: flex;

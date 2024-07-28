@@ -16,39 +16,54 @@ $result = $stmt->get_result();
 // Check if the user ID exists
 if ($result->num_rows > 0) {
     if (isset($_POST['submit_username'])) { // Ensure the form submit button name is 'submit_username'
-        $user_ID = $_POST['user_ID'];
+        $input_user_ID = $_POST['user_ID'];
         $user_password = $_POST['user_password'];
 
         // Verify if the provided password matches the session password
         if (password_verify($user_password, $password)) {
-            // Check if the new username contains only letters and numbers
-            if (preg_match('/^[a-zA-Z0-9]+$/', $user_ID)) {
-                $formatteduser_ID = "@" . $user_ID; // Add "@" to the beginning of the new username
-                
-                // Check if the new formatted user_ID is already taken
-                $sql = "SELECT user_ID FROM user_registration WHERE user_ID = ?";
+            // Clean and format the new username
+            $clean_input = preg_replace('/\s+/', ' ', $input_user_ID); // Replace multiple spaces with a single space
+            $clean_input = strtolower(trim($clean_input)); // Convert to lowercase and trim
+
+            // Replace single spaces with underscores and remove special characters except underscores
+            $formatted_user_ID = preg_replace('/[^a-z0-9\s_]/', '', $clean_input);
+            $formatted_user_ID = str_replace(' ', '_', $formatted_user_ID);
+
+            // Append a random number to the username
+            $random_number = 10 + rand(0, 999);
+            $formatted_user_ID .= $random_number;
+
+            // Ensure only one "@" is present and at the start
+            $formatted_user_ID = preg_replace('/[^a-z0-9.@_]/', '', $formatted_user_ID);
+            if (substr_count($formatted_user_ID, '@') > 1) {
+                $parts = explode('@', $formatted_user_ID);
+                $formatted_user_ID = $parts[0] . '@' . implode('', array_slice($parts, 1));
+            }
+            if ($formatted_user_ID[0] !== '@') {
+                $formatted_user_ID = '@' . $formatted_user_ID;
+            }
+
+            // Check if the new formatted user_ID is already taken
+            $sql = "SELECT user_ID FROM user_registration WHERE user_ID = ?";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("s", $formatted_user_ID);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows === 0) { // No rows means the user_ID is available
+                // Update the user_ID in the database
+                $sql = "UPDATE user_registration SET user_ID = ? WHERE user_ID = ?";
                 $stmt = $con->prepare($sql);
-                $stmt->bind_param("s", $formatteduser_ID);
-                $stmt->execute();
-                $result = $stmt->get_result();
+                $stmt->bind_param("ss", $formatted_user_ID, $user_id); // 'ss' for strings
 
-                if ($result->num_rows === 0) { // No rows means the user_ID is available
-                    // Update the user_ID in the database
-                    $sql = "UPDATE user_registration SET user_ID = ? WHERE user_ID = ?";
-                    $stmt = $con->prepare($sql);
-                    $stmt->bind_param("ss", $formatteduser_ID, $user_id); // 'ss' for strings
-
-                    if ($stmt->execute()) {
-                        $_SESSION["user_ID"] = $formatteduser_ID; // Update session variable
-                        echo "<script>window.open('profile.php?editdetails','_self')</script>";
-                    } else {
-                        $error = "Update failed. Please try again.";
-                    }
+                if ($stmt->execute()) {
+                    $_SESSION["user_ID"] = $formatted_user_ID; // Update session variable
+                    echo "<script>window.open('profile.php?editdetails','_self')</script>";
                 } else {
-                    $error = "This username is already taken.";
+                    $error = "Update failed. Please try again.";
                 }
             } else {
-                $error = "Username can only contain letters and numbers.";
+                $error = "This username is already taken.";
             }
         } else {
             $error = "Password didn't match.";
@@ -56,6 +71,11 @@ if ($result->num_rows > 0) {
     }
 } else {
     $error = "User not found.";
+}
+
+// Display error message if any
+if ($error) {
+    echo "<p>$error</p>";
 }
 
 // Output JavaScript to handle the modal and alert

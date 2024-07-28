@@ -61,9 +61,16 @@ function studentNumberValid($student_no){
     return true;
 }
 
+// Function to format names by removing special characters and normalizing spaces
 function formatName($name) {
+    // Remove special characters, keep only letters and spaces
+    $cleanName = preg_replace('/[^a-zA-Z\s]/', '', $name);
+    
+    // Remove extra spaces and trim leading/trailing spaces
+    $normalizedName = preg_replace('/\s+/', ' ', trim($cleanName));
+    
     // Convert the first character of each word to uppercase
-    return ucwords(strtolower($name));
+    return ucwords(strtolower($normalizedName));
 }
 
 
@@ -244,6 +251,3 @@ function getName(){
 
 
 ?>
-
-
-
