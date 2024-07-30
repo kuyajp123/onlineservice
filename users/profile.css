@@ -80,10 +80,6 @@ body{
     object-fit: cover;
     padding: 0;
     border-radius: 50vh;
-    background-image: url('../users/images/profilepicture/profile.jpg');
-    background-size: cover; 
-    background-repeat: no-repeat; /* Prevents the image from repeating */
-    background-position: center;
 }
 .backbutton{
     position: absolute;

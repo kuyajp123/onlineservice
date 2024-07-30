@@ -152,8 +152,31 @@ function getName(){
 
  
 
+// Function to get old profile picture filename
+function getOldProfilePicture($user_no, $con) {
+    $profilepicture = "";
 
+    $sql = "SELECT profilepicture FROM user_registration WHERE user_no = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param("i", $user_no);
+    $stmt->execute();
+    $stmt->bind_result($profilepicture);
+    $stmt->fetch();
+    return $profilepicture;
+}
 
+// Function to get old cover photo filename
+function getOldCoverPhoto($user_no, $con) {
+    $coverphoto = "";
+
+    $sql = "SELECT coverphoto FROM user_registration WHERE user_no = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param("i", $user_no);
+    $stmt->execute();
+    $stmt->bind_result($coverphoto);
+    $stmt->fetch();
+    return $coverphoto;
+}
 
 
 
@@ -216,7 +239,7 @@ function getName(){
 //       $current_fname = $_SESSION['fname'];
 //       $current_lname = $_SESSION['lname'];
 //       echo"
-//                 <div class='container-fluid nbp'>
+ //                 <div class='container-fluid nbp'>
 //                     <div class='container-fluid namebiomodalprof'>
 //                       <!-- name/bio here -->
 //                       <div class='container-fluid namemodalprof'>$current_fname $current_lname</div>
@@ -228,7 +251,7 @@ function getName(){
 //                       <a href='users/profile.php?profile=$current_user_no'><button class='btn'>Profile</button></a>
 //                       </div>
 //                     </div>
-//                 </div>
+//                 </div> -->
 //       ";
 //     }else{
       

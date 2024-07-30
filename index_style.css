@@ -4,6 +4,7 @@ body{
   padding: 0;
   font-family: Arial, sans-serif;
   overflow-x: hidden;
+  background: linear-gradient(89.9deg, rgb(208, 246, 255) 0.1%, rgb(255, 237, 237) 47.9%, rgb(255, 255, 231) 100.2%);
 }
 a{
   text-decoration: none;
@@ -28,7 +29,6 @@ button{
   padding: 0;
   flex-direction: column;
   gap: 10px;
-  background: linear-gradient(89.9deg, rgb(208, 246, 255) 0.1%, rgb(255, 237, 237) 47.9%, rgb(255, 255, 231) 100.2%);
 }
 .bcon{
   padding-left: 0;
@@ -348,11 +348,7 @@ button{
   height: 100%;
   width: 100%;
   border-radius: 50%;
-  object-fit: contain;
-  background-image: url('users/images/profilepicture/profile.jpg');
-  background-size: cover; 
-  background-repeat: no-repeat;
-  background-position: center;
+  object-fit: cover;
   outline: 5px solid #242526;
   outline-offset: -2px;
 }

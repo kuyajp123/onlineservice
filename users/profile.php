@@ -46,7 +46,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="profile.css?v=3">
+    <link rel="stylesheet" href="profile.css?v=1">
 </head>
 <body>
     <div class="container-fluid body" id="body">

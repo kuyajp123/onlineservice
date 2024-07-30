@@ -6,6 +6,7 @@ $user_no = $_SESSION['user_no'];
 
 if (isset($_POST['submit_coverphoto'])) {
     if (isset($user_no)) {
+        // Check if a file is uploaded
         if (isset($_FILES['coverphoto']) && $_FILES['coverphoto']['error'] === UPLOAD_ERR_OK) {
             $coverphoto = $_FILES['coverphoto']['name'];
             $tmp_coverphoto = $_FILES['coverphoto']['tmp_name'];
@@ -13,6 +14,12 @@ if (isset($_POST['submit_coverphoto'])) {
 
             // Move the uploaded file to the desired location
             if (move_uploaded_file($tmp_coverphoto, $upload_path)) {
+                // Delete the old cover photo if it exists and is not the default image
+                $old_coverphoto = getOldCoverPhoto($user_no, $con); // Function to get old cover photo from DB
+                if ($old_coverphoto && file_exists("../users/images/coverphoto/" . $old_coverphoto) && $old_coverphoto !== 'default_coverphoto.jpg') {
+                    unlink("../users/images/coverphoto/" . $old_coverphoto);
+                }
+
                 // Update the cover photo in the database
                 $sql = "UPDATE user_registration SET coverphoto = ? WHERE user_no = ?";
                 $stmt = $con->prepare($sql);
@@ -28,10 +35,46 @@ if (isset($_POST['submit_coverphoto'])) {
                 $error = "Error moving the uploaded file.";
             }
         } else {
-            $error = "Error uploading file or no file selected.";
+            // If no file is uploaded, set the default cover photo
+            $coverphoto = '.../users/images/coverphoto/defualt_photo.jpg'; // Default image
+            $sql = "UPDATE user_registration SET coverphoto = ? WHERE user_no = ?";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("si", $coverphoto, $user_no);
+
+            if ($stmt->execute()) {
+                $_SESSION['coverphoto'] = $coverphoto; // Update session variable
+                echo "<script>window.open('profile.php?sideprof','_self')</script>";
+            } else {
+                $error = "Error setting default cover photo in database.";
+            }
         }
     } else {
         $error = 'User number not set.';
+    }
+}
+
+if (isset($_POST['remove_coverphoto'])) { // Handle removing profile picture and setting default
+    if ($user_no) {
+        // Remove current profile picture if it exists
+        $old_picture = getOldCoverPhoto($user_no, $con); // Function to get old image path from DB
+        if ($old_picture && file_exists("../users/images/coverphoto/" . $old_picture) && $old_picture !== 'default_coverphoto.jpg') {
+            unlink("../users/images/coverphoto/" . $old_picture);
+        }
+
+        // Set the profile picture to default
+        $coverphoto = 'default_coverphoto.jpg'; // Default image
+        $sql = "UPDATE user_registration SET coverphoto = ? WHERE user_no = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $coverphoto, $user_no);
+
+        if ($stmt->execute()) {
+            $_SESSION['coverphoto'] = $coverphoto;
+            echo "<script>window.open('profile.php?sideprof','_self')</script>";
+        } else {
+            $error = "Error setting default cover photo in database.";
+        }
+    } else {
+        $error = "User number not set.";
     }
 }
 ?>
@@ -50,7 +93,15 @@ if (isset($_POST['submit_coverphoto'])) {
           <div class="col">
             <div class="mb-0">
               <label for="coverphoto" class="p-2">Upload your cover photo here</label>
-              <input type="file" id="coverphoto" name="coverphoto" class="form-control form-control-solid" required />
+              <input type="file" id="coverphoto" name="coverphoto" class="form-control form-control-solid" />
+            </div>
+            <div class="container-fluid profilepictureholder">
+                <div class="card" style="width: 18rem;">
+                        <img src="../users/images/coverphoto/<?php echo $_SESSION['coverphoto']; ?>" class="card-img-top" alt="...">
+                        <div class="card-body">
+                        <button type="submit" name="remove_coverphoto" class="btn btn-outline-danger">Remove</button>
+                        </div>
+                </div>   
             </div>
           </div>
         </div>

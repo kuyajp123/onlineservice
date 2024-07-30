@@ -8,6 +8,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
       header('location: ./users/login.php');
       exit();
     }
+
   $_SESSION['ip'] = getIPAddress();
   $_SESSION['user_no'];
   $_SESSION['user_ID'];
@@ -18,21 +19,45 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
   $_SESSION['bday'];
   $_SESSION['gender'];
   $_SESSION['user_password'];
-  $_SESSION['coverphoto'];
-  $_SESSION['profilepicture'];
-  $coverphoto = $_SESSION['coverphoto'];
-  $profilepicture = $_SESSION['profilepicture'];
   $current_user_no = $_SESSION['user_no'];
-    // Assume connection is already established
 
-// $sql = "SELECT p.post_id, p.user_no, u.fname, u.lname, p.timestamp, p.postphoto, p.caption
-// FROM posts p
-// JOIN user_registration u ON p.user_no = u.user_no";
 
-// $stmt = $con->prepare($sql);
-// $stmt->execute();
-// $result = $stmt->get_result();
-// $row = $result->fetch_assoc();
+  $defaultProfilePicture = 'users/images/profilepicture/profile.jpg';
+
+// Check if the profile picture is set in the session
+if (isset($_SESSION['profilepicture']) && !empty($_SESSION['profilepicture'])) {
+    $profilePicture = 'users/images/profilepicture/' . htmlspecialchars($_SESSION['profilepicture'], ENT_QUOTES, 'UTF-8');
+} else {
+    // Set the profile picture to the default if not set
+    $profilePicture = $defaultProfilePicture;
+    // Update the session with the default profile picture
+    $_SESSION['profilepicture'] = basename($defaultProfilePicture);
+}
+
+$defaultCoverPhoto = 'users/images/coverphoto/defualt_photo.jpg';
+
+// Check if the profile picture is set in the session
+if (isset($_SESSION['coverphoto']) && !empty($_SESSION['coverphoto'])) {
+    $coverPhoto = 'users/images/coverphoto/' . htmlspecialchars($_SESSION['coverphoto'], ENT_QUOTES, 'UTF-8');
+} else {
+    // Set the profile picture to the default if not set
+    $coverPhoto = $defaultCoverPhoto;
+    // Update the session with the default profile picture
+    $_SESSION['coverphoto'] = basename($defaultCoverPhoto);
+}
+
+
+
+// Selecting post from database
+
+$sql = "SELECT p.post_id, p.user_no, u.fname, u.lname, p.timestamp, p.postphoto, p.caption
+FROM posts p
+JOIN user_registration u ON p.user_no = u.user_no";
+
+$stmt = $con->prepare($sql);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
 
 
 // $current_user_no = $_SESSION['user_no'];
@@ -130,39 +155,39 @@ $current_user_no = $_SESSION['user_no'];
             <div class="container-fluid sticky-top considenav">
 
           <!-- sidenav and modal for profile -->
-            <?php
-echo '<div class="container-fluid profile">';
-echo '<a href="users/profile.php?sideprof=' . urlencode($current_user_no) . '" style="color: black;" class="sidemodal" data-open-modal="profilemodal">';
-echo '        <div class="container-fluid contprofname">';
-echo '            <div class="container-fluid profilepicture">';
-// echo '                <!-- profile image in sidenav -->';
-echo '                <img src="users/images/profilepicture/' . htmlspecialchars($profilepicture, ENT_QUOTES, 'UTF-8') .
- '">';
-echo '            </div>';
-echo '            <div class="container-fluid nameusername">';
-// echo '                <!-- profile name in side nav -->';
-echo '                <div class="container-fluid nameko">';
-echo '                    <span>';
-echo '                    ';
-if (isset($_SESSION['fname']) || isset($_SESSION['lname'])) {
-    echo htmlspecialchars($_SESSION['fname']) . ' ' . htmlspecialchars($_SESSION['lname']);
-}
-echo '                    </span>';
-echo '                </div>';
-echo '                <!-- profile username in side nav -->';
-echo '                <div class="container-fluid username">';
-echo '                    <small><span style="font-size:13px;">';
-echo '                    ';
-if (isset($_SESSION['user_ID'])) {
-    echo htmlspecialchars($_SESSION['user_ID']);
-}
-echo '                    </span></small>';
-echo '                </div>';
-echo '            </div>';
-echo '        </div>';
-echo '    </a>';
-echo '</div>';
-?>
+          <div class="container-fluid profile">
+    <a href="users/profile.php?sideprof=<?php echo urlencode($current_user_no); ?>" style="color: black;" class="sidemodal" data-open-modal="profilemodal">
+        <div class="container-fluid contprofname">
+            <div class="container-fluid profilepicture">
+                <!-- Profile image in sidenav -->
+                <img src="<?php echo htmlspecialchars($profilePicture, ENT_QUOTES, 'UTF-8'); ?>">
+            </div>
+            <div class="container-fluid nameusername">
+                <div class="container-fluid nameko">
+                    <span>
+                        <?php
+                        if (isset($_SESSION['fname']) && isset($_SESSION['lname'])) {
+                            echo htmlspecialchars($_SESSION['fname']) . ' ' . htmlspecialchars($_SESSION['lname']);
+                        }
+                        ?>
+                    </span>
+                </div>
+                <!-- Profile username in sidenav -->
+                <div class="container-fluid username">
+                    <small>
+                        <span style="font-size:13px;">
+                            <?php
+                            if (isset($_SESSION['user_ID'])) {
+                                echo htmlspecialchars($_SESSION['user_ID']);
+                            }
+                            ?>
+                        </span>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
 
             
 
@@ -239,19 +264,44 @@ echo '</div>';
 
           
 
-      <?php
-  
-            // require 'include/posttemplate/post.php';
-    
-    
-        // Post with text only
-        // require 'include/posttemplate/textpost.php';
+            <?php while ($row = $result->fetch_assoc()): ?>
+    <?php
+    // Extract data
+    $post_id = htmlspecialchars($row['post_id']);
+    $user_no = htmlspecialchars($row['user_no']);
+    $fname = htmlspecialchars($row['fname']);
+    $lname = htmlspecialchars($row['lname']);
+    // $profile_pic = htmlspecialchars($row['profile_pic']);
+    $timestamp = htmlspecialchars($row['timestamp']);
+    $postphoto = htmlspecialchars($row['postphoto']);
+    $caption = htmlspecialchars($row['caption']);
 
+    // Create DateTime object
+    $dateTime = new DateTime($timestamp);
+
+    // Format date and time
+    $formattedDate = $dateTime->format('F j, Y'); // e.g., July 24, 2023
+    $formattedTime = $dateTime->format('g:i a'); // e.g., 6:27 pm
+
+    // Determine which template to include
+    $hasText = !empty(trim($caption));
+    $hasImage = !empty(trim($postphoto));
+
+    if ($hasText && $hasImage) {
+        // Post with both text and image
+        require 'include/posttemplate/post.php';
+    }
+    elseif ($hasText) {
+        // Post with text only
+        require 'include/posttemplate/textpost.php';
+    } elseif ($hasImage) {
         // Post with image only
         // You can create a separate template for image-only posts if needed
-        // require 'include/posttemplate/imagepost.php';
-    
-      ?>
+        require 'include/posttemplate/imagepost.php';
+    }
+    ?>
+
+<?php endwhile; ?>
 
       
 
