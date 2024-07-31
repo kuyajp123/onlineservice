@@ -22,7 +22,6 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
   $coverphoto = $_SESSION['coverphoto'];
   $profilepicture = $_SESSION['profilepicture'];
   $current_user_no = $_SESSION['user_no'];
-  $_SESSION['profile_user_no'] = isset($_GET['sideprof']) ? $_GET['sideprof'] : '';
     
   
   $query = "SELECT * FROM posts WHERE user_no = ?";

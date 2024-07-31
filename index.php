@@ -48,6 +48,22 @@ if (isset($_SESSION['coverphoto']) && !empty($_SESSION['coverphoto'])) {
 
 
 
+$other_user_no = isset($_GET['user_no']) ? $_GET['user_no'] : null;
+
+// Fetch posts
+$query = "SELECT * FROM posts WHERE user_no = ?";
+$stmt = $con->prepare($query);
+$stmt->bind_param('i', $other_user_no);
+$stmt->execute();
+$result = $stmt->get_result();
+$posts = [];
+while ($post = $result->fetch_assoc()) {
+    $posts[] = $post;
+}
+
+
+
+
 
 // Call the function to get posts
 $data = getPosts($con);
