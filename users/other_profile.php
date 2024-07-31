@@ -8,26 +8,13 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
     header('location: login.php');
     exit();
   }
-  $_SESSION['ip'] = getIPAddress();
-  $_SESSION['user_no'];
-  $_SESSION['user_ID'];
-  $_SESSION['email'];
-  $_SESSION['student_no'];
-  $_SESSION['fname'];
-  $_SESSION['lname'];
-  $_SESSION['bday'];
-  $_SESSION['gender'];
-  $_SESSION['user_password'];
-  $_SESSION['coverphoto'];
-  $coverphoto = $_SESSION['coverphoto'];
-  $profilepicture = $_SESSION['profilepicture'];
-  $current_user_no = $_SESSION['user_no'];
-  $_SESSION['profile_user_no'] = isset($_GET['sideprof']) ? $_GET['sideprof'] : '';
+  
+  $other_user_no = $_GET['user_no'];
     
   
   $query = "SELECT * FROM posts WHERE user_no = ?";
   $stmt = $con->prepare($query);
-  $stmt->bind_param('i', $current_user_no);
+  $stmt->bind_param('i', $other_user_no);
   $stmt->execute();
   $result = $stmt->get_result();
  
@@ -36,6 +23,10 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
   while ($post = $result->fetch_assoc()) {
       $posts[] = $post;
   }
+
+
+
+
 
 
 ?>
@@ -74,7 +65,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                         <div class="container-fluid imgcontainer"><img src="../users/images/coverphoto/<?php echo htmlspecialchars($coverphoto, ENT_QUOTES, 'UTF-8'); ?>" style="position:absolute;"><a href="#" data-open-modal="editcoverphoto"><i class="fa-solid fa-pen-to-square" style="position:absolute;"></i></a></div>
                         <!-- profile photo here -->
                         <div class="container-fluid profilecontainer"><img src="../users/images/profilepicture/<?php echo htmlspecialchars($profilepicture, ENT_QUOTES, 'UTF-8'); ?>"><a href="#" data-open-modal="editprofile"><i class="fa-solid fa-pen-to-square" style="position:absolute; left:0;"></i></a></div>
-                        <div class="container-fluid backbutton"><a href="../index.php?newsfeed=<?php echo urlencode($current_user_no) ?>"><button type="button" class="btn btn-primary">Back</button></a>
+                        <div class="container-fluid backbutton"><a href="../index.php?newsfeed=<?php echo urlencode($other_user_no) ?>"><button type="button" class="btn btn-primary">Back</button></a>
                         </div>
                     </div>
                     <!-- navbar -->
@@ -113,10 +104,10 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                             <?php
 
                                 
-                            if (isset($current_user_no)) {
-                                if (isset($_GET['sideprof'])) {
+                            
+                                if (isset($_GET['user_no'])) {
                                     if (count($posts) > 0) {
-                                        include '../include/profileincluded/userspost.php';
+                                        include '../include/profileincluded/otherusers/otherposts.php';
                                     } else {
                                         echo "
                                             <div class='container-fluid nopostavailable'>
@@ -125,13 +116,21 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                                             ";
                                     }
                                 }
-                                
-                                // Edit details section
-                                if (isset($_GET['editdetails'])) {
-                                    // own edit details
-                                    include '../include/profileincluded/editdetails.php';                           
+
+                                if (isset($_GET['othereditdetails'])) {
+                                    include '../include/profileincluded/otherusers/othereditdetails.php';
                                 }
-                            }
+                                
+                            
+                                
+                                    
+
+                                    // other user details
+                                    
+                                        // include '../include/profileincluded/otherusers/othereditdetails.php';
+                                    
+                                    
+                            
                             
   
                                 
@@ -173,7 +172,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 
 
                             <?php
-                            getName();
+                            getName($other_user_no); // Fetches and displays the profile for the other user                            
                             ?>
 
 
@@ -206,17 +205,12 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                             <?php
                                 // <!-- users features button -->
                                     
-                                        if ($current_user_no) {
-                                            include '../include/profileincluded/featuresprofile.php'; 
-                                        }else{
-                                            echo "error";
-                                        }
-                                        
-                                        
-                                            // include '../include/profileincluded/profilefollow.php'; 
-                                            // include '../include/profileincluded/otherfeauture.php'; 
-                                        
-                                
+                                if ($other_user_no) {
+                                    include '../include/profileincluded/otherusers/profilefollow.php'; 
+                                    include '../include/profileincluded/otherusers/otherfeauture.php'; 
+                                }else{
+                                    echo "error";
+                                }
                             ?>
                             
 
@@ -241,20 +235,6 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
             <div class="container-fluid grid4"></div>
         </div>
     </div>
-    <!-- create post modal -->
-    <?php include '../users/user_operation/createpostprofile.php'; ?>
-<!-- edit section -->
- <?php
-  include '../users/user_operation/editdetails/editname.php'; 
-  include '../users/user_operation/editdetails/editusername.php'; 
-  include '../users/user_operation/editdetails/editbirthdate.php'; 
-  include '../users/user_operation/editdetails/editgender.php'; 
-  include '../users/user_operation/editdetails/editpassword.php'; 
-  include '../users/user_operation/editdetails/editstdnum.php'; 
-  include '../users/user_operation/editdetails/editemail.php'; 
-  include '../users/user_operation/editdetails/editcoverphoto.php'; 
-  include '../users/user_operation/editdetails/editprofile.php'; 
-  ?>
 
 
 

@@ -38,5 +38,3 @@
 <?php else: ?>
     <p>No posts available.</p>
 <?php endif; ?>
-
-                          

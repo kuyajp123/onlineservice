@@ -48,29 +48,14 @@ if (isset($_SESSION['coverphoto']) && !empty($_SESSION['coverphoto'])) {
 
 
 
-// Selecting post from database
 
-$sql = "SELECT p.post_id, p.user_no, u.fname, u.lname, p.timestamp, p.postphoto, p.caption
-FROM posts p
-JOIN user_registration u ON p.user_no = u.user_no";
+// Call the function to get posts
+$data = getPosts($con);
 
-$stmt = $con->prepare($sql);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
+// Access the result and rows
+$result = $data['result'];
+$rows = $data['rows'];
 
-
-// $current_user_no = $_SESSION['user_no'];
-// $post_id = isset($_GET['post_id']) ? $_GET['post_id'] : '';
-
-// // Fetch profile data from the database
-// // Fetch post data from the database
-// $query = "SELECT * FROM posts WHERE post_id = ?";
-// $stmt = $con->prepare($query);
-// $stmt->bind_param('i', $post_id);
-// $stmt->execute();
-// $result = $stmt->get_result();
-// $post = $result->fetch_assoc();
 
 
 $current_user_no = $_SESSION['user_no'];
@@ -262,10 +247,10 @@ $current_user_no = $_SESSION['user_no'];
 
 
 
-          
+<?php      
 
-            <?php while ($row = $result->fetch_assoc()): ?>
-    <?php
+            // Loop through each post
+foreach ($rows as $row):
     // Extract data
     $post_id = htmlspecialchars($row['post_id']);
     $user_no = htmlspecialchars($row['user_no']);
@@ -296,12 +281,10 @@ $current_user_no = $_SESSION['user_no'];
         require 'include/posttemplate/textpost.php';
     } elseif ($hasImage) {
         // Post with image only
-        // You can create a separate template for image-only posts if needed
         require 'include/posttemplate/imagepost.php';
     }
-    ?>
-
-<?php endwhile; ?>
+endforeach;
+?>
 
       
 

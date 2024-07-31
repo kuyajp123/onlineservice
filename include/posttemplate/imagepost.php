@@ -1,19 +1,45 @@
-<!-- imagepost.php -->
+<?php
+// Example variables
+$loggedInUserNo = $_SESSION['user_no']; // Current logged-in user's number
+?>
+
 <div class="container-fluid container_post" data-post-id="<?php echo htmlspecialchars($post_id); ?>">
     <!-- Name section -->
     <div class="container-fluid name">
         <div class="container-fluid lgyan">
             <div class="container-fluid prof_pic">
                 <!-- Profile image in post -->
-                <div><a href="#" data-open-modal="profilemodal"><img src="include/images/profile.jpg" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt=""></a></div>
+                <div>
+                    <?php if ($user_no == $loggedInUserNo): ?>
+                        <!-- Link to the current user's profile -->
+                        <a href="users/profile.php?sideprof" style="font-size:1rem; text-decoration: none; color: black;">
+                            <img src="include/images/profile.jpg" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
+                        </a>
+                    <?php else: ?>
+                        <!-- Link to the other user's profile -->
+                        <a href="users/other_profile.php?user_no=<?php echo htmlspecialchars($user_no); ?>" style="font-size:1rem; text-decoration: none; color: black;">
+                            <img src="include/images/profile.jpg" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
+                        </a>
+                    <?php endif; ?>
+                </div>
             </div>
             <div class="container-fluid pangalan">
                 <!-- Profile name in post -->
-                <div><a href="#" data-open-modal="profilemodal" style="font-size:1rem; text-decoration: none; color: black;">
-                    <span class="ipadname1"><?php echo htmlspecialchars($fname . ' ' . $lname); ?></span>
-                </a></div>
+                <div>
+                    <?php if ($user_no == $loggedInUserNo): ?>
+                        <!-- Display current user's name -->
+                        <span class="ipadname1"><?php echo htmlspecialchars($fname . ' ' . $lname); ?></span>
+                    <?php else: ?>
+                        <!-- Display other user's name -->
+                        <a href="profile.php?user_no=<?php echo htmlspecialchars($user_no); ?>" style="font-size:1rem; text-decoration: none; color: black;">
+                            <span class="ipadname1"><?php echo htmlspecialchars($fname . ' ' . $lname); ?></span>
+                        </a>
+                    <?php endif; ?>
+                </div>
                 <!-- Time in post -->
-                <div><small style="font-size:13px;"><span class="ipadname2"><?php echo htmlspecialchars($formattedDate . ' at ' . $formattedTime); ?></span></small></div>
+                <div>
+                    <small style="font-size:13px;"><span class="ipadname2"><?php echo htmlspecialchars($formattedDate . ' at ' . $formattedTime); ?></span></small>
+                </div>
             </div>
         </div>
         <!-- 3 dots section -->
@@ -24,7 +50,9 @@
     <!-- Image section -->
     <div class="container-fluid image">
         <!-- Image in post -->
-        <div class="container-fluid image_container"><img src="include/posts_images/<?php echo htmlspecialchars($postphoto); ?>" alt=""></div>
+        <div class="container-fluid image_container">
+            <img src="include/posts_images/<?php echo htmlspecialchars($postphoto); ?>" alt="">
+        </div>
     </div>
     <!-- Actions section -->
     <div class="container-fluid heart">

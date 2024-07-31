@@ -12,7 +12,7 @@
                     <li><a href="profile.php?sideprof" >
                         <div class="container-fluid post">Post</div>
                     </a></li>
-                    <li><a href="#" data-open-modal="createpost">
+                    <li><a href="#" data-open-modal="createpostprofile">
                         <div class="container-fluid post">Create post</div>
                     </a></li>
                     <li><a href="" >

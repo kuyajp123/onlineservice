@@ -97,57 +97,46 @@ function getIPAddress() {
 
 
 // name username in profile
-function getName(){
+function getName($user_no = null) {
     global $con;
     $current_user_no = $_SESSION['user_no'];
 
+    // If $user_no is not provided, use the current user's number
+    if ($user_no === null) {
+        $user_no = $current_user_no;
+    }
+
     $query = "SELECT * FROM user_registration WHERE user_no = ?";
     $stmt = $con->prepare($query);
-    $stmt->bind_param('i', $current_user_no);
+    $stmt->bind_param('i', $user_no);
     $stmt->execute();
     $result = $stmt->get_result();
     $profile = $result->fetch_assoc();
 
-    $fname = $_SESSION['fname'];
-    $lname = $_SESSION['lname'];
-    $user_ID = $_SESSION['user_ID'];
-
     if ($profile) {
-        // Check if the profile belongs to the current user
-        if ($current_user_no) {
-            echo "
-            <div class='container-fluid identity'>
-              <!-- Image to be uploaded profile here -->
-             <div class='container-fluid profilepic'></div>                
-             <!-- Name to be uploaded here -->
-              <div class='container-fluid name'>
-                $fname $lname
-             </div>                 
-             <div class='container-fluid username'>
-             $user_ID
-            </div>      
-            <div class='container-fluid bio'>Hello world!</div>
-            </div>                    
-            ";
-        } else {
-            echo "
-            <div class='container-fluid identity'>
-              <!-- Image to be uploaded profile here -->
-             <div class='container-fluid profilepic'></div>                                    
-             <!-- Name to be uploaded here -->
-              <div class='container-fluid name'>
-              " . htmlspecialchars($profile['fname']) . " " . htmlspecialchars($profile['lname']) . "
-             </div>              
-             <div class='container-fluid username'>
-             " . htmlspecialchars($profile['user_ID'])."              
-            <div class='container-fluid bio'>Hello world!</div>
-            </div>                    
-            ";
-        }   
+        $fname = htmlspecialchars($profile['fname']);
+        $lname = htmlspecialchars($profile['lname']);
+        $user_ID = htmlspecialchars($profile['user_ID']);
+        $profile_pic = htmlspecialchars($profile['profilepicture']); // Assuming this column exists in your table
+
+        // Display profile
+        echo "
+        <div class='container-fluid identity'>
+          <!-- Name to be uploaded here -->
+          <div class='container-fluid name'>
+            $fname $lname
+          </div>                 
+          <div class='container-fluid username'>
+            $user_ID
+          </div>      
+          <div class='container-fluid bio'>Hello world!</div>
+        </div>                    
+        ";
     } else {
         echo "Profile not found.";
     }
 }
+
 
 
  
@@ -179,8 +168,27 @@ function getOldCoverPhoto($user_no, $con) {
 }
 
 
+// function to get post from database
+function getPosts($con) {
+    // Define the SQL query
+    $sql = "SELECT p.post_id, p.user_no, u.fname, u.lname, p.timestamp, p.postphoto, p.caption
+    FROM posts p
+    JOIN user_registration u ON p.user_no = u.user_no";
 
+    // Prepare and execute the SQL statement
+    $stmt = $con->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
+    // Fetch all rows from the result set
+    $rows = [];
+    while ($row = $result->fetch_assoc()) {
+        $rows[] = $row;
+    }
+
+    // Return the result set and the rows
+    return ['result' => $result, 'rows' => $rows];
+}
 
 
 

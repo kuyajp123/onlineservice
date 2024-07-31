@@ -15,20 +15,32 @@
             <div class="container-fluid sticky-top considenav">
                 
             <div class="container-fluid profile">
-                <a href="#" style="color: black;" data-open-modal="profilemodal">
+                <a href="users/profile.php?sideprof=<?php echo urlencode($current_user_no); ?>" style="color: black;" data-open-modal="profilemodal">
                     <div class="container-fluid contprofname">
                         <div class="container-fluid profilepicture">
                           <!-- prifle image in sidenav -->
-                            <img src="include/images/d6cdf2a5daaf96462127cc31fb621851.jpg" alt="">
+                            <img src="<?php echo htmlspecialchars($profilePicture, ENT_QUOTES, 'UTF-8'); ?>" alt="">
                         </div>
                         <div class="container-fluid nameusername">
                           <!-- profile name in side nav -->
                             <div class="container-fluid nameko">
-                                <span>John Paul Naag</span>
+                                <span>
+                                <?php
+                        if (isset($_SESSION['fname']) && isset($_SESSION['lname'])) {
+                            echo htmlspecialchars($_SESSION['fname']) . ' ' . htmlspecialchars($_SESSION['lname']);
+                        }
+                        ?>
+                                </span>
                             </div>
                             <!-- profile username in side nav -->
                             <div class="container-fluid username">
-                                <small><span style="font-size:13px;">@johnpaul12</span></small>
+                                <small><span style="font-size:13px;">
+                                <?php
+                            if (isset($_SESSION['user_ID'])) {
+                                echo htmlspecialchars($_SESSION['user_ID']);
+                            }
+                            ?>
+                                </span></small>
                             </div>
                         </div>
                     </div>
@@ -49,7 +61,7 @@
                           </form>
                         </div>
                        <ul>
-                        <li><a href=""><div class="container-fluid post">Create post</div></a></li>
+                        <li><a href="#" data-open-modal="createpost"><div class="container-fluid post">Create post</div></a></li>
                         <li><a href=""><div class="container-fluid notification">Notification</div></a></li>
                         <li><a href=""><div class="container-fluid collect">Collection</div></a></li>
                         <li><div class="container-fluid services" style="padding:0;">
