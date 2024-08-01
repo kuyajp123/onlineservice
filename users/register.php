@@ -109,9 +109,9 @@ if(isset($_POST['submit'])){
                                             <h5 class='modal-title' id='exampleModalLabel'>Registration Successful</h5>
                                         </div>
 
-                                            <div class='alert alert-success' role='alert'>
+                                            
     Registration successful! 
-                                            </div>                                          
+                                                                                 
                                         
                                     </div>
                                 </div>
@@ -221,15 +221,18 @@ if(isset($_POST['submit'])){
                 <div class="modal fade" id="emailInvalid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
+                        
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Invalid Email</h5>
                             </div>
                             <div class="modal-body text-center">
-                                <div class='alert alert-warning' role='alert'>
+
+                                
      Please use your CVSU Email!
-                                </div>
-                                z
+                                
+                                
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -248,13 +251,14 @@ if(isset($_POST['submit'])){
                 <div class="modal fade" id="emailExist" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
+                        
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Invalid Email</h5>
                             </div>
                             <div class="modal-body text-center">
-                                <div class='alert alert-warning' role='alert'>
+                                
   This email is already used!
-                                </div>
+                                
                                     
                                 
                             </div>                       
@@ -282,9 +286,9 @@ if(isset($_POST['submit'])){
                             </div>
                             <div class="modal-body text-center">
 
-                                <div class='alert alert-warning' role='alert'>
+                                
   This Student number is already used!
-                                </div>
+                               
                                                                     
                             </div>                       
                         </div>
@@ -310,9 +314,10 @@ if(isset($_POST['submit'])){
                             </div>
                             <div class="modal-body text-center">
 
-                                <div class='alert alert-warning' role='alert'>
+                               
   Please provide the right Format of Student Number!
-                                </div>
+  
+                                
 
                             </div>
                         </div>

@@ -191,13 +191,18 @@ function getPosts($con) {
 }
 
 
+// get profile user in posts
+function getProfilePicture($user_no, $con) {
+    $profilepicture = "";
 
-
-
-
-
-
-
+    $sql = "SELECT profilepicture FROM user_registration WHERE user_no = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param("i", $user_no);
+    $stmt->execute();
+    $stmt->bind_result($profilepicture);
+    $stmt->fetch();
+    return $profilepicture;
+}
 
 
 

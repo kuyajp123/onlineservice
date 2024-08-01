@@ -1,6 +1,7 @@
 <?php
 // Example variables
 $loggedInUserNo = $_SESSION['user_no']; // Current logged-in user's number
+$profilePic = getProfilePicture($user_no, $con);
 ?>
 
 <div class="container-fluid container_post" data-post-id="<?php echo htmlspecialchars($post_id); ?>">
@@ -13,12 +14,12 @@ $loggedInUserNo = $_SESSION['user_no']; // Current logged-in user's number
                     <?php if ($user_no == $loggedInUserNo): ?>
                         <!-- Link to the current user's profile -->
                         <a href="users/profile.php?sideprof" style="font-size:1rem; text-decoration: none; color: black;">
-                            <img src="include/images/profile.jpg" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
+                            <img src="users/images/profilepicture/<?php echo htmlspecialchars($profilePic); ?>" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
                         </a>
                     <?php else: ?>
                         <!-- Link to the other user's profile -->
                         <a href="users/other_profile.php?user_no=<?php echo htmlspecialchars($user_no); ?>" style="font-size:1rem; text-decoration: none; color: black;">
-                            <img src="include/images/profile.jpg" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
+                            <img src="users/images/profilepicture/<?php echo htmlspecialchars($profilePic); ?>" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
                         </a>
                     <?php endif; ?>
                 </div>
@@ -28,11 +29,11 @@ $loggedInUserNo = $_SESSION['user_no']; // Current logged-in user's number
                 <div>
                     <?php if ($user_no == $loggedInUserNo): ?>
                         <!-- Display current user's name -->
-                        <span class="ipadname1"><?php echo htmlspecialchars($fname . ' ' . $lname); ?></span>
+                        <a href="users/profile.php?sideprof"><span class="pangalantextpost"><?php echo htmlspecialchars($fname . ' ' . $lname); ?></span></a>
                     <?php else: ?>
                         <!-- Display other user's name -->
-                        <a href="profile.php?user_no=<?php echo htmlspecialchars($user_no); ?>" style="font-size:1rem; text-decoration: none; color: black;">
-                            <span class="ipadname1"><?php echo htmlspecialchars($fname . ' ' . $lname); ?></span>
+                        <a href="users/other_profile.php?user_no=<?php echo htmlspecialchars($user_no); ?>" style="font-size:1rem; text-decoration: none; color: black;">
+                            <span class="pangalantextpost"><?php echo htmlspecialchars($fname . ' ' . $lname); ?></span>
                         </a>
                     <?php endif; ?>
                 </div>
