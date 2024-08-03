@@ -559,6 +559,58 @@ button{
   max-height: 100vh;
   max-width: 100%;
 }
+/* textpost comments */
+.contcomments{
+  height: auto;
+  width: 100%;
+  min-height: 50%; 
+}
+.writecomments{
+  height: auto;
+  width: 100%;
+  min-height: 25%;
+  margin-top: 20px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.inputcomments{
+  position: relative;
+  display: flex;
+  min-height: 25%;
+}
+#sendbtncomments{
+  position: absolute;
+  left: 87%;
+}
+.comments{
+  height: auto;
+  min-height: 60%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.usercomments{
+  height: auto;
+  min-height: 40%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 5%;
+}
+.commenttext{
+  border-radius: 10px;
+  margin-top: 5px;
+  height: auto;
+  width: 100%;
+  background-color: #f0f2f5;
+}
+
 
 
 

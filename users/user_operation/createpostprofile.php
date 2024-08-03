@@ -45,7 +45,7 @@ if (isset($_POST['post'])) {
       // Handle file upload
       if ($postphoto) {
         $tmp_postphoto = $_FILES['postphoto']['tmp_name'];
-        $upload_path = "include/posts_images/$postphoto";
+        $upload_path = "../include/posts_images/$postphoto";
 
         if (move_uploaded_file($tmp_postphoto, $upload_path)) {
             $sql = "INSERT INTO posts (user_no, relation, services, caption, postphoto) VALUES (?, ?, ?, ?, ?)";

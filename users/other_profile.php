@@ -9,12 +9,39 @@ if (!isset($_SESSION['user_ID']) && !isset($_SESSION['email']) && !isset($_SESSI
     exit();
 }
 
-$other_user_no = isset($_GET['user_no']) ? $_GET['user_no'] : null;
+// Get the user number from query parameters
+$other_user_no = isset($_GET['user_no']) ? intval($_GET['user_no']) : null;
 
-// Fetch posts if 'user_no' is set
-$posts = [];
+if ($other_user_no !== null) {
+    // Prepare the SQL query with the correct table name
+    $sql = "SELECT profilepicture, coverphoto FROM user_registration WHERE user_no = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param("i", $other_user_no);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($row = $result->fetch_assoc()) {
+        $other_profilepicture = htmlspecialchars($row['profilepicture'], ENT_QUOTES, 'UTF-8');
+        $other_coverphoto = htmlspecialchars($row['coverphoto'], ENT_QUOTES, 'UTF-8');
+    } else {
+        // Handle case where user_no is invalid or no data is found
+        $other_profilepicture = 'default_profile_picture.jpg';
+        $other_coverphoto = 'default_cover_photo.jpg';
+    }
+} else {
+    // Handle case where user_no is not provided
+    $other_profilepicture = 'default_profile_picture.jpg';
+    $other_coverphoto = 'default_cover_photo.jpg';
+}
+
+// Fetch profile details
+$profile = [];
 if ($other_user_no) {
-    $query = "SELECT * FROM posts WHERE user_no = ?";
+    $profile = getUserProfile($other_user_no);
+
+    // Fetch posts if 'user_no' is set
+    $posts = [];
+    $query = "SELECT * FROM posts WHERE user_no = ? ORDER BY timestamp DESC";
     $stmt = $con->prepare($query);
     $stmt->bind_param('i', $other_user_no);
     $stmt->execute();
@@ -46,11 +73,19 @@ $showPosts = !isset($_GET['othereditdetails']);
             <div class="container-fluid grid2">
                 <div class="container-fluid gri1cont">
                     <div class="container-fluid header">
-                        <!-- background photo here -->
-                        <div class="container-fluid imgcontainer"><img src="../users/images/coverphoto/<?php echo htmlspecialchars($coverphoto, ENT_QUOTES, 'UTF-8'); ?>" style="position:absolute;"></div>
-                        <!-- profile photo here -->
-                        <div class="container-fluid profilecontainer"><img src="../users/images/profilepicture/<?php echo htmlspecialchars($profilepicture, ENT_QUOTES, 'UTF-8'); ?>"></div>
-                        <div class="container-fluid backbutton"><a href="../index.php?newsfeed=<?php echo urlencode($other_user_no) ?>"><button type="button" class="btn btn-primary">Back</button></a></div>
+                        <!-- Background photo -->
+                        <div class="container-fluid imgcontainer">
+                            <img src="../users/images/coverphoto/<?php echo $other_coverphoto; ?>" alt="Cover Photo" style="position:absolute;">
+                        </div>
+                        <!-- Profile photo -->
+                        <div class="container-fluid profilecontainer">
+                            <img src="../users/images/profilepicture/<?php echo $other_profilepicture; ?>" alt="Profile Photo">
+                        </div>
+                        <div class="container-fluid backbutton">
+                            <a href="../index.php?newsfeed=<?php echo urlencode($other_user_no); ?>">
+                                <button type="button" class="btn btn-primary">Back</button>
+                            </a>
+                        </div>
                     </div>
                     <!-- navbar -->
                     <div class="container-fluid sticky-top navbar">

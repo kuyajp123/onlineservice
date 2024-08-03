@@ -170,10 +170,11 @@ function getOldCoverPhoto($user_no, $con) {
 
 // function to get post from database
 function getPosts($con) {
-    // Define the SQL query
-    $sql = "SELECT p.post_id, p.user_no, u.fname, u.lname, p.timestamp, p.postphoto, p.caption
+    // Define the SQL query with ORDER BY clause to sort by timestamp in descending order
+    $sql = "SELECT p.post_id, p.user_no, u.fname, u.lname, p.timestamp, p.postphoto, p.caption, p.comments
     FROM posts p
-    JOIN user_registration u ON p.user_no = u.user_no";
+    JOIN user_registration u ON p.user_no = u.user_no
+    ORDER BY p.timestamp DESC"; // Added ORDER BY clause
 
     // Prepare and execute the SQL statement
     $stmt = $con->prepare($sql);
@@ -205,7 +206,104 @@ function getProfilePicture($user_no, $con) {
 }
 
 
+// see another user posts in another_user timeline
+function getUserProfile($user_no) {
+    global $con;
 
+    $query = "SELECT fname, lname, user_ID, coverphoto, profilepicture FROM user_registration WHERE user_no = ?";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param('i', $user_no);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
+
+// follow_user Function
+function followUser($follower_id, $followed_id) {
+    global $con;
+
+    // Check if the follow relationship already exists
+    $query = "SELECT COUNT(*) AS count FROM follows WHERE follower_id = ? AND followed_id = ?";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param('ii', $follower_id, $followed_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $exists = $result->fetch_assoc()['count'] > 0;
+
+    if (!$exists) {
+        // Add a new follow record
+        $query = "INSERT INTO follows (follower_id, followed_id) VALUES (?, ?)";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param('ii', $follower_id, $followed_id);
+        $stmt->execute();
+
+        // Update the follow counts
+        $query = "UPDATE user_registration SET following = following + 1 WHERE user_no = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param('i', $follower_id);
+        $stmt->execute();
+
+        $query = "UPDATE user_registration SET followers = followers + 1 WHERE user_no = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param('i', $followed_id);
+        $stmt->execute();
+
+        return true;
+    }
+
+    return false;
+}
+
+
+// unfollow_user Function
+function unfollowUser($follower_id, $followed_id) {
+    global $con;
+
+    // Check if the follow relationship exists
+    $query = "SELECT COUNT(*) AS count FROM follows WHERE follower_id = ? AND followed_id = ?";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param('ii', $follower_id, $followed_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $exists = $result->fetch_assoc()['count'] > 0;
+
+    if ($exists) {
+        // Remove the follow record
+        $query = "DELETE FROM follows WHERE follower_id = ? AND followed_id = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param('ii', $follower_id, $followed_id);
+        $stmt->execute();
+
+        // Update the follow counts
+        $query = "UPDATE user_registration SET following = following - 1 WHERE user_no = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param('i', $follower_id);
+        $stmt->execute();
+
+        $query = "UPDATE user_registration SET followers = followers - 1 WHERE user_no = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param('i', $followed_id);
+        $stmt->execute();
+
+        return true;
+    }
+
+    return false;
+}
+
+
+// function to get the follow and follower counts
+function getFollowCounts($user_no) {
+    global $con;
+
+    $query = "SELECT (SELECT COUNT(*) FROM follows WHERE follower_id = ?) AS following, 
+                     (SELECT COUNT(*) FROM follows WHERE followed_id = ?) AS followers";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param('ii', $user_no, $user_no);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
 
 
 

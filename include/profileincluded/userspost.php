@@ -1,4 +1,6 @@
-<?php if (!empty($posts)): ?>
+<?php
+// Check if there are posts
+if (!empty($posts)): ?>
     <?php foreach ($posts as $post): ?>
         <?php
         // Extract data
@@ -20,16 +22,16 @@
         $hasImage = !empty(trim($postphoto));
         ?>
         
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 18rem; margin-bottom: 1rem;">
             <?php if ($hasImage): ?>
-                <img src="../include/posts_images/<?php echo $postphoto; ?>" class="card-img-top" alt="Post Image">
+                <img src="../include/posts_images/<?php echo htmlspecialchars($postphoto); ?>" class="card-img-top" alt="Post Image">
             <?php endif; ?>
             
             <div class="card-body">
                 <?php if ($hasText): ?>
                     <p class="card-text"><?php echo nl2br(htmlspecialchars($caption)); ?></p>
                 <?php endif; ?>
-                <p class="card-text"><small class="text-muted"><?php echo $formattedDate . ' at ' . $formattedTime; ?></small></p>
+                <p class="card-text"><small class="text-muted"><?php echo htmlspecialchars($formattedDate . ' at ' . $formattedTime); ?></small></p>
                 <a href="#" class="btn btn-primary">View Post</a>
             </div>
         </div>

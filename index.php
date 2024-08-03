@@ -19,6 +19,8 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
   $_SESSION['bday'];
   $_SESSION['gender'];
   $_SESSION['user_password'];
+  $profilePicture = $_SESSION['profilepicture'];
+  $_SESSION['coverphoto'];
   $current_user_no = $_SESSION['user_no'];
 
 
@@ -48,21 +50,6 @@ if (isset($_SESSION['coverphoto']) && !empty($_SESSION['coverphoto'])) {
 
 
 
-$other_user_no = isset($_GET['user_no']) ? $_GET['user_no'] : null;
-
-// Fetch posts
-$query = "SELECT * FROM posts WHERE user_no = ?";
-$stmt = $con->prepare($query);
-$stmt->bind_param('i', $other_user_no);
-$stmt->execute();
-$result = $stmt->get_result();
-$posts = [];
-while ($post = $result->fetch_assoc()) {
-    $posts[] = $post;
-}
-
-
-
 
 
 // Call the function to get posts
@@ -80,7 +67,7 @@ $current_user_no = $_SESSION['user_no'];
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="index_style.css?v=2">
+<link rel="stylesheet" href="index_style.css?v=3">
 <link rel="stylesheet" href="users/profilemodal.css?v=3">
 <link rel="stylesheet" href="./users/user_operation/createpost.css?v=3">
     <meta charset="UTF-8">
@@ -214,7 +201,7 @@ $current_user_no = $_SESSION['user_no'];
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item" href="#"><div class="container">Store</div></a></li>
                               <li><a class="dropdown-item" href="#"><div class="container">Books</div></a></li>
-                              <li><a class="dropdown-item" href="#"><div class="container">Student Dashboard</div></a></li>
+                              <li><a class="dropdown-item" href="https://trece.cvsu.edu.ph/student/dashboard"><div class="container">Student Dashboard</div></a></li>
                             </ul></div></li>
                         <li><a href=""><div class="container-fluid settings">Settings</div></a></li>
                        </ul>
@@ -265,40 +252,39 @@ $current_user_no = $_SESSION['user_no'];
 
 <?php      
 
-            // Loop through each post
+// Loop through each post
 foreach ($rows as $row):
-    // Extract data
-    $post_id = htmlspecialchars($row['post_id']);
-    $user_no = htmlspecialchars($row['user_no']);
-    $fname = htmlspecialchars($row['fname']);
-    $lname = htmlspecialchars($row['lname']);
-    // $profile_pic = htmlspecialchars($row['profile_pic']);
-    $timestamp = htmlspecialchars($row['timestamp']);
-    $postphoto = htmlspecialchars($row['postphoto']);
-    $caption = htmlspecialchars($row['caption']);
+  // Extract data
+  $post_id = htmlspecialchars($row['post_id']);
+  $user_no = htmlspecialchars($row['user_no']);
+  $fname = htmlspecialchars($row['fname']);
+  $lname = htmlspecialchars($row['lname']);
+  $timestamp = htmlspecialchars($row['timestamp']);
+  $postphoto = htmlspecialchars($row['postphoto']);
+  $caption = htmlspecialchars($row['caption']);
+  $comments = htmlspecialchars($row['comments']);
 
-    // Create DateTime object
-    $dateTime = new DateTime($timestamp);
+  // Create DateTime object
+  $dateTime = new DateTime($timestamp);
 
-    // Format date and time
-    $formattedDate = $dateTime->format('F j, Y'); // e.g., July 24, 2023
-    $formattedTime = $dateTime->format('g:i a'); // e.g., 6:27 pm
+  // Format date and time
+  $formattedDate = $dateTime->format('F j, Y'); // e.g., July 24, 2023
+  $formattedTime = $dateTime->format('g:i a'); // e.g., 6:27 pm
 
-    // Determine which template to include
-    $hasText = !empty(trim($caption));
-    $hasImage = !empty(trim($postphoto));
+  // Determine which template to include
+  $hasText = !empty(trim($caption));
+  $hasImage = !empty(trim($postphoto));
 
-    if ($hasText && $hasImage) {
-        // Post with both text and image
-        require 'include/posttemplate/post.php';
-    }
-    elseif ($hasText) {
-        // Post with text only
-        require 'include/posttemplate/textpost.php';
-    } elseif ($hasImage) {
-        // Post with image only
-        require 'include/posttemplate/imagepost.php';
-    }
+  if ($hasText && $hasImage) {
+      // Post with both text and image
+      require 'include/posttemplate/post.php';
+  } elseif ($hasText) {
+      // Post with text only
+      require 'include/posttemplate/textpost.php';
+  } elseif ($hasImage) {
+      // Post with image only
+      require 'include/posttemplate/imagepost.php';
+  }
 endforeach;
 ?>
 
