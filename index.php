@@ -262,7 +262,6 @@ foreach ($rows as $row):
   $timestamp = htmlspecialchars($row['timestamp']);
   $postphoto = htmlspecialchars($row['postphoto']);
   $caption = htmlspecialchars($row['caption']);
-  $comments = htmlspecialchars($row['comments']);
 
   // Create DateTime object
   $dateTime = new DateTime($timestamp);

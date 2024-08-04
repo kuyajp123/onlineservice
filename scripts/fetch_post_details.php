@@ -8,8 +8,7 @@ if (isset($_POST['post_id'])) {
     $loggedInUserNo = $_SESSION['user_no'];
 
     // Fetch post details with user information
-    $query = "
-        SELECT p.post_id, p.user_no, u.fname, u.lname, p.timestamp, p.postphoto, p.caption, p.comments
+    $query = "SELECT p.post_id, p.user_no, u.fname, u.lname, p.timestamp, p.postphoto, p.caption
         FROM posts p
         JOIN user_registration u ON p.user_no = u.user_no
         WHERE p.post_id = ?";
@@ -25,7 +24,6 @@ if (isset($_POST['post_id'])) {
         $fname = $post['fname'];
         $lname = $post['lname'];
         $caption = $post['caption'];
-        $comments = $post['comments'];
         $postphoto = $post['postphoto'];
         $timestamp = $post['timestamp']; // Adjust as needed for date/time formatting
 
@@ -102,14 +100,17 @@ if (isset($_POST['post_id'])) {
             <div class='line'></div>
 
             <div class='container contcomments'>
-                <form action='' method='post'>
-                    <div class='container-fluid writecomments'>
-                        <input class='form-control inputcomments' name='send_comment' placeholder='Write a comment...'>
-                        <button type='submit' class='btn btn-outline-primary' id='sendbtncomments'><i class='fa-solid fa-paper-plane'></i></button>
-                    </div>
-                </form>
+                    <form action='' method='post'>
+                        <input type='hidden' name='post_id' value='" . htmlspecialchars($post_id) . "'>
+                        <div class='container-fluid writecomments'>
+                            <input class='form-control inputcomments' name='send_comment' placeholder='Write a comment...'>
+                            <button type='submit' name='submit_comment' class='btn btn-outline-primary' id='sendbtncomments'><i class='fa-solid fa-paper-plane'></i></button>
+                        </div>
+                    </form>
 
                 <div class='line'></div>
+
+                <!-----display comments------>
 
                 <div class='container-fluid comments'>
                     <div class='container-fluid usercomments'>
@@ -131,7 +132,8 @@ if (isset($_POST['post_id'])) {
                         </div>
                         <div class='container-fluid commenttext'>
                             <figure>
-                                <figcaption>" . htmlspecialchars($comments) . "</figcaption>
+                                <figcaption>" . //htmlspecialchars($comments) . 
+                                "</figcaption>
                             </figure>
                         </div>
                     </div>
@@ -140,6 +142,26 @@ if (isset($_POST['post_id'])) {
         </div>";
     } else {
         echo "Invalid request.";
+    }
+}elseif (isset($_POST["submit_comment"])) {
+    $comment = $_POST["send_comment"];
+    $post_id = $_POST['post_id'];
+
+    if (!empty($comment)) {
+        // Use the correct table name within the schema
+        $sql = "INSERT INTO posts_management.comments (post_id, user_no, comment_text) VALUES (?, ?, ?)";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("iis", $post_id, $loggedInUserNo, $comment);
+        
+        if ($stmt->execute()) {
+            echo "success";
+        } else {
+            $error = "error";
+            echo "$error";
+        }
+    }else{
+        $error = "comment cannot be empty";
+            echo "$error";
     }
 } else {
     echo "Invalid request.";

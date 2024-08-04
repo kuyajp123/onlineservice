@@ -171,7 +171,7 @@ function getOldCoverPhoto($user_no, $con) {
 // function to get post from database
 function getPosts($con) {
     // Define the SQL query with ORDER BY clause to sort by timestamp in descending order
-    $sql = "SELECT p.post_id, p.user_no, u.fname, u.lname, p.timestamp, p.postphoto, p.caption, p.comments
+    $sql = "SELECT p.post_id, p.user_no, u.fname, u.lname, p.timestamp, p.postphoto, p.caption
     FROM posts p
     JOIN user_registration u ON p.user_no = u.user_no
     ORDER BY p.timestamp DESC"; // Added ORDER BY clause
