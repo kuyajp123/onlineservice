@@ -67,7 +67,7 @@ $current_user_no = $_SESSION['user_no'];
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="index_style.css?v=3">
+<link rel="stylesheet" href="index_style.css?v=1">
 <link rel="stylesheet" href="users/profilemodal.css?v=3">
 <link rel="stylesheet" href="./users/user_operation/createpost.css?v=3">
     <meta charset="UTF-8">

@@ -94,6 +94,7 @@ $profilePic = getProfilePicture($user_no, $con);
 
 </div>
 <script>
+    // fetching post and comment in comment section modal
 document.addEventListener('DOMContentLoaded', function () {
   var exampleModal = document.getElementById('exampleModal');
 
@@ -103,28 +104,38 @@ document.addEventListener('DOMContentLoaded', function () {
     // Extract info from data-bs-* attributes
     var postId = button.getAttribute('data-bs-whatever');
 
-    // Make an AJAX request to fetch post details
-    fetch('scripts/fetch_post_details.php', {
-    method: 'POST',
-    headers: {
+    // Fetch post details
+    fetch('scripts/fetch_textpost_details.php', {
+      method: 'POST',
+      headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: new URLSearchParams('post_id=' + postId)
+      },
+      body: new URLSearchParams('post_id=' + postId)
     })
-
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.text();
-    })
+    .then(response => response.text())
     .then(data => {
-      // Update the modal's content
       var modalContent = exampleModal.querySelector('#modal-content');
       modalContent.innerHTML = data;
     })
     .catch(error => {
       console.error('Error fetching post details:', error);
+    });
+
+    // Fetch comments for the post
+    fetch('scripts/fetch_textpost_comment.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams('post_id=' + postId)
+    })
+    .then(response => response.text())
+    .then(data => {
+      var modalCommentContent = exampleModal.querySelector('#modal-comment-content');
+      modalCommentContent.innerHTML = data;
+    })
+    .catch(error => {
+      console.error('Error fetching comments:', error);
     });
   });
 });

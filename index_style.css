@@ -585,6 +585,7 @@ button{
   left: 87%;
 }
 .comments{
+  margin-top: 2vh;
   height: auto;
   min-height: 60%;
   width: 100%;

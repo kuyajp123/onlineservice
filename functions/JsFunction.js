@@ -48,9 +48,6 @@ function myFunction() {
 
 
 
-
-
-
 $(document).ready(function() {
     // Intercept click event on elements with class 'ajax-link'
     $('.ajax-link').on('click', function(event) {

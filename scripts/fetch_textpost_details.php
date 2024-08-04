@@ -96,72 +96,9 @@ if (isset($_POST['post_id'])) {
                     </div>
                 </div>
             </div>
-
-            <div class='line'></div>
-
-            <div class='container contcomments'>
-                    <form action='' method='post'>
-                        <input type='hidden' name='post_id' value='" . htmlspecialchars($post_id) . "'>
-                        <div class='container-fluid writecomments'>
-                            <input class='form-control inputcomments' name='send_comment' placeholder='Write a comment...'>
-                            <button type='submit' name='submit_comment' class='btn btn-outline-primary' id='sendbtncomments'><i class='fa-solid fa-paper-plane'></i></button>
-                        </div>
-                    </form>
-
-                <div class='line'></div>
-
-                <!-----display comments------>
-
-                <div class='container-fluid comments'>
-                    <div class='container-fluid usercomments'>
-                        <div class='container-fluid lgyan'>
-                            <div class='container-fluid prof_pic' style='display: flex; align-items: center; justify-content: flex-start; width:auto;'>
-                                <div>
-                                    <a href='" . ($user_no == $loggedInUserNo ? "users/profile.php?sideprof" : "users/other_profile.php?user_no=" . htmlspecialchars($user_no)) . "' style='font-size:1rem; text-decoration: none; color: black;'>
-                                        <img src='users/images/profilepicture/" . htmlspecialchars($profilePic) . "' style='object-fit:contain; width: 40px; height: 40px; border-radius: 50%;' alt=''>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class='container-fluid pangalan' style='justify-content:flex-start; padding:0;'>
-                                <div style='margin-left:5px'>
-                                    <a href='" . ($user_no == $loggedInUserNo ? "users/profile.php?sideprof" : "users/other_profile.php?user_no=" . htmlspecialchars($user_no)) . "' style='font-size:1rem; text-decoration: none; color: black;'>
-                                        <span class='pangalantextpost'>" . htmlspecialchars($fname . ' ' . $lname) . "</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class='container-fluid commenttext'>
-                            <figure>
-                                <figcaption>" . //htmlspecialchars($comments) . 
-                                "</figcaption>
-                            </figure>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>";
+            ";
     } else {
         echo "Invalid request.";
-    }
-}elseif (isset($_POST["submit_comment"])) {
-    $comment = $_POST["send_comment"];
-    $post_id = $_POST['post_id'];
-
-    if (!empty($comment)) {
-        // Use the correct table name within the schema
-        $sql = "INSERT INTO posts_management.comments (post_id, user_no, comment_text) VALUES (?, ?, ?)";
-        $stmt = $con->prepare($sql);
-        $stmt->bind_param("iis", $post_id, $loggedInUserNo, $comment);
-        
-        if ($stmt->execute()) {
-            echo "success";
-        } else {
-            $error = "error";
-            echo "$error";
-        }
-    }else{
-        $error = "comment cannot be empty";
-            echo "$error";
     }
 } else {
     echo "Invalid request.";
