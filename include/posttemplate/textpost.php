@@ -70,9 +70,12 @@ $profilePic = getProfilePicture($user_no, $con);
         <div class="container-fluid thethree">
             <div class="container-fluid puso"><button type="button" data-bs-toggle="modal" data-bs-target="#btn-comments"><i class="fa-regular fa-heart"></i></button></div>
             <div class="container-fluid comment">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#btn-comments">
+                <!-- Buttons to open the modal -->
+           
+                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="<?php echo htmlspecialchars($post_id); ?>">
                     <i class="fa-regular fa-comment-dots fa-flip-horizontal"></i>
                 </button>
+
             </div>
             <div class="container-fluid share"><button><i class="fa-regular fa-share-from-square"></i></button></div>
         </div>
@@ -91,22 +94,39 @@ $profilePic = getProfilePicture($user_no, $con);
 
 </div>
 <script>
-    $(document).ready(function() {
-    $('button[data-bs-toggle="modal"]').on('click', function() {
-        var postId = $(this).data('post-id');
+document.addEventListener('DOMContentLoaded', function () {
+  var exampleModal = document.getElementById('exampleModal');
 
-        $.ajax({
-            url: '../include/posttemplate/comment_modal/fetch_post_details.php', // Adjust this to the correct URL
-            method: 'POST',
-            data: { post_id: postId },
-            success: function(response) {
-                $('#modal-content').html(response);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching post details:', status, error);
-            }
-        });
+  exampleModal.addEventListener('show.bs.modal', function (event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget;
+    // Extract info from data-bs-* attributes
+    var postId = button.getAttribute('data-bs-whatever');
+
+    // Make an AJAX request to fetch post details
+    fetch('scripts/fetch_post_details.php', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams('post_id=' + postId)
+    })
+
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.text();
+    })
+    .then(data => {
+      // Update the modal's content
+      var modalContent = exampleModal.querySelector('#modal-content');
+      modalContent.innerHTML = data;
+    })
+    .catch(error => {
+      console.error('Error fetching post details:', error);
     });
+  });
 });
 </script>
 

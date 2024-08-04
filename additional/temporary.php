@@ -1,115 +1,80 @@
-<?php while ($row = $result->fetch_assoc()): ?>
-    <?php
+<?php
+session_start();
+require_once '../include/bootsrap.php';
+require_once '../include/connect.php';
+require_once '../functions/common_function.php';
+// Get the user number from query parameters
+$other_user_no = isset($_GET['user_no']) ? intval($_GET['user_no']) : null;
+$data = getPosts($con);
+
+$rows = $data['rows'];
+
+foreach ($rows as $row):
     // Extract data
     $post_id = htmlspecialchars($row['post_id']);
     $user_no = htmlspecialchars($row['user_no']);
     $fname = htmlspecialchars($row['fname']);
     $lname = htmlspecialchars($row['lname']);
-    // $profile_pic = htmlspecialchars($row['profile_pic']);
     $timestamp = htmlspecialchars($row['timestamp']);
     $postphoto = htmlspecialchars($row['postphoto']);
     $caption = htmlspecialchars($row['caption']);
-
-    // Create DateTime object
-    $dateTime = new DateTime($timestamp);
-
-    // Format date and time
-    $formattedDate = $dateTime->format('F j, Y'); // e.g., July 24, 2023
-    $formattedTime = $dateTime->format('g:i a'); // e.g., 6:27 pm
-
-    // Determine which template to include
-    $hasText = !empty(trim($caption));
-    $hasImage = !empty(trim($postphoto));
-
-    if ($hasText && $hasImage) {
-        // Post with both text and image
-        require 'include/posttemplate/post.php';
-    }
-    elseif ($hasText) {
-        // Post with text only
-        require 'include/posttemplate/textpost.php';
-    } elseif ($hasImage) {
-        // Post with image only
-        // You can create a separate template for image-only posts if needed
-        require 'include/posttemplate/imagepost.php';
-    }
-    ?>
-
-<?php endwhile; ?>
-
-
-
-
-
-
-<!-- post creation -->
-<?php
-
-// Initialize an empty string for error messages
-$error = "";
-$postphoto = "";
-
-// Prepare SQL query to fetch user data
-$sql = "SELECT * FROM user_registration WHERE user_ID = ? OR email = ? OR student_no = ?";
-$stmt = $con->prepare($sql);
-$stmt->bind_param('sss', $_SESSION['user_ID'], $_SESSION['email'], $_SESSION['student_no']);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
-
-
-$_SESSION['user_no'] = $row['user_no'];
-
-if (isset($_POST['submit'])) {
-    // Initialize flags to check if any content is provided
-    $is_relation_set = isset($_POST['relation']) && !empty($_POST['relation']);
-    $is_services_set = isset($_POST['services']) && !empty($_POST['services']);
-    $is_caption_set = isset($_POST['caption']) && !empty(trim($_POST['caption']));
-    $is_postphoto_set = isset($_FILES['postphoto']['name']) && !empty($_FILES['postphoto']['name']);
-
-    // Check if category fields (relation and services) are empty
-    if (!$is_relation_set || !$is_services_set) {
-        $error = "Please provide a category to post.";
-    }
-
-    // Check if both caption and postphoto are empty
-    if (!$is_caption_set && !$is_postphoto_set) {
-        $error = "Please provide content for your post.";
-    }
-
-    // If no errors, process the post
-    if (empty($error)) {
-      $user_no = $_SESSION['user_no'];
-      $relation = $_POST['relation'];
-      $services = $_POST['services'];
-      $caption = $_POST['caption'];
-      $postphoto = isset($_FILES['postphoto']['name']) ? $_FILES['postphoto']['name'] : '';
-
-
-      // Handle file upload
-      if ($postphoto) {
-        $tmp_postphoto = $_FILES['postphoto']['tmp_name'];
-        $upload_path = "include/posts_images/$postphoto";
-
-        if (move_uploaded_file($tmp_postphoto, $upload_path)) {
-            $sql = "INSERT INTO posts (user_no, relation, services, caption, postphoto) VALUES (?, ?, ?, ?, ?)";
-            $stmt = $con->prepare($sql);
-            $stmt->bind_param('issss', $user_no, $relation, $services, $caption, $postphoto);
-            $stmt->execute();
-
-            echo "<script>window.open('index.php','_self')</script>";
-        } else {
-            $error = "Failed to upload photo.";
-        }
-    } else {
-        // Insert post without photo
-        $sql = "INSERT INTO posts (user_no, relation, services, caption, postphoto) VALUES (?, ?, ?, ?, '')";
-        $stmt = $con->prepare($sql);
-        $stmt->bind_param('isss', $user_no, $relation, $services, $caption);
-        $stmt->execute();
-    }
-  }
-}
-
-
+    $comments = htmlspecialchars($row['comments']);
+endforeach;
 ?>
+
+<!-- Buttons to open the modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="<?php echo htmlspecialchars($post_id); ?>">Open modal for post <?php echo htmlspecialchars($post_id); ?></button>
+
+<!-- Modal HTML -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Post Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modal-content">
+        <!-- Modal body content will be dynamically loaded here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var exampleModal = document.getElementById('exampleModal');
+
+  exampleModal.addEventListener('show.bs.modal', function (event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget;
+    // Extract info from data-bs-* attributes
+    var postId = button.getAttribute('data-bs-whatever');
+
+    // Make an AJAX request to fetch post details
+    fetch('scripts/fetch_post_details.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams('post_id=' + postId)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.text();
+    })
+    .then(data => {
+      // Update the modal's content
+      var modalContent = exampleModal.querySelector('#modal-content');
+      modalContent.innerHTML = data;
+    })
+    .catch(error => {
+      console.error('Error fetching post details:', error);
+    });
+  });
+});
+</script>
