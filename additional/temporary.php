@@ -1,24 +1,11 @@
-<?php
-if (isset($_POST["submit_comment"])) {
-  $comment = $_POST["send_comment"];
-  $post_id = $_POST['post_id'];
-
-  if (!empty($comment)) {
-      // Use the correct table name within the schema
-      $sql = "INSERT INTO posts_management.comments (post_id, user_no, comment_text) VALUES (?, ?, ?)";
-      $stmt = $con->prepare($sql);
-      $stmt->bind_param("iis", $post_id, $loggedInUserNo, $comment);
-      
-      if ($stmt->execute()) {
-          echo "success";
-      } else {
-          $error = "error";
-          echo "$error";
-      }
-  }else{
-      $error = "comment cannot be empty";
-          echo "$error";
-  }
-}
-
-?>
+<div class="container-fluid formcommentdiv">
+  <form action="" method="post">
+    <input type="hidden" name="post_id" value="<?php echo htmlspecialchars($post_id); ?>">
+    <div class="container-fluid writecomments">
+      <input class="form-control inputcomments" name="send_comment" placeholder="Write a comment..." required>
+      <button type="submit" name="submit_comment" class="btn btn-outline-primary" id="sendbtncomments">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+  </form>
+</div>

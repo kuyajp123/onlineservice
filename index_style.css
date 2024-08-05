@@ -561,6 +561,7 @@ button{
 }
 /* textpost comments */
 .contcomments{
+  margin-top: 2vh;
   height: auto;
   width: 100%;
   min-height: 50%; 
@@ -610,6 +611,12 @@ button{
   height: auto;
   width: 100%;
   background-color: #f0f2f5;
+}
+.formcommentdiv{
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 

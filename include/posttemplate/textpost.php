@@ -94,14 +94,11 @@ $profilePic = getProfilePicture($user_no, $con);
 
 </div>
 <script>
-    // fetching post and comment in comment section modal
 document.addEventListener('DOMContentLoaded', function () {
   var exampleModal = document.getElementById('exampleModal');
 
   exampleModal.addEventListener('show.bs.modal', function (event) {
-    // Button that triggered the modal
     var button = event.relatedTarget;
-    // Extract info from data-bs-* attributes
     var postId = button.getAttribute('data-bs-whatever');
 
     // Fetch post details
@@ -122,6 +119,57 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Fetch comments for the post
+    fetchComments(postId);
+
+    // Fetch input comment form
+    fetch('scripts/input_comment_textpost.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams('post_id=' + postId)
+    })
+    .then(response => response.text())
+    .then(data => {
+      var modalInputComment = exampleModal.querySelector('#modal-input-comment');
+      modalInputComment.innerHTML = data;
+
+      // Attach submit event listener to the form
+      var form = modalInputComment.querySelector('form');
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault(); // Prevent default form submission
+
+          var formData = new FormData(form);
+
+          fetch('scripts/input_comment_textpost.php', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => response.text())
+          .then(data => {
+            console.log('Response from server:', data); // Debugging output
+
+            if (data === "success") {
+              // Clear the input field
+              form.reset();
+
+              // Fetch and update comments after successful submission
+              fetchComments(postId);
+            } else {
+              console.error('Error:', data);
+            }
+          })
+          .catch(error => console.error('Error:', error));
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching input comment form:', error);
+    });
+  });
+
+  function fetchComments(postId) {
     fetch('scripts/fetch_textpost_comment.php', {
       method: 'POST',
       headers: {
@@ -134,11 +182,10 @@ document.addEventListener('DOMContentLoaded', function () {
       var modalCommentContent = exampleModal.querySelector('#modal-comment-content');
       modalCommentContent.innerHTML = data;
     })
-    .catch(error => {
-      console.error('Error fetching comments:', error);
-    });
-  });
+    .catch(error => console.error('Error fetching comments:', error));
+  }
 });
+
 </script>
 
 <?php require_once "include/posttemplate/comment_modal/textpost_comment.php"; ?>
