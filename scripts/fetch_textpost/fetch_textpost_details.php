@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../include/connect.php'; // Adjust path as needed
-require_once '../functions/common_function.php';
+require_once '../../include/connect.php'; // Go up two directories from fetch_textpost to reach include
+require_once '../../functions/common_function.php'; // Go up two directories from
 
 if (isset($_POST['post_id'])) {
     $post_id = $_POST['post_id'];

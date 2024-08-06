@@ -94,7 +94,7 @@ $profilePic = getProfilePicture($user_no, $con);
 
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+ document.addEventListener('DOMContentLoaded', function () {
   var exampleModal = document.getElementById('exampleModal');
 
   exampleModal.addEventListener('show.bs.modal', function (event) {
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var postId = button.getAttribute('data-bs-whatever');
 
     // Fetch post details
-    fetch('scripts/fetch_textpost_details.php', {
+    fetch('scripts/fetch_textpost/fetch_textpost_details.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchComments(postId);
 
     // Fetch input comment form
-    fetch('scripts/input_comment_textpost.php', {
+    fetch('scripts/fetch_textpost/input_comment_textpost.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -142,22 +142,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
           var formData = new FormData(form);
 
-          fetch('scripts/input_comment_textpost.php', {
+          fetch('scripts/fetch_textpost/input_comment_textpost.php', {
             method: 'POST',
             body: formData
           })
-          .then(response => response.text())
+          .then(response => response.json())
           .then(data => {
-            console.log('Response from server:', data); // Debugging output
-
-            if (data === "success") {
+            if (data.status === 'success') {
               // Clear the input field
               form.reset();
 
-              // Fetch and update comments after successful submission
-              fetchComments(postId);
+              // Update comments section with new data
+              var modalCommentContent = exampleModal.querySelector('#modal-comment-content');
+              modalCommentContent.innerHTML = data.comments;
             } else {
-              console.error('Error:', data);
+              console.error('Error:', data.message);
             }
           })
           .catch(error => console.error('Error:', error));
@@ -170,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   function fetchComments(postId) {
-    fetch('scripts/fetch_textpost_comment.php', {
+    fetch('scripts/fetch_textpost/fetch_textpost_comment.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
