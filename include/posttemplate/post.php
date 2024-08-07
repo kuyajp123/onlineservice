@@ -68,7 +68,7 @@ $profilePic = getProfilePicture($user_no, $con);
       <div class="container-fluid puso"><button><i class="fa-regular fa-heart"></i></button></div>
 
         <div class="container-fluid postcomment">
-            <button data-post-id="<?php echo $post_id; ?>" data-user-no="<?php echo $loggedInUserNo; ?>">
+        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal_postcomment" data-bs-whatever="<?php echo htmlspecialchars($post_id); ?>">
             <i class="fa-regular fa-comment-dots fa-flip-horizontal"></i>
             </button>
         </div>
@@ -96,99 +96,95 @@ $profilePic = getProfilePicture($user_no, $con);
 
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Event listener for comment buttons
-  document.querySelectorAll('.container-fluid.postcomment button').forEach(button => {
-    button.addEventListener('click', function() {
-      const postId = this.getAttribute('data-post-id');
-      const userNo = this.getAttribute('data-user-no');
+document.addEventListener('DOMContentLoaded', function () {
+  var exampleModal = document.getElementById('exampleModal_postcomment');
 
-      // Show the modal
-      var myModal = new bootstrap.Modal(document.getElementById('exampleModal_postcomment'));
-      myModal.show();
+  exampleModal.addEventListener('show.bs.modal', function (event) {
+    var button = event.relatedTarget;
+    var postId = button.getAttribute('data-bs-whatever');
 
-      // Fetch post details
-      fetch('scripts/fetch_post/fetch_post_details.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams('post_id=' + postId)
-      })
-      .then(response => response.text())
-      .then(data => {
-        document.querySelector('#modal-content-post').innerHTML = data;
-      })
-      .catch(error => console.error('Error fetching post details:', error));
+    // Fetch post details
+    fetch('scripts/fetch_post/fetch_post_details.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams('post_id=' + postId)
+    })
+    .then(response => response.text())
+    .then(data => {
+      var modalContent = exampleModal.querySelector('#modal-content-post');
+      modalContent.innerHTML = data;
+    })
+    .catch(error => {
+      console.error('Error fetching post details:', error);
+    });
 
-      // Fetch comments
-      fetch('scripts/fetch_post/fetch_post_comment.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams('post_id=' + postId)
-      })
-      .then(response => response.text())
-      .then(data => {
-        document.querySelector('#modal-commentpost-content').innerHTML = data;
-      })
-      .catch(error => console.error('Error fetching comments:', error));
+    // Fetch comments for the post
+    fetchComments(postId);
 
-      // Fetch comment form
-      fetch('scripts/fetch_post/input_comment_post.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams('post_id=' + postId + '&user_no=' + userNo)
-      })
-      .then(response => response.text())
-      .then(data => {
-        const modalInputComment = document.querySelector('#modal-postinput-comment');
-        modalInputComment.innerHTML = data;
+    // Fetch input comment form
+    fetch('scripts/fetch_post/input_comment_post.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams('post_id=' + postId)
+    })
+    .then(response => response.text())
+    .then(data => {
+      var modalInputComment = exampleModal.querySelector('#modal-postinput-comment');
+      modalInputComment.innerHTML = data;
 
-        // Attach submit event listener
-        modalInputComment.querySelector('form').addEventListener('submit', function(e) {
-          e.preventDefault(); // Prevent form from submitting normally
+      // Attach submit event listener to the form
+      var form = modalInputComment.querySelector('form');
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault(); // Prevent default form submission
 
-          const formData = new FormData(this);
-          formData.append('post_id', postId);
-          formData.append('user_no', userNo);
+          var formData = new FormData(form);
 
           fetch('scripts/fetch_post/input_comment_post.php', {
             method: 'POST',
             body: formData
           })
-          .then(response => response.text())
-          .then(result => {
-            if (result === 'success') {
-              // Reload comments after successful submission
-              fetch('scripts/fetch_post/fetch_post_comment.php', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams('post_id=' + postId)
-              })
-              .then(response => response.text())
-              .then(data => {
-                document.querySelector('#modal-commentpost-content').innerHTML = data;
-                // Reset form
-                this.reset();
-              })
-              .catch(error => console.error('Error fetching comments:', error));
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'success') {
+              // Clear the input field
+              form.reset();
+
+              // Update comments section with new data
+              var modalCommentContent = exampleModal.querySelector('#modal-commentpost-content');
+              modalCommentContent.innerHTML = data.comments;
             } else {
-              console.error('Error:', result);
+              console.error('Error:', data.message);
             }
           })
-          .catch(error => console.error('Error submitting comment:', error));
+          .catch(error => console.error('Error:', error));
         });
-      })
-      .catch(error => console.error('Error fetching comment form:', error));
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching input comment form:', error);
     });
   });
-});
 
+  function fetchComments(postId) {
+    fetch('scripts/fetch_post/fetch_post_comment.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams('post_id=' + postId)
+    })
+    .then(response => response.text())
+    .then(data => {
+      var modalCommentContent = exampleModal.querySelector('#modal-commentpost-content');
+      modalCommentContent.innerHTML = data;
+    })
+    .catch(error => console.error('Error fetching comments:', error));
+  }
+});
 </script>
 <?php require_once "include/posttemplate/comment_modal/post_comment.php"; ?>

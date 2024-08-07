@@ -59,10 +59,6 @@ $data = getPosts($con);
 $result = $data['result'];
 $rows = $data['rows'];
 
-
-
-$current_user_no = $_SESSION['user_no'];
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -218,13 +214,17 @@ $current_user_no = $_SESSION['user_no'];
                         </button>
                         <ul class="dropdown-menu">
                           <li><a class="dropdown-item" href="#"><div class="container">Profile</div></a></li>
-                          <button class="logoutbut"><div class="container">Logout</div></button>
+                          <a href="users/logout.php"><button class="logoutbut" name="logoutbut"><div class="container">Logout</div></button></a>
                         </ul>
                       </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <?php
+        
+        ?>
 
 
         <!-- contents second div -->

@@ -49,7 +49,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title><?php echo "".$_SESSION['fname']."" ?>'s Profile</title>
     <link rel="stylesheet" href="profile.css?v=2">
 </head>
 <body>

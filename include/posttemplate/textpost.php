@@ -2,6 +2,14 @@
 // Example variables
 $loggedInUserNo = $_SESSION['user_no']; // Current logged-in user's number
 $profilePic = getProfilePicture($user_no, $con);
+
+// Get the new heart count
+    $stmt = $con->prepare("SELECT COUNT(*) AS heart_count FROM heart_reactions WHERE post_id = ?");
+    $stmt->bind_param("i", $postId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $heartCount = $row['heart_count'];
 ?>
 
 <!-- Start of the content to be inserted into the div for comments -->
@@ -68,7 +76,13 @@ $profilePic = getProfilePicture($user_no, $con);
     <!-- Actions -->
     <div class="container-fluid heart">
         <div class="container-fluid thethree">
-            <div class="container-fluid puso"><button type="button" data-bs-toggle="modal" data-bs-target="#btn-comments"><i class="fa-regular fa-heart"></i></button></div>
+            <div class="container-fluid puso">
+                <button type="button" class="heart-btn" data-post-id="<?php echo htmlspecialchars($post_id); ?>" data-user-no="<?php echo htmlspecialchars($loggedInUserNo); ?>">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <span class="heart-count" style="font-size:small;"><?php echo htmlspecialchars($heartCount); ?></span>
+            </div>
+
             <div class="container-fluid comment">
                 <!-- Buttons to open the modal -->
            
@@ -93,6 +107,7 @@ $profilePic = getProfilePicture($user_no, $con);
     <div class="line"></div>
 
 </div>
+<!-- fetching post details for modal comment -->
 <script>
  document.addEventListener('DOMContentLoaded', function () {
   var exampleModal = document.getElementById('exampleModal');
@@ -184,7 +199,51 @@ $profilePic = getProfilePicture($user_no, $con);
     .catch(error => console.error('Error fetching comments:', error));
   }
 });
-
 </script>
+<!-- fetching heart reaction in post -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.heart-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const postId = this.getAttribute('data-post-id');
+            const userNo = this.getAttribute('data-user-no');
+            const icon = this.querySelector('i');
+            const countSpan = this.nextElementSibling;
+
+            // Toggle heart icon and send AJAX request
+            fetch('scripts/fetch_heart_textpost/heart_toggle_textpost.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    post_id: postId,
+                    user_no: userNo
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the heart icon and count
+                    if (data.reacted) {
+                        icon.classList.remove('fa-regular');
+                        icon.classList.add('fa-solid');
+                        icon.style.color = '#ff0000';
+                    } else {
+                        icon.classList.remove('fa-solid');
+                        icon.classList.add('fa-regular');
+                        icon.style.color = '';
+                    }
+                    countSpan.textContent = data.heartCount;
+                } else {
+                    console.error('Error:', data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+});
+</script>
+
 
 <?php require_once "include/posttemplate/comment_modal/textpost_comment.php"; ?>

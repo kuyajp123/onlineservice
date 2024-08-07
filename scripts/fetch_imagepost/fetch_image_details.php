@@ -1,4 +1,41 @@
 <?php
+session_start();
+require_once '../../include/connect.php';
+require_once '../../functions/common_function.php';
+
+// Fetch post ID from request
+$post_id = isset($_POST['post_id']) ? $_POST['post_id'] : null;
+if (!$post_id) {
+    echo "No post ID provided.";
+    exit;
+}
+
+// Fetch post details from database
+$sql = "SELECT p.post_id, p.user_no, p.caption, p.postphoto, u.fname, u.lname, u.profilepicture, 
+        DATE_FORMAT(p.timestamp, '%b %d, %Y') as formattedDate,
+        DATE_FORMAT(p.timestamp, '%I:%i %p') as formattedTime
+        FROM posts p
+        JOIN user_registration u ON p.user_no = u.user_no
+        WHERE p.post_id = ?";
+$stmt = $con->prepare($sql);
+$stmt->bind_param("i", $post_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$post = $result->fetch_assoc();
+
+if ($post) {
+    $user_no = $post['user_no'];
+    $fname = htmlspecialchars($post['fname']);
+    $lname = htmlspecialchars($post['lname']);
+    $profilePic = htmlspecialchars($post['profilepicture']);
+    $caption = htmlspecialchars($post['caption']);
+    $postphoto = htmlspecialchars($post['postphoto']);
+    $formattedDate = htmlspecialchars($post['formattedDate']);
+    $formattedTime = htmlspecialchars($post['formattedTime']);
+    $loggedInUserNo = isset($_SESSION['user_no']) ? $_SESSION['user_no'] : null;
+?>
+
+<?php
 // Example variables
 $loggedInUserNo = $_SESSION['user_no']; // Current logged-in user's number
 $profilePic = getProfilePicture($user_no, $con);
@@ -81,94 +118,8 @@ $profilePic = getProfilePicture($user_no, $con);
     <div class="line"></div>
 </div>
 
-<script>
-   document.addEventListener('DOMContentLoaded', function () {
-  var exampleModal = document.getElementById('exampleModal_imagepost');
-
-  exampleModal.addEventListener('show.bs.modal', function (event) {
-    var button = event.relatedTarget;
-    var postId = button.getAttribute('data-bs-whatever');
-
-    // Fetch post details
-    fetch('scripts/fetch_imagepost/fetch_image_details.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams('post_id=' + postId)
-    })
-    .then(response => response.text())
-    .then(data => {
-      var modalContent = exampleModal.querySelector('#modal-content-image');
-      modalContent.innerHTML = data;
-    })
-    .catch(error => console.error('Error fetching post details:', error));
-
-    // Fetch comments for the post
-    fetchComments(postId);
-
-    // Fetch input comment form
-    fetch('scripts/fetch_imagepost/input_comment_image.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams('post_id=' + postId)
-    })
-    .then(response => response.text())
-    .then(data => {
-      var modalInputComment = exampleModal.querySelector('#modal-imageinput-comment');
-      modalInputComment.innerHTML = data;
-
-      // Attach submit event listener to the form
-      var form = modalInputComment.querySelector('form');
-      if (form) {
-        form.addEventListener('submit', function (e) {
-          e.preventDefault(); // Prevent default form submission
-
-          var formData = new FormData(form);
-
-          fetch('scripts/fetch_imagepost/input_comment_image.php', {
-            method: 'POST',
-            body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === 'success') {
-              // Clear the input field
-              form.reset();
-
-              // Update comments section with new data
-              fetchComments(postId);
-            } else {
-              console.error('Error:', data.message);
-            }
-          })
-          .catch(error => console.error('Error:', error));
-        });
-      }
-    })
-    .catch(error => console.error('Error fetching input comment form:', error));
-  });
-
-  function fetchComments(postId) {
-    fetch('scripts/fetch_imagepost/fetch_image_comment.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams('post_id=' + postId)
-    })
-    .then(response => response.text())
-    .then(data => {
-      var modalCommentContent = exampleModal.querySelector('#modal-commentimage-content');
-      modalCommentContent.innerHTML = data;
-    })
-    .catch(error => console.error('Error fetching comments:', error));
-  }
-});
-
-
-</script>
-
-<?php include 'include/posttemplate/comment_modal/imagepost_comment.php'; ?>
+<?php
+} else {
+    echo "Post not found.";
+}
+?>
