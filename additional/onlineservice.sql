@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 04, 2024 at 09:03 AM
+-- Generation Time: Aug 07, 2024 at 09:12 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -73,7 +73,6 @@ CREATE TABLE `posts` (
   `services` varchar(10) DEFAULT NULL,
   `caption` text DEFAULT NULL,
   `postphoto` varchar(255) DEFAULT NULL,
-  `comments` varchar(255) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -81,10 +80,11 @@ CREATE TABLE `posts` (
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`post_id`, `user_no`, `relation`, `services`, `caption`, `postphoto`, `comments`, `timestamp`) VALUES
-(1, 3, 'bothrelati', 'bothservic', 'check post eeeeeeeeeeeyyyyyyyyyyy', '', '', '2024-08-01 11:05:40'),
-(4, 4, 'bothrelati', 'bothservic', 'post check ni B', '', '', '2024-08-03 07:36:47'),
-(5, 3, 'bothrelati', 'bothservic', 'text post', '', '', '2024-08-03 14:30:16');
+INSERT INTO `posts` (`post_id`, `user_no`, `relation`, `services`, `caption`, `postphoto`, `timestamp`) VALUES
+(1, 3, 'bothrelati', 'bothservic', 'check post eeeeeeeeeeeyyyyyyyyyyy', '', '2024-08-01 11:05:40'),
+(4, 4, 'bothrelati', 'bothservic', 'post check ni B', '', '2024-08-03 07:36:47'),
+(5, 3, 'bothrelati', 'bothservic', 'text post', '', '2024-08-03 14:30:16'),
+(6, 3, 'bothrelati', 'bothservic', 'photo post', 'wallpaperflare-cropped.jpg', '2024-08-06 13:08:55');
 
 -- --------------------------------------------------------
 
@@ -140,7 +140,7 @@ CREATE TABLE `user_registration` (
 --
 
 INSERT INTO `user_registration` (`user_no`, `user_ip`, `user_ID`, `email`, `student_no`, `fname`, `lname`, `bday`, `gender`, `coverphoto`, `profilepicture`, `created_at`, `updated_at`, `user_password`) VALUES
-(3, '::1', '@test91', 'tmc.test@cvsu.edu.ph', '2022-100-0349', 'A', 'A', '2024-07-24', 'Other', 'default_coverphoto.jpg', '8d2.jpg', '2024-07-24 01:12:33', '2024-08-01 14:13:24', '$2y$10$n37x9A2H9vukaGeMNnvMaulCD9ITXIXGWePQDUwkCYeAqiQS9QvZW'),
+(3, '::1', '@test91', 'tmc.test@cvsu.edu.ph', '2022-100-0349', 'A', 'A', '2024-07-24', 'Other', 'default_coverphoto.jpg', 'FB_IMG_1715253475717.jpg', '2024-07-24 01:12:33', '2024-08-05 12:06:32', '$2y$10$n37x9A2H9vukaGeMNnvMaulCD9ITXIXGWePQDUwkCYeAqiQS9QvZW'),
 (4, '::1', '@b360', 'tmc.test2@cvsu.edu.ph', '2023-100-0349', 'B', 'B', '2024-07-05', 'Non-binary', 'james-sullivan-x8l63IUeuwQ-unsplash.jpg', 'FB_IMG_1658182051384.jpg', '2024-07-24 07:43:49', '2024-08-02 06:47:46', '$2y$10$VrqB3dKisDYexxK7KGraQuelhI8Pq.3JjcbLC/K/1jZTFdQPql0l.');
 
 --
@@ -222,7 +222,7 @@ ALTER TABLE `heart_reactions`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `saves`
