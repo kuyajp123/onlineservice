@@ -28,8 +28,15 @@ if ($other_user_no) {
             <div><?php echo htmlspecialchars($formattedDate); ?></div>
         </div>
         <div class="container-fluid gender">
-            <div>Gender</div>
-            <div><?php echo htmlspecialchars($row['gender']); ?></div>
+             <div>Gender</div>
+             <div><?php $gender = $row['gender'];
+             
+             if($gender == 'prefered-not-to-say'){
+                 echo 'Prefered not to say';
+              }else{
+                 echo $gender;
+             }
+            ?></div>
         </div>
         <div class="container-fluid lineedit"></div>
     </div>

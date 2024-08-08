@@ -49,7 +49,25 @@ $profilePic = getProfilePicture($user_no, $con);
 
     <!-- 3dots 1st div -->
     <div class="container-fluid dots">
-      <button><div class="container-fluid dot"><i class="fa-solid fa-ellipsis fa-xl" style="color: #575b60; font-size:20px;"></i></div></button>
+            <div class="dropdown dot">
+                <button class="btn btn-secondary dropdown-toggle bg-white" style="border:none;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-ellipsis fa-xl" style="color: #575b60; font-size:20px;"></i>
+                        <ul class="dropdown-menu">
+                        <?php if($user_no == $loggedInUserNo){
+                                echo '
+                                <li><a class="dropdown-item" href="#">Copy post</a></li>
+                                <li><a class="dropdown-item" href="#">Delete post</a></li>
+                                ';
+                            }else{
+                                echo '
+                                <li><a class="dropdown-item" href="#" data-bs-whatever="'.htmlspecialchars($post_id).'" data-bs-toggle="modal" data-bs-target="#reportmodal2">Report</a></li>
+                                <li><a class="dropdown-item" href="#">Copy post</a></li>
+                                ';
+                            } 
+                            ?>
+                        </ul>
+                </button>
+            </div>
     </div>
 </div>
 
@@ -97,6 +115,7 @@ $profilePic = getProfilePicture($user_no, $con);
 </div>
 
 </div>
+<?php include 'include/posttemplate/report_modal/report_post_modal.php'; ?>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   var exampleModal = document.getElementById('exampleModal_postcomment');

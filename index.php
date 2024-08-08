@@ -10,7 +10,6 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
     }
 
   $_SESSION['ip'] = getIPAddress();
-  $_SESSION['user_no'];
   $_SESSION['user_ID'];
   $_SESSION['email'];
   $_SESSION['student_no'];

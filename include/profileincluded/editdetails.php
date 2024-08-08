@@ -31,7 +31,14 @@
                                 </div>
                                 <div class="container-fluid gender">
                                     <div>Gender</div>
-                                    <div><?php echo $row['gender'] ?> <a href="#" data-open-modal="editgender"><i class="fa-solid fa-pen-to-square"></i></a></div>
+                                    <div><?php $gender = $row['gender'];
+                                    
+                                    if($gender == 'prefered-not-to-say'){
+                                        echo 'Prefered not to say';
+                                    }else{
+                                        echo $gender;
+                                    }
+                                    ?> <a href="#" data-open-modal="editgender"><i class="fa-solid fa-pen-to-square"></i></a></div>
                                 </div>
                                 <div class="container-fluid lineedit"></div>
                                 <div class="container-fluid password">

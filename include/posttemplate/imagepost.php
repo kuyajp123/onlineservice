@@ -45,7 +45,25 @@ $profilePic = getProfilePicture($user_no, $con);
         </div>
         <!-- 3 dots section -->
         <div class="container-fluid dots">
-            <button><div class="container-fluid dot"><i class="fa-solid fa-ellipsis fa-xl" style="color: #575b60; font-size:20px;"></i></div></button>
+            <div class="dropdown dot">
+                <button class="btn btn-secondary dropdown-toggle bg-white" style="border:none;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-ellipsis fa-xl" style="color: #575b60; font-size:20px;"></i>
+                        <ul class="dropdown-menu">
+                            <?php if($user_no == $loggedInUserNo){
+                                echo '
+                                <li><a class="dropdown-item" href="#">Copy post</a></li>
+                                <li><a class="dropdown-item" href="#">Delete post</a></li>
+                                ';
+                            }else{
+                                echo '
+                                <li><a class="dropdown-item" href="#" data-bs-whatever="'.htmlspecialchars($post_id).'" data-bs-toggle="modal" data-bs-target="#reportmodal2">Report</a></li>
+                                <li><a class="dropdown-item" href="#">Copy post</a></li>
+                                ';
+                            } 
+                            ?>
+                        </ul>
+                </button>
+            </div>
         </div>
     </div>
     <!-- Image section -->
@@ -82,6 +100,24 @@ $profilePic = getProfilePicture($user_no, $con);
     <!-- Line separator -->
     <div class="line"></div>
 </div>
+<?php
+// getting first name of user in report modal
+$query = 'SELECT ur.fname
+FROM user_registration ur
+JOIN posts p ON ur.user_no = p.user_no
+WHERE p.post_id = ?';
+
+$stmt = $con->prepare($query);
+$stmt->bind_param('i', $post_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($row = $result->fetch_assoc()) {
+$fnameOfPost = $row['fname'];
+}
+
+include 'include/posttemplate/report_modal/report_imagepost.php';
+?>
 
 <script>
    document.addEventListener('DOMContentLoaded', function () {

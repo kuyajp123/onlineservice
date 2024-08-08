@@ -19,6 +19,8 @@ $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $heartCount = $row['heart_count'] ?? 0;
+
+
 ?>
 
 <!-- Start of the content to be inserted into the div for comments -->
@@ -64,11 +66,27 @@ $heartCount = $row['heart_count'] ?? 0;
         </div>
         <!-- 3 dots section -->
         <div class="container-fluid dots">
-            <button>
-                <div class="container-fluid dot">
+        <div class="dropdown dot">
+                <button class="btn btn-secondary dropdown-toggle bg-white" style="border:none;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-ellipsis fa-xl" style="color: #575b60; font-size:20px;"></i>
-                </div>
-            </button>
+                        <ul class="dropdown-menu">
+                            <?php if($user_no == $loggedInUserNo){
+                                echo '
+                                <li><a class="dropdown-item" href="#">Copy post</a></li>
+                                <li><a class="dropdown-item" href="#">Delete post</a></li>
+                                ';
+                            }else{
+                                echo '
+                                <li>
+                                <a class="dropdown-item" href="#" data-bs-whatever="'.htmlspecialchars($post_id).'" data-bs-toggle="modal" data-bs-target="#reportmodal2">Report</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#">Copy post</a></li>
+                                ';
+                            } 
+                            ?>
+                        </ul>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -116,6 +134,7 @@ $heartCount = $row['heart_count'] ?? 0;
     <div class="line"></div>
 
 </div>
+<?php include 'include/posttemplate/report_modal/report_textpost_modal.php'; ?>
 <!-- fetching post details for modal comment -->
 <script>
  document.addEventListener('DOMContentLoaded', function () {

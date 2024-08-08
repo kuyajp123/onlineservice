@@ -66,7 +66,7 @@ if (isset($_POST['gender_submit'])) {
                 <option value="">Select...</option>
                 <option value="Non-binary">Non-binary</option>
                 <option value="Other">Other</option>
-                <option value="Other">prefered not to say</option>
+                <option value="prefered-not-to-say">prefered not to say</option>
               </select>
             </div>
           </div>
