@@ -3,13 +3,22 @@
 $loggedInUserNo = $_SESSION['user_no']; // Current logged-in user's number
 $profilePic = getProfilePicture($user_no, $con);
 
-// Get the new heart count
-    $stmt = $con->prepare("SELECT COUNT(*) AS heart_count FROM heart_reactions WHERE post_id = ?");
-    $stmt->bind_param("i", $postId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    $heartCount = $row['heart_count'];
+// Check if the user has reacted
+$query = "SELECT * FROM heart_reactions WHERE post_id = ? AND user_no = ?";
+$stmt = $con->prepare($query);
+$stmt->bind_param("ii", $post_id, $loggedInUserNo);
+$stmt->execute();
+$result = $stmt->get_result();
+$hasReacted = $result->num_rows > 0;
+
+// Fetch heart count
+$query = "SELECT COUNT(*) AS heart_count FROM heart_reactions WHERE post_id = ? AND reaction_type = 'heart'";
+$stmt = $con->prepare($query);
+$stmt->bind_param("i", $post_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$heartCount = $row['heart_count'] ?? 0;
 ?>
 
 <!-- Start of the content to be inserted into the div for comments -->
@@ -80,7 +89,7 @@ $profilePic = getProfilePicture($user_no, $con);
                 <button type="button" class="heart-btn" data-post-id="<?php echo htmlspecialchars($post_id); ?>" data-user-no="<?php echo htmlspecialchars($loggedInUserNo); ?>">
                     <i class="fa-regular fa-heart"></i>
                 </button>
-                <span class="heart-count" style="font-size:small;"><?php echo htmlspecialchars($heartCount); ?></span>
+                <!-- <span class="heart-count" style="font-size:small;"><?php //echo htmlspecialchars($heartCount); ?></span> -->
             </div>
 
             <div class="container-fluid comment">
@@ -208,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const postId = this.getAttribute('data-post-id');
             const userNo = this.getAttribute('data-user-no');
             const icon = this.querySelector('i');
-            const countSpan = this.nextElementSibling;
+            const countSpan = this.nextElementSibling; // Assumes count span is right after the button
 
             // Toggle heart icon and send AJAX request
             fetch('scripts/fetch_heart_textpost/heart_toggle_textpost.php', {
@@ -234,6 +243,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         icon.classList.add('fa-regular');
                         icon.style.color = '';
                     }
+                    // Always display the heart count, even if it's 0
                     countSpan.textContent = data.heartCount;
                 } else {
                     console.error('Error:', data.message);
@@ -243,6 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
 </script>
 
 

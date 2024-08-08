@@ -58,7 +58,9 @@ $profilePic = getProfilePicture($user_no, $con);
     <!-- Actions section -->
     <div class="container-fluid heart">
         <div class="container-fluid thethree">
-            <div class="container-fluid puso"><button><i class="fa-regular fa-heart"></i></button></div>
+            <div class="container-fluid puso"><button type="button" class="heart-btn3" data-post-id="<?php echo htmlspecialchars($post_id); ?>" data-user-no="<?php echo htmlspecialchars($loggedInUserNo); ?>">
+                    <i class="fa-regular fa-heart"></i>
+                </button></div>
 
             <div class="container-fluid imagecomment">
         <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal_imagepost" data-bs-whatever="<?php echo htmlspecialchars($post_id); ?>">
@@ -167,7 +169,52 @@ $profilePic = getProfilePicture($user_no, $con);
     .catch(error => console.error('Error fetching comments:', error));
   }
 });
+</script>
 
+<!-- fetching heart reaction in post -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.heart-btn3').forEach(button => {
+        button.addEventListener('click', function () {
+            const postId = this.getAttribute('data-post-id');
+            const userNo = this.getAttribute('data-user-no');
+            const icon = this.querySelector('i');
+            const countSpan = this.nextElementSibling; // Assumes count span is right after the button
+
+            // Toggle heart icon and send AJAX request
+            fetch('scripts/fetch_heart_textpost/heart_toggle_textpost.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    post_id: postId,
+                    user_no: userNo
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the heart icon and count
+                    if (data.reacted) {
+                        icon.classList.remove('fa-regular');
+                        icon.classList.add('fa-solid');
+                        icon.style.color = '#ff0000';
+                    } else {
+                        icon.classList.remove('fa-solid');
+                        icon.classList.add('fa-regular');
+                        icon.style.color = '';
+                    }
+                    // Always display the heart count, even if it's 0
+                    countSpan.textContent = data.heartCount;
+                } else {
+                    console.error('Error:', data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+});
 
 </script>
 
