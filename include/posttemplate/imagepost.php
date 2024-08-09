@@ -1,4 +1,5 @@
 <?php
+require_once 'include/connect.php';
 // Example variables
 $loggedInUserNo = $_SESSION['user_no']; // Current logged-in user's number
 $profilePic = getProfilePicture($user_no, $con);
@@ -48,21 +49,17 @@ $profilePic = getProfilePicture($user_no, $con);
             <div class="dropdown dot">
                 <button class="btn btn-secondary dropdown-toggle bg-white" style="border:none;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-ellipsis fa-xl" style="color: #575b60; font-size:20px;"></i>
-                        <ul class="dropdown-menu">
-                            <?php if($user_no == $loggedInUserNo){
-                                echo '
-                                <li><a class="dropdown-item" href="#">Copy post</a></li>
-                                <li><a class="dropdown-item" href="#">Delete post</a></li>
-                                ';
-                            }else{
-                                echo '
-                                <li><a class="dropdown-item" href="#" data-bs-whatever="'.htmlspecialchars($post_id).'" data-bs-toggle="modal" data-bs-target="#reportmodal2">Report</a></li>
-                                <li><a class="dropdown-item" href="#">Copy post</a></li>
-                                ';
-                            } 
-                            ?>
-                        </ul>
                 </button>
+                <ul class="dropdown-menu">
+                    <?php if($user_no == $loggedInUserNo): ?>
+                        <li><a class="dropdown-item" href="#">Copy post</a></li>
+                        <li><a class="dropdown-item" href="#">Delete post</a></li>
+                    <?php else: ?>
+                        <!-- Pass the post_id as a data attribute for the report option -->
+                        <li><a class="dropdown-item" href="#" data-post-id="<?php echo htmlspecialchars($post_id); ?>" data-bs-toggle="modal" data-bs-target="#reportmodal2" data-bs-whatever="<?php echo htmlspecialchars($post_id); ?>">Report</a></li>
+                        <li><a class="dropdown-item" href="#">Copy post</a></li>
+                    <?php endif; ?>
+                </ul>
             </div>
         </div>
     </div>

@@ -132,12 +132,6 @@ if(isset($_POST['submit'])){
     }
 }
 ?>
-<style>
-    #btn-signup2{
-        background-color:#00A400;
-        border:none;
-    }
-</style>
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -179,18 +173,30 @@ if(isset($_POST['submit'])){
 
         <div class="row g-3 px-3 pt-4">
         <div class="col ">
-        <label for="date-input">Date of birth</label>
-            <input type="date" id="bday" name="bday" class="form-control" value="<?php echo htmlspecialchars($bday); ?>"  placeholder="Date of Birth" aria-label="Date of Birth" required="required">
+        <!-- <label for="date-input">Date of birth</label>
+            <input type="date" id="bday" name="bday" class="form-control" value="<?php //echo htmlspecialchars($bday); ?>"  placeholder="Date of Birth" aria-label="Date of Birth" required="required"> -->
+
+            <div class="container-fluid dateinput">
+                <input id="datepicker" name="bday" class="input_el__l_VZt" readonly placeholder="Choose date" value="<?php echo htmlspecialchars($bday); ?>">
+            </div>
         </div>
-        <div class="col pt-2">
-        <label>Gender &nbsp; &nbsp;</label><br>
-        
-            <input class="form-check-input" type="radio" name="gender" id="gender" value="Male" required>
-            <label class="form-check-label" for="gender">Male</label>
-            &nbsp; &nbsp;
-            <input class="form-check-input" type="radio" name="gender" id="gender" value="Female" required>
-            <label class="form-check-label" for="gender">Female</label>
+
         </div>
+        <div class="container gender-register">
+            <div class="col pt-3">
+            <label>Gender: &nbsp; &nbsp;</label>
+
+            <div class="container-fluid genderinput">
+                <input class="form-check-input" type="radio" name="gender" id="gender" value="Male" required>
+                <label class="form-check-label" for="gender">Male</label>
+                &nbsp; &nbsp;
+                <input class="form-check-input" type="radio" name="gender" id="gender" value="Female" required>
+                <label class="form-check-label" for="gender">Female</label>
+                &nbsp; &nbsp;
+                <input class="form-check-input" type="radio" name="gender" id="gender" value="other" required>
+                <label class="form-check-label" for="gender">other</label>
+                </div>
+            </div>
         </div>
 
         <div class="col-12 t-2 pt-4 px-3">
@@ -334,3 +340,25 @@ if(isset($_POST['submit'])){
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+            // Initialize Air Datepicker
+            new AirDatepicker('#datepicker', {
+                buttons: ['clear'],
+                dateFormat: 'yyyy-MM-dd',
+                autoClose: true,
+                locale: {
+                    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                    daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                    daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                    months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    today: 'Today',
+                    clear: 'Clear',
+                    dateFormat: 'yyyy-MM-dd',
+                    timeFormat: 'HH:MM',
+                    firstDay: 0
+                }
+            });
+        });
+</script>

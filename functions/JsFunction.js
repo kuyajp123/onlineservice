@@ -90,9 +90,6 @@ $(document).ready(function() {
 
 
 
-
-
-
 // magagamit moto in future!
 
 

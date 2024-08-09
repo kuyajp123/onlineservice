@@ -139,6 +139,59 @@ body {
             height: 30px; /* Adjust this height according to your design */
         }
   
+
+
+
+
+
+
+/* register css */
+#btn-signup2{
+  background-color:#00A400;
+  border:none;
+}
+.gender-register{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.form-check-input{
+  border: 1px solid black;
+}
+.genderinput{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.air-datepicker {
+  z-index: 1251; 
+}
+.air-datepicker-overlay {
+  display: none !important;
+}
+.input_el__l_VZt{
+width: 100%;
+height: 100%;
+border: none;
+padding-left: 10px;
+}
+.dateinput{
+padding: 0;
+width: 100%;
+border-radius: 5px;
+width: 100%;
+border: 1px solid #dadde1;
+}
+
+
+
+
+
+
+
+
+
   
   /* responsive for phones */
   @media (max-width: 768px) {

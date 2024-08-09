@@ -1,5 +1,6 @@
                             
                             <?php
+                            
                             $sql = "select * from user_registration where user_no = ?";
                             $stmt = $con->prepare($sql);
                             $stmt->bind_param('i', $_SESSION['user_no']);

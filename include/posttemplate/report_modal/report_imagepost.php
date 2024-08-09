@@ -1,5 +1,5 @@
 <?php
-
+require_once 'include/connect.php';
 // Check if the form was submitted
 if (isset($_POST['submit_report_imagepost'])) {
     // Get form values
@@ -22,6 +22,7 @@ if (isset($_POST['submit_report_imagepost'])) {
     } else {
         echo "Error: " . $stmt->error;
     }
+    
 }
 ?>
 
