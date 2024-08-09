@@ -1,30 +1,4 @@
-<?php
-require_once 'include/connect.php';
-// Check if the form was submitted
-if (isset($_POST['submit_report_imagepost'])) {
-    // Get form values
-    $post_id = $_POST['post_id'];
-    $report_reason = isset($_POST['report_reason']) ? $_POST['report_reason'] : ''; // Handle undefined array key
-    $user_no = $_SESSION['user_no']; // Assuming you store the user number in session
 
-    // Validate input
-    if (empty($post_id) || empty($report_reason)) {
-        echo "All fields are required.";
-        exit;
-    }
-
-    // Insert report into the database
-    $stmt = $con->prepare('INSERT INTO post_reports (post_id, user_no, report_reason, report_date) VALUES (?, ?, ?, NOW())');
-    $stmt->bind_param('iis', $post_id, $user_no, $report_reason);
-
-    if ($stmt->execute()) {
-        echo "Report submitted successfully.";
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    
-}
-?>
 
 
 <!-- Modal -->

@@ -56,7 +56,7 @@ $profilePic = getProfilePicture($user_no, $con);
                         <li><a class="dropdown-item" href="#">Delete post</a></li>
                     <?php else: ?>
                         <!-- Pass the post_id as a data attribute for the report option -->
-                        <li><a class="dropdown-item" href="#" data-post-id="<?php echo htmlspecialchars($post_id); ?>" data-bs-toggle="modal" data-bs-target="#reportmodal2" data-bs-whatever="<?php echo htmlspecialchars($post_id); ?>">Report</a></li>
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#reportmodal2">Report</a></li>
                         <li><a class="dropdown-item" href="#">Copy post</a></li>
                     <?php endif; ?>
                 </ul>
@@ -97,28 +97,12 @@ $profilePic = getProfilePicture($user_no, $con);
     <!-- Line separator -->
     <div class="line"></div>
 </div>
-<?php
-// getting first name of user in report modal
-$query = 'SELECT ur.fname
-FROM user_registration ur
-JOIN posts p ON ur.user_no = p.user_no
-WHERE p.post_id = ?';
-
-$stmt = $con->prepare($query);
-$stmt->bind_param('i', $post_id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($row = $result->fetch_assoc()) {
-$fnameOfPost = $row['fname'];
-}
-
-include 'include/posttemplate/report_modal/report_imagepost.php';
-?>
+<?php include 'include/posttemplate/report_modal/report_imagepost.php'; ?>
 
 <script>
-   document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function () {
   var exampleModal = document.getElementById('exampleModal_imagepost');
+  var commentPollInterval = 1000;
 
   exampleModal.addEventListener('show.bs.modal', function (event) {
     var button = event.relatedTarget;
@@ -139,8 +123,13 @@ include 'include/posttemplate/report_modal/report_imagepost.php';
     })
     .catch(error => console.error('Error fetching post details:', error));
 
-    // Fetch comments for the post
-    fetchComments(postId);
+    // Fetch and update comments
+    function updateComments() {
+      fetchComments(postId);
+    }
+    
+    updateComments(); // Initial fetch
+    var commentPolling = setInterval(updateComments, commentPollInterval);
 
     // Fetch input comment form
     fetch('scripts/fetch_imagepost/input_comment_image.php', {
@@ -172,9 +161,9 @@ include 'include/posttemplate/report_modal/report_imagepost.php';
             if (data.status === 'success') {
               // Clear the input field
               form.reset();
-
-              // Update comments section with new data
-              fetchComments(postId);
+              
+              // Optionally, update comments immediately after submitting
+              updateComments();
             } else {
               console.error('Error:', data.message);
             }
@@ -184,6 +173,11 @@ include 'include/posttemplate/report_modal/report_imagepost.php';
       }
     })
     .catch(error => console.error('Error fetching input comment form:', error));
+
+    // Clear interval when modal is hidden
+    exampleModal.addEventListener('hide.bs.modal', function () {
+      clearInterval(commentPolling);
+    });
   });
 
   function fetchComments(postId) {
@@ -202,6 +196,8 @@ include 'include/posttemplate/report_modal/report_imagepost.php';
     .catch(error => console.error('Error fetching comments:', error));
   }
 });
+
+
 </script>
 
 <!-- fetching heart reaction in post -->

@@ -5,7 +5,7 @@ require_once './register.php';
 require_once '../functions/common_function.php';
 
 if(isset($_SESSION['user_no'])){
-    echo "<script>window.open('../index.php?newsfeed=".urlencode($current_user_no)."','_self')</script>";
+    echo "<script>window.open('../index.php?newsfeed=".urlencode($_SESSION['user_no'])."','_self')</script>";
 }
 
 $error = ''; // Initialize error variable
