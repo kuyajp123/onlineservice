@@ -85,7 +85,9 @@ $profilePic = getProfilePicture($user_no, $con);
     <div class="container-fluid thethree">
       <div class="container-fluid puso"><button type="button" class="heart-btn2" data-post-id="<?php echo htmlspecialchars($post_id); ?>" data-user-no="<?php echo htmlspecialchars($loggedInUserNo); ?>">
                     <i class="fa-regular fa-heart"></i>
-                </button></div>
+                </button>
+                <span class="reaction-count">0</span>
+              </div>
 
         <div class="container-fluid postcomment">
         <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal_postcomment" data-bs-whatever="<?php echo htmlspecialchars($post_id); ?>">
@@ -119,6 +121,7 @@ $profilePic = getProfilePicture($user_no, $con);
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   var exampleModal = document.getElementById('exampleModal_postcomment');
+  var commentPollInterval = 1000; // Polling interval for comments
 
   exampleModal.addEventListener('show.bs.modal', function (event) {
     var button = event.relatedTarget;
@@ -141,8 +144,13 @@ document.addEventListener('DOMContentLoaded', function () {
       console.error('Error fetching post details:', error);
     });
 
-    // Fetch comments for the post
-    fetchComments(postId);
+    // Fetch and update comments
+    function updateComments() {
+      fetchComments(postId);
+    }
+
+    updateComments(); // Initial fetch
+    var commentPolling = setInterval(updateComments, commentPollInterval);
 
     // Fetch input comment form
     fetch('scripts/fetch_post/input_comment_post.php', {
@@ -175,9 +183,8 @@ document.addEventListener('DOMContentLoaded', function () {
               // Clear the input field
               form.reset();
 
-              // Update comments section with new data
-              var modalCommentContent = exampleModal.querySelector('#modal-commentpost-content');
-              modalCommentContent.innerHTML = data.comments;
+              // Optionally, update comments immediately after submitting
+              updateComments();
             } else {
               console.error('Error:', data.message);
             }
@@ -188,6 +195,11 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     .catch(error => {
       console.error('Error fetching input comment form:', error);
+    });
+
+    // Clear interval when modal is hidden
+    exampleModal.addEventListener('hide.bs.modal', function () {
+      clearInterval(commentPolling);
     });
   });
 
@@ -207,10 +219,60 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch(error => console.error('Error fetching comments:', error));
   }
 });
+
 </script>
 
+<!-- fetch heart button on post -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    // Fetch initial heart reaction states
+    document.querySelectorAll('.heart-btn2').forEach(button => {
+        const postId = button.getAttribute('data-post-id');
+        const userNo = button.getAttribute('data-user-no');
+        const icon = button.querySelector('i');
+        const countSpan = button.nextElementSibling; // Assumes count span is right after the button
+
+        fetch('scripts/fetch_heart_textpost/get_heart_status.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                post_id: postId,
+                user_no: userNo
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update the heart icon and count based on fetched data
+                if (data.reacted) {
+                    icon.classList.remove('fa-regular');
+                    icon.classList.add('fa-solid');
+                    icon.style.color = '#ff0000';
+                } else {
+                    icon.classList.remove('fa-solid');
+                    icon.classList.add('fa-regular');
+                    icon.style.color = '';
+                }
+                
+                // Update the heart count and its visibility
+                const heartCount = data.heartCount;
+                countSpan.textContent = heartCount;
+
+                if (heartCount > 0) {
+                    countSpan.style.display = 'inline'; // Show the count if greater than 0
+                } else {
+                    countSpan.style.display = 'none'; // Hide the count if 0
+                }
+            } else {
+                console.error('Error:', data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Handle heart button clicks
     document.querySelectorAll('.heart-btn2').forEach(button => {
         button.addEventListener('click', function () {
             const postId = this.getAttribute('data-post-id');
@@ -218,7 +280,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const icon = this.querySelector('i');
             const countSpan = this.nextElementSibling; // Assumes count span is right after the button
 
-            // Toggle heart icon and send AJAX request
             fetch('scripts/fetch_heart_textpost/heart_toggle_textpost.php', {
                 method: 'POST',
                 headers: {
@@ -242,8 +303,16 @@ document.addEventListener('DOMContentLoaded', function () {
                         icon.classList.add('fa-regular');
                         icon.style.color = '';
                     }
-                    // Always display the heart count, even if it's 0
-                    countSpan.textContent = data.heartCount;
+                    
+                    // Update the heart count and its visibility
+                    const heartCount = data.heartCount;
+                    countSpan.textContent = heartCount;
+
+                    if (heartCount > 0) {
+                        countSpan.style.display = 'inline'; // Show the count if greater than 0
+                    } else {
+                        countSpan.style.display = 'none'; // Hide the count if 0
+                    }
                 } else {
                     console.error('Error:', data.message);
                 }
