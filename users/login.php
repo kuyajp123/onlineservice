@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once "../include/bootsrap.php";
 require_once '../include/connect.php';
 require_once './register.php';
 require_once '../functions/common_function.php';

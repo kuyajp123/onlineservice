@@ -1,16 +1,15 @@
 <?php
-require_once '../include/connect.php';
 require_once "../include/bootsrap.php";
+require_once '../include/connect.php';
 require_once '../functions/common_function.php';
-
 // Variable to track of functions
 $emailInvalid = false;
 $emailExist = false;
 $studentNoExist = false;
 $studentNoInvalid = false;
+$passwordMismatch = false;
 
-$email = $student_no = $user_password = $fname = $lname = $bday = $gender = "";
-$email_no_err = $general_err = "";
+$conf_user_password = $email = $student_no = $user_password = $fname = $lname = $bday = $gender = "";
 
 // Check if the form is submitted
 if(isset($_POST['submit'])){
@@ -18,6 +17,7 @@ if(isset($_POST['submit'])){
     $email = strtolower(trim($_POST['email']));
     $student_no = $_POST['student_no'];
     $user_password = $_POST['user_password'];
+    $conf_user_password = $_POST['conf_user_password'];
     $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
     $fname = $_POST['fname'];
     $lname = $_POST['lname'];
@@ -29,8 +29,10 @@ if(isset($_POST['submit'])){
     $formattedFirstName = formatName($fname);
     $formattedLastName = formatName($lname);
 
-    // Validate email
-    if (!validateEmail($email)) {
+    if(!password_verify($conf_user_password, $hashed_password)){
+        $passwordMismatch = true;
+    }// Validate email
+    elseif (!validateEmail($email)) {
         $emailInvalid = true;
     }elseif(!studentNumberValid($student_no)){
         $studentNoExist = true;
@@ -122,7 +124,7 @@ if(isset($_POST['submit'])){
                             registrationSuccessModal.show();
                         }); </script>";
                         
-                        $email = $student_no = $user_password = $fname = $lname = $bday = $gender = ''; // Reset form
+                        $conf_user_password = $email = $student_no = $user_password = $fname = $lname = $bday = $gender = ''; // Reset form
                         break;
                     }
                 }
@@ -140,25 +142,28 @@ if(isset($_POST['submit'])){
         <!-- <button id="close_button" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
       </div>
       <div class="modal-body">
-      <?php if ($email_no_err): ?>
-                    <div class="alert alert-danger"><?php echo $email_no_err; ?></div>
-                <?php endif; ?>
-                <?php if ($general_err): ?>
-                    <div class="alert alert-danger"><?php echo $general_err; ?></div>
-                <?php endif; ?>
       <form id="exampleModal" action="" method="post">
                 <div class="mb-3 px-3">
         <label for="formGroupExampleInput" class="form-label"></label>
         <input type="email" class="form-control" name="email" id="formGroupExampleInput" value="<?php echo htmlspecialchars($email); ?>" placeholder="CVSU Email" required="required">
         </div>
+
         <div class="mb-3 px-3">
         <label for="formGroupExampleInput2" class="form-label"></label>
         <input type="text" class="form-control" name="student_no" id="formGroupExampleInput2" value="<?php echo htmlspecialchars($student_no); ?>" placeholder="Student Number" required="required">
+
         </div>
 
         <div class="mb-3 px-3">
         <label for="formGroupExampleInput2" class="form-label"></label>
         <input type="password" class="form-control" name="user_password" id="formGroupExampleInput2" value="<?php echo htmlspecialchars($user_password); ?>" placeholder="Password" required="required">
+        
+        </div>
+        
+
+        <div class="mb-3 px-3">
+        <label for="formGroupExampleInput2" class="form-label"></label>
+        <input type="password" class="form-control" name="conf_user_password" id="formGroupExampleInput2" value="<?php echo htmlspecialchars($conf_user_password); ?>" placeholder="Confirm Password" required="required">
         
         </div>
 
@@ -177,7 +182,7 @@ if(isset($_POST['submit'])){
             <input type="date" id="bday" name="bday" class="form-control" value="<?php //echo htmlspecialchars($bday); ?>"  placeholder="Date of Birth" aria-label="Date of Birth" required="required"> -->
 
             <div class="container-fluid dateinput">
-                <input id="datepicker" name="bday" class="input_el__l_VZt" readonly placeholder="Choose date" value="<?php echo htmlspecialchars($bday); ?>">
+                <input id="datepicker" name="bday" class="input_el__l_VZt" readonly placeholder="Enter your birthdate" value="<?php echo htmlspecialchars($bday); ?>">
             </div>
         </div>
 
@@ -209,7 +214,7 @@ if(isset($_POST['submit'])){
 </div> 
 
 
-<?php if ($emailInvalid || $studentNoInvalid || $emailExist || $studentNoExist): ?>
+<?php if ($emailInvalid || $studentNoInvalid || $emailExist || $studentNoExist || $conf_user_password): ?>
     <script>
         var exampleModal = new bootstrap.Modal(document.getElementById('exampleModal'));
         exampleModal.show();
@@ -233,8 +238,10 @@ if(isset($_POST['submit'])){
                             </div>
                             <div class="modal-body text-center">
 
-                                
-     Please use your CVSU Email!
+<div class="alert alert-danger" role="alert">
+  Please use your CVSU Email!
+</div>
+     
                                 
                                 
                             </div>
@@ -336,8 +343,33 @@ if(isset($_POST['submit'])){
             });
         </script>
     <?php endif; ?>
+    <?php if ($passwordMismatch): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var modalHtml = `
+                <div class="modal fade" id="conf_user_password" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Password did not match</h5>
+                            </div>
+                            <div class="modal-body text-center">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                               
+Please double check your password 
+                                
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                var conf_user_password = new bootstrap.Modal(document.getElementById('conf_user_password'));
+                conf_user_password.show();
+            });
+        </script>
+    <?php endif; ?>
 </body>
 </html>
 <script>

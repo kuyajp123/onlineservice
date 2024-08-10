@@ -177,6 +177,7 @@ border: none;
 padding-left: 10px;
 }
 .dateinput{
+height: 5vh;
 padding: 0;
 width: 100%;
 border-radius: 5px;
