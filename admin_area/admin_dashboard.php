@@ -46,7 +46,7 @@ $usersResult = $con->query($usersQuery);
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="admin_dashboard.php?list_of_users">
+                                    <a href="list_of_users.php">
                                         <div class="container-fluid listofusers">
                                             <div class="container-fluid listusericon">
                                                  <i class="fa-solid fa-users fa-lg"></i>
@@ -157,16 +157,9 @@ $usersResult = $con->query($usersQuery);
         </div>
         <div class="container-fluid content">
             
-            <?php
-            if (isset($_GET['list_of_users'])) {
-                // own edit details
-                include '../admin_area/list_of_users.php';                       
-            }
-            if (isset($_GET['user_no'])) {
-                $user_no = htmlspecialchars($_GET['user_no']);
-                include '../admin_area/review_post.php';
-            }
-            ?>
+
+
+
         </div>
     </div>
 </div>
