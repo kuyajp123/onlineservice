@@ -238,10 +238,7 @@ if(isset($_POST['submit'])){
                             </div>
                             <div class="modal-body text-center">
 
-<div class="alert alert-danger" role="alert">
   Please use your CVSU Email!
-</div>
-     
                                 
                                 
                             </div>
