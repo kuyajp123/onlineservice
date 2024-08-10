@@ -70,20 +70,18 @@ $heartCount = $row['heart_count'] ?? 0;
                 <button class="btn btn-secondary dropdown-toggle bg-white" style="border:none;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-ellipsis fa-xl" style="color: #575b60; font-size:20px;"></i>
                         <ul class="dropdown-menu">
-                            <?php if($user_no == $loggedInUserNo){
-                                echo '
-                                <li><a class="dropdown-item" href="#">Copy post</a></li>
-                                <li><a class="dropdown-item" href="#">Delete post</a></li>
-                                ';
-                            }else{
-                                echo '
-                                <li>
-                                <a class="dropdown-item" href="#" data-bs-whatever="'.htmlspecialchars($post_id).'" data-bs-toggle="modal" data-bs-target="#reportmodal2">Report</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#">Copy post</a></li>
-                                ';
-                            } 
-                            ?>
+                        <?php if($user_no == $loggedInUserNo): ?>
+                            <li><a class="dropdown-item" href="#">Copy post</a></li>
+                            <li><a class="dropdown-item" href="#">Delete post</a></li>
+                        <?php else: ?>
+                            <!-- Pass the post_id and user_no as data attributes for the report option -->
+                            <li><a class="dropdown-item" href="#" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#reportmodal2"
+                                data-post-id="<?php echo htmlspecialchars($post_id); ?>" 
+                                data-user-no="<?php echo htmlspecialchars($user_no); ?>">Report</a></li>
+                            <li><a class="dropdown-item" href="#">Copy post</a></li>
+                        <?php endif; ?>
                         </ul>
                 </button>
             </div>
@@ -112,10 +110,10 @@ $heartCount = $row['heart_count'] ?? 0;
 
             <div class="container-fluid comment">
                 <!-- Buttons to open the modal -->
-           
                 <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="<?php echo htmlspecialchars($post_id); ?>">
                     <i class="fa-regular fa-comment-dots fa-flip-horizontal"></i>
                 </button>
+                
             </div>
             <div class="container-fluid share"><button><i class="fa-regular fa-share-from-square"></i></button></div>
         </div>
@@ -133,111 +131,115 @@ $heartCount = $row['heart_count'] ?? 0;
     <div class="line"></div>
 
 </div>
-<?php include 'include/posttemplate/report_modal/report_textpost_modal.php'; ?>
+<?php include 'include/posttemplate/report_modal/report_post.php'; ?>
 <!-- fetching post details for modal comment -->
 <script>
  document.addEventListener('DOMContentLoaded', function () {
-  var exampleModal = document.getElementById('exampleModal');
-  var commentPollInterval = 1000; // Polling interval for comments
+    var exampleModal = document.getElementById('exampleModal');
+    var commentPollInterval = 1000; // Polling interval for comments
 
-  exampleModal.addEventListener('show.bs.modal', function (event) {
-    var button = event.relatedTarget;
-    var postId = button.getAttribute('data-bs-whatever');
+    exampleModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var postId = button.getAttribute('data-bs-whatever');
 
-    // Fetch post details
-    fetch('scripts/fetch_textpost/fetch_textpost_details.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams('post_id=' + postId)
-    })
-    .then(response => response.text())
-    .then(data => {
-      var modalContent = exampleModal.querySelector('#modal-content');
-      modalContent.innerHTML = data;
-    })
-    .catch(error => {
-      console.error('Error fetching post details:', error);
-    });
-
-    // Fetch and update comments
-    function updateComments() {
-      fetchComments(postId);
-    }
-
-    updateComments(); // Initial fetch
-    var commentPolling = setInterval(updateComments, commentPollInterval);
-
-    // Fetch input comment form
-    fetch('scripts/fetch_textpost/input_comment_textpost.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams('post_id=' + postId)
-    })
-    .then(response => response.text())
-    .then(data => {
-      var modalInputComment = exampleModal.querySelector('#modal-input-comment');
-      modalInputComment.innerHTML = data;
-
-      // Attach submit event listener to the form
-      var form = modalInputComment.querySelector('form');
-      if (form) {
-        form.addEventListener('submit', function (e) {
-          e.preventDefault(); // Prevent default form submission
-
-          var formData = new FormData(form);
-
-          fetch('scripts/fetch_textpost/input_comment_textpost.php', {
+        // Fetch post details
+        fetch('scripts/fetch_textpost/fetch_textpost_details.php', {
             method: 'POST',
-            body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === 'success') {
-              // Clear the input field
-              form.reset();
-
-              // Optionally, update comments immediately after submitting
-              updateComments();
-            } else {
-              console.error('Error:', data.message);
-            }
-          })
-          .catch(error => console.error('Error:', error));
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams('post_id=' + postId)
+        })
+        .then(response => response.text())
+        .then(data => {
+            var modalContent = exampleModal.querySelector('#modal-content');
+            modalContent.innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error fetching post details:', error);
         });
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching input comment form:', error);
+
+        // Fetch and update comments
+        function updateComments() {
+            fetchComments(postId);
+        }
+
+        updateComments(); // Initial fetch
+        var commentPolling = setInterval(updateComments, commentPollInterval);
+
+        // Fetch input comment form
+        fetch('scripts/fetch_textpost/input_comment_textpost.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams('post_id=' + postId)
+        })
+        .then(response => response.text())
+        .then(data => {
+            var modalInputComment = exampleModal.querySelector('#modal-input-comment');
+            modalInputComment.innerHTML = data;
+
+            // Attach submit event listener to the form
+            var form = modalInputComment.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault(); // Prevent default form submission
+
+                    var formData = new FormData(form);
+
+                    fetch('scripts/fetch_textpost/input_comment_textpost.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            // Clear the input field
+                            form.reset();
+
+                            // Optionally, update comments immediately after submitting
+                            updateComments();
+                        } else {
+                            console.error('Error:', data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching input comment form:', error);
+        });
+
+        // Clear interval when modal is hidden
+        exampleModal.addEventListener('hide.bs.modal', function () {
+            clearInterval(commentPolling);
+        });
     });
 
-    // Clear interval when modal is hidden
-    exampleModal.addEventListener('hide.bs.modal', function () {
-      clearInterval(commentPolling);
-    });
-  });
-
-  function fetchComments(postId) {
-    fetch('scripts/fetch_textpost/fetch_textpost_comment.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams('post_id=' + postId)
-    })
-    .then(response => response.text())
-    .then(data => {
-      var modalCommentContent = exampleModal.querySelector('#modal-comment-content');
-      modalCommentContent.innerHTML = data;
-    })
-    .catch(error => console.error('Error fetching comments:', error));
-  }
+    function fetchComments(postId) {
+        fetch('scripts/fetch_textpost/fetch_textpost_comment.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams('post_id=' + postId)
+        })
+        .then(response => response.text())
+        .then(data => {
+            var modalCommentContent = exampleModal.querySelector('#modal-comment-content');
+            modalCommentContent.innerHTML = data;
+        })
+        .catch(error => console.error('Error fetching comments:', error));
+    }
 });
 
 </script>
+
+
+
+
 <!-- fetching heart reaction in post -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {

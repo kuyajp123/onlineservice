@@ -51,18 +51,23 @@ $profilePic = getProfilePicture($user_no, $con);
                     <i class="fa-solid fa-ellipsis fa-xl" style="color: #575b60; font-size:20px;"></i>
                 </button>
                 <ul class="dropdown-menu">
-                    <?php if($user_no == $loggedInUserNo): ?>
-                        <li><a class="dropdown-item" href="#">Copy post</a></li>
-                        <li><a class="dropdown-item" href="#">Delete post</a></li>
-                    <?php else: ?>
-                        <!-- Pass the post_id as a data attribute for the report option -->
-                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#reportmodal2">Report</a></li>
-                        <li><a class="dropdown-item" href="#">Copy post</a></li>
-                    <?php endif; ?>
+                <?php if($user_no == $loggedInUserNo): ?>
+                    <li><a class="dropdown-item" href="#">Copy post</a></li>
+                    <li><a class="dropdown-item" href="#">Delete post</a></li>
+                <?php else: ?>
+                    <!-- Pass the post_id and user_no as data attributes for the report option -->
+                    <li><a class="dropdown-item" href="#" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#reportmodal2"
+                        data-post-id="<?php echo htmlspecialchars($post_id); ?>" 
+                        data-user-no="<?php echo htmlspecialchars($user_no); ?>">Report</a></li>
+                    <li><a class="dropdown-item" href="#">Copy post</a></li>
+                <?php endif; ?>
                 </ul>
             </div>
         </div>
     </div>
+    <script src="functions/JsFunction.js"></script>
     <!-- Image section -->
     <div class="container-fluid image">
         <!-- Image in post -->
@@ -100,8 +105,28 @@ $profilePic = getProfilePicture($user_no, $con);
     <!-- Line separator -->
     <div class="line"></div>
 </div>
-<?php include 'include/posttemplate/report_modal/report_imagepost.php'; ?>
+<?php include 'include/posttemplate/report_modal/report_post.php'; ?>
+<script>
+    // JavaScript to handle modal report data
+    document.addEventListener('DOMContentLoaded', function () {
+    var reportModal = document.getElementById('reportmodal2');
 
+    reportModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget; // Button that triggered the modal
+        var postId = button.getAttribute('data-post-id');
+        var userNo = button.getAttribute('data-user-no');
+        var reporterUserNo = '<?php echo $loggedInUserNo; ?>'; // Pass the current user's number
+
+        var modalPostIdInput = reportModal.querySelector('#modal_post_id');
+        var modalUserNoInput = reportModal.querySelector('#modal_user_no');
+        var modalReporterUserNoInput = reportModal.querySelector('#modal_reporter_user_no');
+
+        modalPostIdInput.value = postId;
+        modalUserNoInput.value = userNo;
+        modalReporterUserNoInput.value = reporterUserNo;
+    });
+});
+</script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var exampleModal = document.getElementById('exampleModal_imagepost');

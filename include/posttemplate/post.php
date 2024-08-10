@@ -53,18 +53,18 @@ $profilePic = getProfilePicture($user_no, $con);
                 <button class="btn btn-secondary dropdown-toggle bg-white" style="border:none;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-ellipsis fa-xl" style="color: #575b60; font-size:20px;"></i>
                         <ul class="dropdown-menu">
-                        <?php if($user_no == $loggedInUserNo){
-                                echo '
-                                <li><a class="dropdown-item" href="#">Copy post</a></li>
-                                <li><a class="dropdown-item" href="#">Delete post</a></li>
-                                ';
-                            }else{
-                                echo '
-                                <li><a class="dropdown-item" href="#" data-bs-whatever="'.htmlspecialchars($post_id).'" data-bs-toggle="modal" data-bs-target="#reportmodal2">Report</a></li>
-                                <li><a class="dropdown-item" href="#">Copy post</a></li>
-                                ';
-                            } 
-                            ?>
+                        <?php if($user_no == $loggedInUserNo): ?>
+                            <li><a class="dropdown-item" href="#">Copy post</a></li>
+                            <li><a class="dropdown-item" href="#">Delete post</a></li>
+                        <?php else: ?>
+                            <!-- Pass the post_id and user_no as data attributes for the report option -->
+                            <li><a class="dropdown-item" href="#" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#reportmodal2"
+                                data-post-id="<?php echo htmlspecialchars($post_id); ?>" 
+                                data-user-no="<?php echo htmlspecialchars($user_no); ?>">Report</a></li>
+                            <li><a class="dropdown-item" href="#">Copy post</a></li>
+                        <?php endif; ?>
                         </ul>
                 </button>
             </div>
@@ -117,7 +117,7 @@ $profilePic = getProfilePicture($user_no, $con);
 </div>
 
 </div>
-<?php include 'include/posttemplate/report_modal/report_post_modal.php'; ?>
+<?php include 'include/posttemplate/report_modal/report_post.php'; ?>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   var exampleModal = document.getElementById('exampleModal_postcomment');
