@@ -50,7 +50,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo "".$_SESSION['fname']."" ?>'s Profile</title>
-    <link rel="stylesheet" href="profile.css?v=2">
+    <link rel="stylesheet" href="profile.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <div class="container-fluid body" id="body">
@@ -104,14 +104,10 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                     <div class="container-fluid content">
                         <div class="container-fluid contcontent">
 
-
-
                         <!-- dito ang mga included -->
 
                             <!-- user posts -->
-                            <?php
-
-                                
+                            <?php                                
                             if (isset($current_user_no)) {
                                 if (isset($_GET['sideprof'])) {
                                     if (count($posts) > 0) {
@@ -124,28 +120,23 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                                             ";
                                     }
                                 }
-                                
                                 // Edit details section
                                 if (isset($_GET['editdetails'])) {
                                     // own edit details
                                     include '../include/profileincluded/editdetails.php';                           
                                 }
+                                // schedule
+                                if (isset($_GET['schedule'])) {
+                                    // shecdule
+                                    include '../include/profileincluded/set_schedule.php';                           
+                                }
+                                // add schedule
+                                if (isset($_GET['add_schedule'])) {
+                                    // shecdule
+                                    include '../include/profileincluded/add_schedule.php';                           
+                                }
                             }
-                            
-  
-                                
-
-                                
-
-
-                       
-                            
                             ?>
-
-
-
-                            
-
 
                         </div>
                     </div>
@@ -170,8 +161,8 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                                 </div>
                             </div>
 
-
                             <?php
+                            // get name function
                             getName();
                             ?>
 
@@ -199,9 +190,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 
 
                             <div class="container-fluid line"></div>
-
-      
-                            
+                   
                             <?php
                                 // <!-- users features button -->
                                     
@@ -209,17 +198,12 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                                             include '../include/profileincluded/featuresprofile.php'; 
                                         }else{
                                             echo "error";
-                                        }
-                                        
-                                        
+                                        }                                        
                                             // include '../include/profileincluded/profilefollow.php'; 
                                             // include '../include/profileincluded/otherfeauture.php'; 
-                                        
-                                
+ 
                             ?>
-                            
-
-
+                        
                         </div>
                     </div>
                 </div>

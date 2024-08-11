@@ -18,8 +18,8 @@
                     <li><a href="" >
                         <div class="container-fluid notification">Notification</div>
                     </a></li>
-                    <li><a href="" >
-                        <div class="container-fluid collect">Collection</div>
+                    <li><a href="profile.php?schedule" >
+                        <div class="container-fluid collect">Schedule</div>
                     </a></li>
                     <li>
                         <div class="container-fluid services" style="padding:0;">

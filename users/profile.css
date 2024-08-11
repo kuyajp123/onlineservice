@@ -349,10 +349,98 @@ a .container{
 
 
 
+/* schedule */
+.schedulebody{
+    height: 100%;
+    width: 100%;
+}
+.adddiv{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.addivcont{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.adddivdesc{
+    font-size: 1.2rem;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.adddivadd{
+    font-size: 1.3rem;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.buttondiv{
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.buttondiv button, .buttondiv a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: none;
+    font-size: 3rem;
+    text-decoration: none;
+
+}
+.adddivdicon{
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 
 
-
+/* add schedule */
+.addbody{
+    height: 100%;
+    width: 100%;
+    border: 1px solid red;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+.inputs{
+    height: 100%;
+    width: auto;
+    border: 1px solid red;
+}
+.names{
+    height: 100%;
+    width: auto;
+    border: 1px solid red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.namedate,
+.description,
+.date,
+.time{
+    height: 100%;
+    width: auto;
+    border: 1px solid red;
+}
 
 
 
