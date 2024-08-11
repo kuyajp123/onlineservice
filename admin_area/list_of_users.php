@@ -183,7 +183,7 @@ if (!in_array($sort_column, $valid_columns)) {
 }
 
 // Validate rows per page
-$valid_rows_per_page = [5, 10, 50, 100];
+$valid_rows_per_page = [10, 25, 50, 100];
 if (!in_array($rows_per_page, $valid_rows_per_page)) {
     $rows_per_page = 10; // default rows per page
 }
@@ -218,8 +218,8 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                     Number of rows
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="?rows=5&page=<?php echo $page; ?>">5</a></li>
                     <li><a class="dropdown-item" href="?rows=10&page=<?php echo $page; ?>">10</a></li>
+                    <li><a class="dropdown-item" href="?rows=25&page=<?php echo $page; ?>">25</a></li>
                     <li><a class="dropdown-item" href="?rows=50&page=<?php echo $page; ?>">50</a></li>
                     <li><a class="dropdown-item" href="?rows=100&page=<?php echo $page; ?>">100</a></li>
                 </ul>

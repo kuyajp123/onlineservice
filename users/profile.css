@@ -409,38 +409,83 @@ a .container{
 
 
 /* add schedule */
-.addbody{
+.addboddy{
     height: 100%;
     width: 100%;
-    border: 1px solid red;
+    padding: 0;
+}
+.nametitle,
+.description,
+.date,
+.time,
+.day{
+    height: 17%;
+    width: 100%;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: row;
+    margin: 0;
+
 }
-.inputs{
-    height: 100%;
-    width: auto;
-    border: 1px solid red;
+.kahitano{
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    flex-direction: column;
 }
-.names{
-    height: 100%;
+.kahitano1{
+    width: 40%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+}
+.day2{
+    padding: 0;
+}
+.kahitano2{
+    padding: 0;
+}
+.kahitano3{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    gap: 10px;
+}
+.kahitano4{
+    width: 10%;
+    padding: 0;
+}
+.kahitano5{
+    height: 10%;
+    padding: 0;
     width: auto;
-    border: 1px solid red;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    gap: 5px;
 }
-.namedate,
-.description,
-.date,
-.time{
-    height: 100%;
-    width: auto;
-    border: 1px solid red;
+.kahitano7{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+.frm1{
+    width: 100%;
+}
+
+
+
+
+
+
+
 
 
 

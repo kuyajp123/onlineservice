@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 11, 2024 at 09:51 AM
+-- Generation Time: Aug 11, 2024 at 05:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -81,7 +81,9 @@ INSERT INTO `comments` (`comment_id`, `post_id`, `user_no`, `comment_text`, `tim
 (27, 6, 3, 'sa phos photo', '2024-08-10 00:27:19'),
 (28, 5, 3, 'e sa text?', '2024-08-10 00:27:27'),
 (29, 4, 3, 'comment check ni a', '2024-08-10 00:27:44'),
-(30, 1, 3, 'check comment eeeeeeeyyyyyyyyyyyy', '2024-08-10 00:27:56');
+(30, 1, 3, 'check comment eeeeeeeyyyyyyyyyyyy', '2024-08-10 00:27:56'),
+(31, 12, 32, 'condomlence', '2024-08-11 13:11:04'),
+(32, 12, 3, 'respect post', '2024-08-11 15:00:50');
 
 -- --------------------------------------------------------
 
@@ -116,7 +118,14 @@ INSERT INTO `heart_reactions` (`reaction_id`, `post_id`, `user_no`, `reaction_ty
 (69, 1, 3, '', '2024-08-10 00:28:10'),
 (70, 4, 32, '', '2024-08-11 00:53:05'),
 (71, 1, 32, '', '2024-08-11 00:53:07'),
-(72, 7, 32, '', '2024-08-11 00:53:12');
+(72, 7, 32, '', '2024-08-11 00:53:12'),
+(73, 9, 32, '', '2024-08-11 10:34:30'),
+(74, 12, 32, '', '2024-08-11 13:10:35'),
+(75, 11, 32, '', '2024-08-11 13:10:38'),
+(76, 10, 32, '', '2024-08-11 13:10:40'),
+(77, 12, 3, '', '2024-08-11 15:00:37'),
+(78, 11, 3, '', '2024-08-11 15:00:55'),
+(79, 10, 3, '', '2024-08-11 15:00:56');
 
 -- --------------------------------------------------------
 
@@ -144,7 +153,10 @@ INSERT INTO `posts` (`post_id`, `user_no`, `relation`, `services`, `caption`, `p
 (5, 3, 'bothrelati', 'bothservic', 'text post', '', '2024-08-03 14:30:16'),
 (6, 3, 'bothrelati', 'bothservic', 'photo post', 'wallpaperflare-cropped.jpg', '2024-08-06 13:08:55'),
 (7, 4, 'bothrelati', 'bothservic', '', 'download.jpg', '2024-08-07 10:08:52'),
-(9, 19, 'bothrelati', 'bothservic', '', '5a91e8359f415e730c4ed61965ce7023.jpg', '2024-08-09 09:54:01');
+(9, 19, 'bothrelati', 'bothservic', '', '5a91e8359f415e730c4ed61965ce7023.jpg', '2024-08-09 09:54:01'),
+(10, 32, 'bothrelati', 'bothservic', '', 'PicsArt_03-20-12.17.09.png', '2024-08-11 13:09:26'),
+(11, 32, 'bothrelati', 'bothservic', '', 'FB_IMG_1658182051384.jpg', '2024-08-11 13:09:36'),
+(12, 32, 'bothrelati', 'bothservic', '', 'Black.png.jpg', '2024-08-11 13:09:54');
 
 -- --------------------------------------------------------
 
@@ -208,9 +220,11 @@ CREATE TABLE `saves` (
 CREATE TABLE `schedules` (
   `schedule_id` int(11) NOT NULL,
   `user_no` int(11) DEFAULT NULL,
-  `schedule_date` date DEFAULT NULL,
+  `date_start` date DEFAULT NULL,
+  `date_end` date DEFAULT NULL,
   `start_time` time DEFAULT NULL,
   `end_time` time DEFAULT NULL,
+  `day` date DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -219,8 +233,8 @@ CREATE TABLE `schedules` (
 -- Dumping data for table `schedules`
 --
 
-INSERT INTO `schedules` (`schedule_id`, `user_no`, `schedule_date`, `start_time`, `end_time`, `name`, `description`) VALUES
-(1, 3, '2021-07-26', '08:00:00', '09:00:00', 'test', 'this is test');
+INSERT INTO `schedules` (`schedule_id`, `user_no`, `date_start`, `date_end`, `start_time`, `end_time`, `day`, `name`, `description`) VALUES
+(1, 3, '2021-07-26', NULL, '08:00:00', '09:00:00', NULL, 'test', 'this is test');
 
 -- --------------------------------------------------------
 
@@ -365,19 +379,19 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `heart_reactions`
 --
 ALTER TABLE `heart_reactions`
-  MODIFY `reaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `reaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `post_reports`
