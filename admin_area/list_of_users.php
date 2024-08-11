@@ -164,6 +164,9 @@ $usersResult = $con->query($usersQuery);
 //     exit;
 // }
 
+// Handle search input
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
 // Determine the sort column and direction
 $sort_column = isset($_GET['sort']) ? $_GET['sort'] : 'lname';
 $sort_direction = isset($_GET['direction']) && $_GET['direction'] == 'desc' ? 'desc' : 'asc';
@@ -185,10 +188,12 @@ if (!in_array($rows_per_page, $valid_rows_per_page)) {
     $rows_per_page = 10; // default rows per page
 }
 
-// Fetch users and their report status with sorting and pagination
-$usersQuery = "SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, pr.report_reason, pr.post_id, IFNULL(COUNT(pr.report_id), 0) AS report_count 
+// Fetch users and their report status with search, sorting, and pagination
+$searchFilter = !empty($search) ? " AND (ur.fname LIKE '%$search%' OR ur.lname LIKE '%$search%' OR ur.email LIKE '%$search%' OR ur.student_no LIKE '%$search%' OR ur.user_no LIKE '%$search%')" : "";
+$usersQuery = "SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, IFNULL(COUNT(pr.report_id), 0) AS report_count 
                FROM user_registration ur
                LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
+               WHERE 1=1 $searchFilter
                GROUP BY ur.user_no
                ORDER BY $sort_column $sort_direction
                LIMIT $rows_per_page OFFSET $offset";
@@ -197,6 +202,12 @@ $usersResult = $con->query($usersQuery);
 // Fetch total number of records for pagination
 $totalQuery = "SELECT COUNT(*) AS total FROM user_registration";
 $totalResult = $con->query($totalQuery);
+
+// Check for query errors
+if (!$totalResult) {
+    die('Error in total records query: ' . $con->error);
+}
+
 $totalRecords = $totalResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRecords / $rows_per_page);
 ?>
@@ -213,12 +224,12 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                 </ul>
             </div>
 
-            <div class="container-fluid search">
-                <form class="d-flex" role="search" style="width: 100%;" method="GET" action="">
-                    <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search" value="<?php echo htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : ''); ?>">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
+                    <div class="container-fluid search">
+                        <form class="d-flex" role="search" style="width: 100%;" method="GET" action="">
+                            <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search" value="<?php echo htmlspecialchars($search); ?>">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    </div>
         </div>
 
         <table class="table table-bordered table-striped">
@@ -246,7 +257,12 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                         <td><?php echo htmlspecialchars($user['email']); ?></td>
                         <td><?php echo htmlspecialchars($user['report_count']); ?></td>
                         <td>
+                        <?php if ($user['report_count'] > 0): ?>
                             <a class="Review_posts text-primary" href="../admin_area/review_post.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>">View post</a>
+                            <?php else: ?>
+                                
+                            <?php endif; ?>
+                            
                         </td>
 
                         <td>
