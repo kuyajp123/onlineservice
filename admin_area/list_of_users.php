@@ -183,7 +183,7 @@ if (!in_array($sort_column, $valid_columns)) {
 }
 
 // Validate rows per page
-$valid_rows_per_page = [10, 50, 100];
+$valid_rows_per_page = [5, 10, 50, 100];
 if (!in_array($rows_per_page, $valid_rows_per_page)) {
     $rows_per_page = 10; // default rows per page
 }
@@ -218,6 +218,7 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                     Number of rows
                 </button>
                 <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="?rows=5&page=<?php echo $page; ?>">5</a></li>
                     <li><a class="dropdown-item" href="?rows=10&page=<?php echo $page; ?>">10</a></li>
                     <li><a class="dropdown-item" href="?rows=50&page=<?php echo $page; ?>">50</a></li>
                     <li><a class="dropdown-item" href="?rows=100&page=<?php echo $page; ?>">100</a></li>
@@ -260,7 +261,7 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                         <?php if ($user['report_count'] > 0): ?>
                             <a class="Review_posts text-primary" href="../admin_area/review_post.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>">View post</a>
                             <?php else: ?>
-                                
+                                <!-- leave blank here to get space for no report -->
                             <?php endif; ?>
                             
                         </td>
@@ -270,7 +271,7 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                                 <a href="warn_user.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>" class="btn btn-warning btn-sm">Warn</a>
                                 <a href="ban_user.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>" class="btn btn-danger btn-sm">Ban</a>
                             <?php else: ?>
-                                No action
+                                <!-- leave blank here to get space for no report -->
                             <?php endif; ?>
                         </td>
                     </tr>
