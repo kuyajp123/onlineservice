@@ -184,13 +184,13 @@ $rows = $data['rows'];
                                 <!-- search bar -->
                         <div class="container-fluid searchbar">
                           <form class="d-flex" role="search">
-                            <input class="form-control me-2" type="search" placeholder="@" aria-label="Search">
+                            <input class="form-control me-2" type="search" placeholder="Under construction" aria-label="Search">
                             <button class="btn btn-outline-success" type="submit">Search</button>
                           </form>
                         </div>
                         <li><a href="#" data-open-modal="createpost"><div class="container-fluid post">Create post</div></a></li>
-                        <li><a href=""><div class="container-fluid notification">Notification</div></a></li>
-                        <li><a href=""><div class="container-fluid collect">Collection</div></a></li>
+                        <li><a href="additional/under_maitenance.php"><div class="container-fluid notification">Notification</div></a></li>
+                        <li><a href="additional/under_maitenance.php"><div class="container-fluid collect">Collection</div></a></li>
                         <li><div class="container-fluid services" style="padding:0;">
                           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><div class="container" >Services<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i></div></a>
                             <ul class="dropdown-menu">
@@ -198,7 +198,7 @@ $rows = $data['rows'];
                               <li><a class="dropdown-item" href="#"><div class="container">Books</div></a></li>
                               <li><a class="dropdown-item" href="https://trece.cvsu.edu.ph/student/dashboard"><div class="container">Student Dashboard</div></a></li>
                             </ul></div></li>
-                        <li><a href=""><div class="container-fluid settings">Settings</div></a></li>
+                        <li><a href="additional/under_maitenance.php"><div class="container-fluid settings">Settings</div></a></li>
                        </ul>
                       </div>
                     </div>
@@ -212,7 +212,7 @@ $rows = $data['rows'];
                           <div class="container">more</div>
                         </button>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><div class="container">Profile</div></a></li>
+                          <li><a class="dropdown-item" href="users/profile.php?sideprof=<?php echo urlencode($current_user_no); ?>"><div class="container">Profile</div></a></li>
                           <a href="users/logout.php"><button class="logoutbut" name="logoutbut"><div class="container">Logout</div></button></a>
                         </ul>
                       </div>

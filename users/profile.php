@@ -80,7 +80,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                     <div class="container-fluid sticky-top navbar">
                         <div class="dropdown-center">
                           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Connection
+                            <!-- Connection -->Under construction
                           </button>
                           <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">All</a></li>
@@ -91,7 +91,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 
                         <div class="dropdown-center">
                           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Services
+                            <!-- Services -->Under construction
                           </button>
                           <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">All</a></li>
@@ -154,9 +154,9 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <!-- <li><a class="dropdown-item" href="#">Action</a></li>
                                     <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li> -->
                                 </ul>
                                 </div>
                             </div>
@@ -169,7 +169,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 
                             <div class="container-fluid ff">
 
-                                <div class="container-fluid following">
+                                <!-- <div class="container-fluid following">
                                     <div class="container-fluid numbers"><div style="display: flex;
                                         align-items: center;
                                         justify-content: center;">1k</div></div>
@@ -184,7 +184,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                                     <div class="container-fluid words" style="display: flex;
                                         align-items: center;
                                         justify-content: center;">Followers</div>
-                                </div>
+                                </div> -->
 
                             </div>
 

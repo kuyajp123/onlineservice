@@ -91,7 +91,7 @@ $showPosts = !isset($_GET['othereditdetails']);
                     <div class="container-fluid sticky-top navbar">
                         <div class="dropdown-center">
                           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Connection
+                            <!-- Connection --> under construction
                           </button>
                           <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">All</a></li>
@@ -101,7 +101,7 @@ $showPosts = !isset($_GET['othereditdetails']);
                         </div>
                         <div class="dropdown-center">
                           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Services
+                            <!-- Services --> under construction
                           </button>
                           <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">All</a></li>
@@ -141,22 +141,22 @@ $showPosts = !isset($_GET['othereditdetails']);
                                         <i class="fa-solid fa-ellipsis-vertical"></i>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <!-- <li><a class="dropdown-item" href="#">Action</a></li>
                                         <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li> -->
                                     </ul>
                                 </div>
                             </div>
                             <?php getName($other_user_no); // Fetches and displays the profile for the other user ?>
                             <div class="container-fluid ff">
-                                <div class="container-fluid following">
+                                <!-- <div class="container-fluid following">
                                     <div class="container-fluid numbers"><div style="display: flex; align-items: center; justify-content: center;">1k</div></div>
                                     <div class="container-fluid words"><div style="display: flex; align-items: center; justify-content: center;">Following</div></div>
                                 </div>
                                 <div class="container-fluid followers">
                                     <div class="container-fluid numbers" style="display: flex; align-items: center; justify-content: center;">262k</div>
                                     <div class="container-fluid words" style="display: flex; align-items: center; justify-content: center;">Followers</div>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="container-fluid line"></div>
                             <?php

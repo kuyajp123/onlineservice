@@ -55,7 +55,14 @@ if ($result->num_rows > 0) {
         // Generate the card HTML
         echo "
         <div class='card $card_class mb-3' style='max-width: 18rem;'>
-            <div class='card-header'>Schedule</div>
+            <div class='card-header headercard'>
+                Schedule
+                <button type='button' class='btn btn-link' data-bs-toggle='modal' data-bs-target='#deleteModal' data-schedule-id='$schedule_id'>
+                    <div class='container-fluid trashsasched'>
+                        <i class='fa-solid fa-trash text-danger'></i>
+                    </div>
+                </button>
+            </div>
             <div class='card-body'>
                 <h5 class='card-title'>$name</h5>
                 <p class='card-text'>$description</p>
@@ -71,7 +78,7 @@ if ($result->num_rows > 0) {
             <div class='card-body text-center'>
                 <div class='container-fluid addivcont'>
                     <div class='container-fluid adddivdesc'>
-                        Add another schedules <br>
+                        Add another schedule <br>
                     </div>
                     <div class='container-fluid' style='padding: 0;'>
                         <div class='container-fluid adddivadd'>Add</div>
@@ -87,25 +94,74 @@ if ($result->num_rows > 0) {
             </div>
         </div>
         ";
-}else{
-echo "
-<div class='container-fluid adddiv'>
-    <div class='container-fluid addivcont'>
-        <div class='container-fluid adddivdesc'>
-            You don't have any schedules yet <br>
-        </div>
-        <div class='container-fluid' style='padding: 0;'>
-            <div class='container-fluid adddivadd'>Add</div>
-            <div class='container-fluid buttondiv'>
-                <a href='profile.php?add_schedule'>
-                    <button>
-                        <i class='fa-solid fa-plus text-primary'></i>
-                    </button>
-                </a>
+} else {
+    echo "
+    <div class='container-fluid adddiv'>
+        <div class='container-fluid addivcont'>
+            <div class='container-fluid adddivdesc'>
+                You don't have any schedules yet <br>
+            </div>
+            <div class='container-fluid' style='padding: 0;'>
+                <div class='container-fluid adddivadd'>Add</div>
+                <div class='container-fluid buttondiv'>
+                    <a href='profile.php?add_schedule'>
+                        <button>
+                            <i class='fa-solid fa-plus text-primary'></i>
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
-";
+    ";
+}
+
+if (isset($_POST['remove_sched'])) {
+    $schedule_id = $_POST['schedule_id'];
+
+    // Prepare and execute delete statement
+    $sql = "DELETE FROM schedules WHERE schedule_id = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param("i", $schedule_id);
+    $stmt->execute();
+
+    // Redirect to avoid resubmission
+   echo "<script>window.open('profile.php?schedule','_self')</script>";
 }
 ?>
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteModalLabel">Confirm Deletion</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this schedule?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <form id="deleteScheduleForm" method="POST">
+          <input type="hidden" name="schedule_id" id="scheduleIdToDelete">
+          <button type="submit" name="remove_sched" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function(event) {
+        var button = event.relatedTarget;
+        var scheduleId = button.getAttribute('data-schedule-id');
+        var modal = document.getElementById('deleteModal');
+        var scheduleIdInput = modal.querySelector('#scheduleIdToDelete');
+        scheduleIdInput.value = scheduleId;
+    });
+});
+</script>
+

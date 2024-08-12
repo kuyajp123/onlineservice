@@ -2,9 +2,9 @@
 include("../functions/follow_user.php");
 ?>
 
-<div class="container-fluid follow">
+<!-- <div class="container-fluid follow">
     <input class="btn btn-primary follow-btn" type="button" value="Follow" data-user-no="<?php echo htmlspecialchars($other_user_no); ?>" data-action="follow">
-</div>
+</div> -->
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

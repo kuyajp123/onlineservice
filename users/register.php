@@ -3,6 +3,9 @@ require_once "../include/bootsrap.php";
 require_once '../include/connect.php';
 require_once '../functions/common_function.php';
 // Variable to track of functions
+$coverphoto = "";
+$profilepicture = "";
+
 $emailInvalid = false;
 $emailExist = false;
 $studentNoExist = false;

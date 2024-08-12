@@ -492,6 +492,20 @@ a .container{
     border: 1px solid red;
     height: 100%; 
 }
+.headercard{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.trashsasched{
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background-color: #242526;
+    border: 1px solid #4E4BCB;
+}
 
 
 

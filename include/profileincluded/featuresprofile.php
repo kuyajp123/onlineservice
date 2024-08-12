@@ -15,7 +15,7 @@
                     <li><a href="#" data-open-modal="createpostprofile">
                         <div class="container-fluid post">Create post</div>
                     </a></li>
-                    <li><a href="" >
+                    <li><a href="../additional/under_maitenance.php" >
                         <div class="container-fluid notification">Notification</div>
                     </a></li>
                     <li><a href="profile.php?schedule" >
@@ -25,7 +25,8 @@
                         <div class="container-fluid services" style="padding:0;">
                             <a class="nav-link dropdown-toggle" style="padding:none;" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
                                 <div class="container" style="padding:none;">
-                                    Services<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i>
+                                    Under construction
+                                    <i class="fa-solid fa-angle-right" style="margin-left:5px;"></i>
                                 </div>
                             </a>
                             <ul class="dropdown-menu">
