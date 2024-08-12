@@ -1,134 +1,86 @@
 <?php
-session_start();
-// if (!isset($_SESSION['admin_logged_in'])) {
-//     header('Location: ../login.php');
-//     exit;
-// }
-require_once '../include/connect.php';
-require_once '../include/bootsrap.php';
+include("../include/connect.php");
+date_default_timezone_set('America/New_York'); // Set your timezone
 
-// Determine the sort column and direction
-$sort_column = isset($_GET['sort']) ? $_GET['sort'] : 'lname';
-$sort_direction = isset($_GET['direction']) && $_GET['direction'] == 'desc' ? 'desc' : 'asc';
+// Define the start and end times
+$start_time = '07:00 AM';
+$end_time = '07:00 PM';
 
-// Validate sort column
-$valid_columns = ['fname', 'lname', 'user_no', 'student_no', 'email', 'report_count'];
-if (!in_array($sort_column, $valid_columns)) {
-    $sort_column = 'lname'; // default sort column
+// Convert start and end times to DateTime objects
+$start = new DateTime($start_time);
+$end = new DateTime($end_time);
+
+// Initialize an empty string for the time slots
+$time_slots = '';
+
+// Generate time slots with a 30-minute interval
+while ($start < $end) {
+    $next_start = clone $start;
+    $next_start->modify('+30 minutes');
+    
+    $time_slots .= '<tr>
+    <td>' . $start->format('h:i A') . '-' . $next_start->format('h:i A') . '</td>
+    <td class="mon"></td>
+    <td class="tues"></td>
+    <td class="wed"></td>
+    <td class="thu"></td>
+    <td class="fri"></td>
+    <td class="sat"></td>
+    <td class="sun"></td>
+    </tr>';
+    
+    $start = $next_start;
 }
 
-// Fetch users and their report status with sorting
-$usersQuery = "SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, pr.report_reason, pr.post_id, IFNULL(COUNT(pr.report_id), 0) AS report_count 
-               FROM user_registration ur
-               LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
-               GROUP BY ur.user_no
-               ORDER BY $sort_column $sort_direction";
-$usersResult = $con->query($usersQuery);
-?>
+// Output the complete HTML structure
+echo '<div class="container-fluid schedulebody">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Time</th>
+      <th scope="col">Mon</th>
+      <th scope="col">Tues</th>
+      <th scope="col">Wed</th>
+      <th scope="col">Thu</th>
+      <th scope="col">Fri</th>
+      <th scope="col">Sat</th>
+      <th scope="col">Sun</th>
+    </tr>
+  </thead>
+  <tbody>
+    ' . $time_slots . '
+  </tbody>
+</table>
+</div>';
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List of Users</title>
+// Fetch data from the database
+$sql = "SELECT * FROM schedules";
+$stmt = $con->query($sql);
 
-    <style>
-        .table th, .table td {
-            text-align: center;
-        }
-        .sortable {
-            cursor: pointer;
-            position: relative;
-        }
-        .sortable i {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            margin-left: 10px;
-            font-size: 0.8em;
-        }
-        .asc i.fa-sort-up {
-            color: black;
-        }
-        .desc i.fa-sort-down {
-            color: black;
-        }
-        .sortable i {
-            opacity: 0;
-        }
-        .sortable.asc i.fa-sort-up {
-            opacity: 1;
-        }
-        .sortable.desc i.fa-sort-down {
-            opacity: 1;
-        }
-        .sortable:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-<div class="container mt-4">
-<div class="btn-group">
-  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Small button
-  </button>
-  <ul class="dropdown-menu">
-    ...
-  </ul>
-</div>
-    <h1>List of Users</h1>
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th scope="col">No</th>
-                <th scope="col" class="sortable <?php echo ($sort_column == 'fname') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('fname')">Name<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                <th scope="col" class="sortable <?php echo ($sort_column == 'user_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('user_no')">User No<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                <th scope="col" class="sortable <?php echo ($sort_column == 'student_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('student_no')">Student No<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                <th scope="col" class="sortable <?php echo ($sort_column == 'email') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('email')">Email<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                <th scope="col" class="sortable <?php echo ($sort_column == 'report_count') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('report_count')">Reports<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                <th scope="col">Posts</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $line_number = 1;
-            while ($user = $usersResult->fetch_assoc()): ?>
-                <tr>
-                    <th scope="row"><?php echo htmlspecialchars($line_number++); ?></th>
-                    <td><?php echo htmlspecialchars($user['fname'] . ' ' . $user['lname']); ?></td>
-                    <td><?php echo htmlspecialchars($user['user_no']); ?></td>
-                    <td><?php echo htmlspecialchars($user['student_no']); ?></td>
-                    <td><?php echo htmlspecialchars($user['email']); ?></td>
-                    <td><?php echo htmlspecialchars($user['report_count']); ?></td>
-                    <td><?php echo htmlspecialchars($user['post_id']); ?></td>
-                    <td>
-                        <?php if ($user['report_count'] > 0): ?>
-                            <a href="warn_user.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>" class="btn btn-warning btn-sm">Warn</a>
-                            <a href="ban_user.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>" class="btn btn-danger btn-sm">Ban</a>
-                        <?php else: ?>
-                            No action
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
-</div>
 
-<script>
-    function sortTable(column) {
-        let direction = 'asc';
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('sort') === column && urlParams.get('direction') === 'asc') {
-            direction = 'desc';
-        }
-        window.location.search = `sort=${column}&direction=${direction}`;
+
+while ($row = $stmt->fetch_assoc()) {
+    // Extract day and time
+    $days = explode(', ', $row['days']);
+    $start_time = date('h:i A', strtotime($row['start_time']));
+    $end_time = date('h:i A', strtotime($row['end_time']));
+    $description = $row['description']; // Assuming 'description' is a field in your schedules table
+
+    foreach ($days as $day) {
+        // Convert the day to a column class
+        $day_class = strtolower(substr($day, 0, 3)); // 'mon', 'tue', etc.
+        
+        // Update the appropriate cells in the table
+        echo '<script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var cells = document.querySelectorAll("tr td.' . $day_class . '");
+                cells.forEach(function(cell) {
+                    if (cell.innerHTML === "") {
+                        cell.innerHTML = "<strong>' . $description . '</strong><br>' . $start_time . ' - ' . $end_time . '";
+                    }
+                });
+            });
+        </script>';
     }
-</script>
-
-</body>
-</html>
+}
+?>

@@ -475,9 +475,22 @@ a .container{
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8%;
 }
 .frm1{
     width: 100%;
+}
+.scheddisplay{
+    width: 100%;
+    border: 1px solid red;
+    height: 100%;
+    padding: 0;
+    flex-wrap: wrap;
+}
+.divsasched{
+    width: 50%;
+    border: 1px solid red;
+    height: 100%; 
 }
 
 

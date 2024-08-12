@@ -11,21 +11,22 @@ if (isset($_POST['submit_sched'])) {
     $end_hour = $_POST['end_hour'];
     $end_minute = $_POST['end_minute'];
     $end_ampm = $_POST['end_ampm'];
-    $days = implode(', ', $_POST['days']); // Days selected by user
+    $days = $_POST['days'];
+    $color = $_POST['color'];
     
     // Convert time to 24-hour format
     $start_time = ($start_ampm == 'pm' && $start_hour != 12) ? ($start_hour + 12) . ':' . $start_minute : $start_hour . ':' . $start_minute;
     $end_time = ($end_ampm == 'pm' && $end_hour != 12) ? ($end_hour + 12) . ':' . $end_minute : $end_hour . ':' . $end_minute;
     
     // Insert into database
-    $sql = "INSERT INTO schedules (user_no, date_start, date_end, start_time, end_time, days, name, description)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO schedules (user_no, date_start, date_end, start_time, end_time, days, name, description, color)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $con->prepare($sql);
-    $stmt->bind_param("isssssss", $user_no, $start_date, $end_date, $start_time, $end_time, $days, $name, $description);
+    $stmt->bind_param("issssssss", $current_user_no, $start_date, $end_date, $start_time, $end_time, $days, $name, $description, $color);
     $stmt->execute();
+    echo "<script>window.open('profile.php?schedule','_self')</script>";
 }
 ?>
-
   <div class="container-fluid addboddy">
  <form class="was-validated" method="post">
           <div class="container-fluid nametitle">
@@ -40,7 +41,7 @@ if (isset($_POST['submit_sched'])) {
           <div class="container-fluid description">
               <div class="container-fluid kahitano1">Description</div>
               <div class="container-fluid kahitano">
-                <input type="text" name="description" class="form-control">
+                <input type="text" name="description" class="form-control" placeholder="Description (optional)">
               </div>
           </div>
           <div class="container-fluid date">
@@ -160,15 +161,27 @@ if (isset($_POST['submit_sched'])) {
               <div class="container-fluid kahitano1">Day</div>
                   <div class="container-fluid kahitano7">
                       <div class="container-fluid kahitano5">
-                          <select class="form-select frm1" name="days[]" aria-label="Default select example">
-                              <option value="Mon">Monday</option>
-                              <option value="Tue">Tuesday</option>
-                              <option value="Wed">Wednesday</option>
-                              <option value="Thu">Thursday</option>
-                              <option value="Fri">Friday</option>
-                              <option value="Sat">Saturday</option>
+                          <select class="form-select frm1" name="days" aria-label="Default select example">
+                              <option value="Monday">Monday</option>
+                              <option value="Tuesday">Tuesday</option>
+                              <option value="Wednesday">Wednesday</option>
+                              <option value="Thursday">Thursday</option>
+                              <option value="Friday">Friday</option>
+                              <option value="Saturday">Saturday</option>
                           </select>
-                          <!-- The button will be appended by JavaScript -->
+                      </div>
+                      Color:
+                      <div class="container-fluid kahitano5">
+                          <select class="form-select frm1" name="color" aria-label="Default select example">
+                              <option value="blue">Blue</option>
+                              <option value="gray">Gray</option>
+                              <option value="green">Green</option>
+                              <option value="red">Red</option>
+                              <option value="yellow">Yellow</option>
+                              <option value="aqua">Aqua</option>
+                              <option value="white">White</option>
+                              <option value="dark">Dark</option>
+                          </select>
                       </div>
                   </div>
 
@@ -245,68 +258,4 @@ if (isset($_POST['submit_sched'])) {
     }
   });
 </script>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const container = document.querySelector('.kahitano5');
-    let selectionCount = 1; // Initial count with one selection
-    
-    function createSelectElement() {
-        const select = document.createElement('select');
-        select.className = 'form-select';
-        select.setAttribute('aria-label', 'Default select example');
-        select.innerHTML = `
-            <option value="Mon">Monday</option>
-            <option value="Tue">Tuesday</option>
-            <option value="Wed">Wednesday</option>
-            <option value="Thu">Thursday</option>
-            <option value="Fri">Friday</option>
-            <option value="Sat">Saturday</option>
-        `;
-        return select;
-    }
 
-    function createButton() {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'btn btn-primary btn-sm';
-        button.innerHTML = '<i class="fa-solid fa-plus"></i>';
-        button.addEventListener('click', handleButtonClick);
-        return button;
-    }
-
-    function handleButtonClick(event) {
-        const button = event.currentTarget;
-        
-        if (selectionCount < 4 && button.innerHTML.includes('plus')) {
-            // Add a new selection
-            const newSelect = createSelectElement();
-            const newButton = createButton();
-            
-            container.appendChild(newSelect);
-            container.appendChild(newButton);
-            selectionCount++;
-        } else if (selectionCount > 1 && button.innerHTML.includes('minus')) {
-            // Remove the last selection
-            const selects = container.querySelectorAll('.form-select');
-            const buttons = container.querySelectorAll('.btn');
-            
-            if (selects.length > 1) {
-                container.removeChild(selects[selects.length - 1]);
-                container.removeChild(buttons[buttons.length - 1]);
-                selectionCount--;
-            }
-        }
-        
-        // Toggle button icon
-        button.innerHTML = button.innerHTML.includes('plus') 
-            ? '<i class="fa-solid fa-minus"></i>' 
-            : '<i class="fa-solid fa-plus"></i>';
-    }
-
-    // Initial setup
-    const initialButton = createButton();
-    initialButton.addEventListener('click', handleButtonClick);
-    container.appendChild(initialButton);
-});
-
-</script>
