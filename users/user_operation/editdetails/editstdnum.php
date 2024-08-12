@@ -24,7 +24,7 @@ if (isset($_POST["submit_std_no"])) {
                 $stmt->bind_param("ss", $student_no, $user_no);
                 if ($stmt->execute()) {
                     $_SESSION['student_no'] = $student_no;
-                    echo "<script>window.location.href = 'profile.php?editdetails';</script>";
+                    echo "<script>window.open('../users/logout.php','_self')</script>";
                 } else {
                     $error = "Update failed";
                 }
@@ -61,6 +61,7 @@ if (isset($_POST["submit_std_no"])) {
         </div>
         <div id="liveAlertPlaceholderstd_num" class="alert-container p-0 text-center"></div>
         <div class="modal-footer">
+        <div class="container-fluid">You will be logged out after changing your Student Number</div>
           <button type="submit" name="submit_std_no" class="btn btn-primary">Change</button>
         </div>
       </form>

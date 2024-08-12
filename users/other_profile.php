@@ -63,7 +63,7 @@ $showPosts = !isset($_GET['othereditdetails']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="profile.css?v=2">
+    <link rel="stylesheet" href="profile.css?v=1">
 </head>
 <body>
     <div class="container-fluid body" id="body">
@@ -72,6 +72,11 @@ $showPosts = !isset($_GET['othereditdetails']);
 
             <div class="container-fluid grid2">
                 <div class="container-fluid gri1cont">
+                    <div class="container-fluid sticky-top sidenavprofile">
+                        <div class="container-fluid backbutton2"><a href="../index.php?newsfeed=<?php echo urlencode($other_user_no); ?>"><button style="height:5vh;background-color: #4BCBCB;border:none;" type="button" class="btn btn-primary">Back</button></a>
+                        </div>
+                        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="height:5vh;background-color: #4BCBCB;border:none;"><i class="fa-solid fa-bars"></i></button>
+                    </div>
                     <div class="container-fluid header">
                         <!-- Background photo -->
                         <div class="container-fluid imgcontainer">
@@ -81,17 +86,14 @@ $showPosts = !isset($_GET['othereditdetails']);
                         <div class="container-fluid profilecontainer">
                             <img src="../users/images/profilepicture/<?php echo $other_profilepicture; ?>" alt="Profile Photo">
                         </div>
-                        <div class="container-fluid backbutton">
-                            <a href="../index.php?newsfeed=<?php echo urlencode($other_user_no); ?>">
-                                <button type="button" class="btn btn-primary">Back</button>
-                            </a>
+                        <div class="container-fluid backbutton"><a href="../index.php?newsfeed=<?php echo urlencode($other_user_no); ?>"><button type="button" class="btn btn-primary"  style="background-color: #4BCBCB;border:none;">Back</button></a>
                         </div>
                     </div>
                     <!-- navbar -->
                     <div class="container-fluid sticky-top navbar">
-                        <div class="dropdown-center">
+                        <!-- <div class="dropdown-center">
                           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <!-- Connection --> under construction
+                            Connection
                           </button>
                           <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">All</a></li>
@@ -101,14 +103,14 @@ $showPosts = !isset($_GET['othereditdetails']);
                         </div>
                         <div class="dropdown-center">
                           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <!-- Services --> under construction
+                            Services
                           </button>
                           <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">All</a></li>
                             <li><a class="dropdown-item" href="#">Store</a></li>
                             <li><a class="dropdown-item" href="#">Books</a></li>
                           </ul>
-                        </div>
+                        </div> -->
                     </div>
                     <!-- contents -->
                     <div class="container-fluid content">
@@ -175,7 +177,58 @@ $showPosts = !isset($_GET['othereditdetails']);
         </div>
     </div>
 
-    <script>
+    <!-- other profile sidenav -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">Offcanvas right</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+  
+  
+  <div class="container-fluid rightnavcont2"><!-- mobile device -->
+                        <div class="container-fluid displayprof">
+                            <div class="container-fluid settingsicon">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdownsettings" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <!-- <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+                                    </ul>
+                                </div>
+                            </div>
+                            <?php getName($other_user_no); // Fetches and displays the profile for the other user ?>
+                            <div class="container-fluid ff">
+                                <!-- <div class="container-fluid following">
+                                    <div class="container-fluid numbers"><div style="display: flex; align-items: center; justify-content: center;">1k</div></div>
+                                    <div class="container-fluid words"><div style="display: flex; align-items: center; justify-content: center;">Following</div></div>
+                                </div>
+                                <div class="container-fluid followers">
+                                    <div class="container-fluid numbers" style="display: flex; align-items: center; justify-content: center;">262k</div>
+                                    <div class="container-fluid words" style="display: flex; align-items: center; justify-content: center;">Followers</div>
+                                </div> -->
+                            </div>
+                            <div class="container-fluid line"></div>
+                            <?php
+                            if ($other_user_no) {
+                                include '../include/profileincluded/otherusers/profilefollow.php'; 
+                                include '../include/profileincluded/otherusers/otherfeauture.php'; 
+                            } else {
+                                echo "error";
+                            }
+                            ?>
+                        </div>
+                    </div>
+
+
+  </div>
+</div>
+</body>
+</html>
+<script>
     $(document).ready(function() {
         $('.ajax-link').on('click', function(event) {
             event.preventDefault();
@@ -198,5 +251,3 @@ $showPosts = !isset($_GET['othereditdetails']);
         });
     });
     </script>
-</body>
-</html>

@@ -95,24 +95,24 @@ $profilePic = getProfilePicture($user_no, $con);
     <!-- Actions section -->
     <div class="container-fluid heart">
         <div class="container-fluid thethree">
-            <div class="container-fluid puso"><button><i class="fa-regular fa-heart"></i></button></div>
+            <!-- <div class="container-fluid puso"><button><i class="fa-regular fa-heart"></i></button></div>
 
             <div class="container-fluid imagecomment">
-        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal_imagepost" data-bs-whatever="<?php echo htmlspecialchars($post_id); ?>">
+        <button type="button" >
             <i class="fa-regular fa-comment-dots fa-flip-horizontal"></i>
             </button>
         </div>
 
             <div class="container-fluid share"><button><i class="fa-regular fa-paper-plane"></i></button></div>
         </div>
-        <!-- Collection section -->
+        Collection section
         <div class="container-fluid collection">
             <div class="container-fluid save">
                 <div class="container-fluid bookmarkicon">
                     <button><i class="fa-regular fa-bookmark"></i></button>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <!-- Line separator -->
     <div class="line"></div>

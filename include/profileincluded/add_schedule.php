@@ -27,7 +27,6 @@ if (isset($_POST['submit_sched'])) {
     echo "<script>window.open('profile.php?schedule','_self')</script>";
 }
 ?>
-  <div class="container-fluid addboddy">
  <form class="was-validated" method="post">
           <div class="container-fluid nametitle">
               <div class="container-fluid kahitano1">Name</div>
@@ -190,7 +189,6 @@ if (isset($_POST['submit_sched'])) {
                 </div>
           </div>
       </form>
-  </div>
 
 
   <script>

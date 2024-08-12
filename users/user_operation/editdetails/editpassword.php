@@ -37,7 +37,7 @@ if (isset($user_no)) {
 
                         if ($stmt->execute()) {
                             $_SESSION["user_password"] = $hashed_password; // Update session variable
-                            echo "<script>window.open('profile.php?editdetails','_self')</script>";
+                            echo "<script>window.open('../users/logout.php','_self')</script>";
                         } else {
                             $error = "Update failed. Please try again.";
                         }
@@ -56,7 +56,12 @@ if (isset($user_no)) {
     $error = "User ID not set.";
 }
 ?>
-
+<style>
+    .passbut{
+        display: flex;
+        justify-content: flex-end;
+    }
+</style>
 <!-- Modal -->
 <div class="modal fade" id="editpassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -76,8 +81,9 @@ if (isset($user_no)) {
           <input type="password" class="form-control" name="user_password" id="user_password" placeholder="Enter your old password" required>
         </div>
         <div id="liveAlertPlaceholderpassword" class="alert-container p-0 text-center"></div>
-        <div class="modal-footer">
-          <button type="submit" name="submit_password" class="btn btn-primary">Change</button>
+        <div class="modal-footer passmod">
+            <div class="container-fluid">You will be logged out after changing your password</div>
+          <div class="container-fluid passbut"><button type="submit" name="submit_password" class="btn btn-primary">Change</button></div>
         </div>
       </form>
     </div>

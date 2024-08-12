@@ -25,7 +25,6 @@ body{
 }
 .grid1,.grid2,.grid3,.grid4{
     padding: 0;
-    border: 1px solid red;
     
 }
 .gri1cont{
@@ -85,8 +84,8 @@ body{
 .backbutton{
     position: absolute;
     padding: 0;
-    top: 3%;
-    left: 15%;
+    top: 1vh;
+    left: 35vh;
     color: #4BCBCB;
 }
 .navbar{
@@ -235,7 +234,9 @@ body{
     align-items: center;
     justify-content: center;
 }
-
+.editcoverphotolink{
+    z-index: 1000;
+}
 
 
 
@@ -510,7 +511,10 @@ a .container{
 
 
 
-
+/* sidenavmobile */
+.sidenavprofile{
+    display: none;
+}
 
 
 
@@ -524,13 +528,30 @@ a .container{
         overflow-x: hidden;
     }
     .bodyprof{
-        grid-auto-columns: 1fr;
-    }
-    .grid1,.grid4,.grid3{
-        display: none;
+        grid-template-columns:0fr 10fr 0fr 0fr; /* Responsive columns */
     }
     .backbutton{
         display: none;
     }
-
+    .rightnavcont{
+        display: none;
+    }
+    .profilecontainer{
+    width: 20vh;
+    height: 20vh;
+    top: -21vh;
+    left: -10vh;
+    }
+    .sidenavprofile{
+        display: flex;
+        position: absolute;
+        align-items: center;
+        justify-content: flex-end;
+        height: 10vh;
+        padding-right: 5vh;
+        z-index: 10;
+    }
+    .editcoverphotolink,.editprofilephotolink{
+        display: none;
+    }
 }

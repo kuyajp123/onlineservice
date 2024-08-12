@@ -3,7 +3,7 @@
 
 <div class="offcanvas offcanvas-top" style="background-color:#615EFC;" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title text-light" id="offcanvasTopLabel">Choose your prefered newsfeed</h5>
+    <h5 class="offcanvas-title text-light" id="offcanvasTopLabel">Under construction</h5>
     <button type="button" class="btn-close" style="background-color:#fff;" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body" style="padding:0;">

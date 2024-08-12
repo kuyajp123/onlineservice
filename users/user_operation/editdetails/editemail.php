@@ -19,7 +19,7 @@ if (isset($_POST["submit_email"])) {
 
                 if ($stmt->execute()) {
                     $_SESSION["email"] = $email;
-                    echo "<script>window.location.href = 'profile.php?editdetails';</script>";
+                    echo "<script>window.open('../users/logout.php','_self')</script>";
                 } else {
                     $error = "Update failed. Please try again.";
                 }
@@ -52,6 +52,7 @@ if (isset($_POST["submit_email"])) {
         </div>
         <div id="liveAlertPlaceholderemail" class="alert-container p-0 text-center"></div>
         <div class="modal-footer">
+        <div class="container-fluid">You will be logged out after changing your Email</div>
           <button type="submit" name="submit_email" class="btn btn-primary">Change</button>
         </div>
       </form>

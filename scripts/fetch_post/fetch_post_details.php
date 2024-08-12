@@ -89,11 +89,11 @@ if ($post) {
     <!-- Heart, comment, share buttons -->
     <div class='container-fluid heart'>
         <div class='container-fluid thethree'>
-            <div class='container-fluid puso'>
+            <!-- <div class='container-fluid puso'>
                 <button><i class='fa-regular fa-heart'></i></button>
             </div>
             <div class='container-fluid comment'>
-                <button type='button' data-bs-toggle='modal' data-bs-target='#btn-comments' data-post-id='<?php echo $post_id; ?>' data-user-no='<?php echo $loggedInUserNo; ?>'>
+                <button type='button' data-bs-toggle='modal' data-bs-target='#btn-comments'>
                     <i class='fa-regular fa-comment-dots fa-flip-horizontal'></i>
                 </button>
             </div>
@@ -102,14 +102,14 @@ if ($post) {
             </div>
         </div>
 
-        <!-- Collection (Save) -->
+        Collection (Save)
         <div class='container-fluid collection'>
             <div class='container-fluid save'>
                 <div class='container-fluid bookmarkicon'>
                     <button><i class='fa-regular fa-bookmark'></i></button>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <div class='line'></div>

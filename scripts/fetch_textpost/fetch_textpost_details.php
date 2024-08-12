@@ -76,7 +76,18 @@ if (isset($_POST['post_id'])) {
                 </div>
             </div>
 
-            <div class='container-fluid heart'>
+            
+            ";
+    } else {
+        echo "Invalid request.";
+    }
+} else {
+    echo "Invalid request.";
+}
+?>
+<!-- this will be add on the last div -->
+ 
+<!-- <div class='container-fluid heart'>
                 <div class='container-fluid thethree'>
                     <div class='container-fluid puso'>
                         <button type='button'><i class='fa-regular fa-heart'></i></button>
@@ -95,12 +106,4 @@ if (isset($_POST['post_id'])) {
                         </div>
                     </div>
                 </div>
-            </div>
-            ";
-    } else {
-        echo "Invalid request.";
-    }
-} else {
-    echo "Invalid request.";
-}
-?>
+            </div> -->
