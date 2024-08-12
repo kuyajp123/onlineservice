@@ -90,8 +90,6 @@ if(isset($_POST['submit'])){
             mysqli_stmt_store_result($stmt_userID);//need to do this before counting the number of data exist in database or to display data
             $result_ID = mysqli_stmt_num_rows($stmt_userID);// counting the number of data exist in database
 
-            
-
             if($result_ID == 0){
                 if ($result_email > 0){
                     break;

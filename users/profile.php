@@ -61,11 +61,6 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 
 
 
-
-
-
-
-
             <div class="container-fluid grid2">
                 <div class="container-fluid gri1cont">
                     <div class="container-fluid header">
@@ -208,15 +203,6 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
 
 
 

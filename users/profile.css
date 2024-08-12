@@ -25,6 +25,7 @@ body{
 }
 .grid1,.grid2,.grid3,.grid4{
     padding: 0;
+    border: 1px solid red;
     
 }
 .gri1cont{
@@ -519,10 +520,16 @@ a .container{
 
 @media (max-width: 768px) {
 
+    body{
+        overflow-x: hidden;
+    }
     .bodyprof{
         grid-auto-columns: 1fr;
     }
     .grid1,.grid4,.grid3{
+        display: none;
+    }
+    .backbutton{
         display: none;
     }
 
