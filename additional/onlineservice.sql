@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 12, 2024 at 05:53 PM
+-- Generation Time: Aug 13, 2024 at 03:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -73,7 +73,12 @@ CREATE TABLE `heart_reactions` (
 --
 
 INSERT INTO `heart_reactions` (`reaction_id`, `post_id`, `user_no`, `reaction_type`, `timestamp`) VALUES
-(4, 23, 48, '', '2024-08-12 15:42:54');
+(4, 23, 48, '', '2024-08-12 15:42:54'),
+(6, 24, 49, '', '2024-08-13 11:14:27'),
+(7, 25, 49, '', '2024-08-13 11:14:41'),
+(8, 23, 49, '', '2024-08-13 11:15:40'),
+(9, 25, 48, '', '2024-08-13 11:44:07'),
+(10, 24, 48, '', '2024-08-13 11:44:40');
 
 -- --------------------------------------------------------
 
@@ -96,7 +101,9 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`post_id`, `user_no`, `relation`, `services`, `caption`, `postphoto`, `timestamp`) VALUES
-(23, 48, 'bothrelati', 'bothservic', 'Welcome to CvS tagram', '', '2024-08-12 15:42:25');
+(23, 48, 'bothrelati', 'bothservic', 'Welcome to CvS tagram', '', '2024-08-12 15:42:25'),
+(24, 49, 'bothrelati', 'bothservic', 'qwer', '5a91e8359f415e730c4ed61965ce7023.jpg', '2024-08-13 11:14:25'),
+(25, 49, 'bothrelati', 'bothservic', '', 'Cavite_State_University_(CvSU).png', '2024-08-13 11:14:39');
 
 -- --------------------------------------------------------
 
@@ -112,6 +119,13 @@ CREATE TABLE `post_reports` (
   `report_reason` varchar(100) NOT NULL,
   `report_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `post_reports`
+--
+
+INSERT INTO `post_reports` (`report_id`, `post_id`, `user_no`, `reporter_user_no`, `report_reason`, `report_date`) VALUES
+(18, 25, 49, 48, 'Pretending to be someone else', '2024-08-13 11:39:43');
 
 -- --------------------------------------------------------
 
@@ -145,6 +159,13 @@ CREATE TABLE `schedules` (
   `color` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `schedules`
+--
+
+INSERT INTO `schedules` (`schedule_id`, `user_no`, `date_start`, `date_end`, `start_time`, `end_time`, `days`, `name`, `description`, `color`) VALUES
+(8, 48, '2024-08-29', '2024-08-27', '01:00:00', '01:00:00', 'Monday', 'qwer', 'qwer', 'green');
+
 -- --------------------------------------------------------
 
 --
@@ -156,6 +177,19 @@ CREATE TABLE `shares` (
   `post_id` int(11) NOT NULL,
   `user_no` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users_preferences`
+--
+
+CREATE TABLE `users_preferences` (
+  `prefered_id` int(11) NOT NULL,
+  `user_no` int(11) DEFAULT NULL,
+  `hide_birthdate` tinyint(1) DEFAULT 0,
+  `hide_gender` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -187,7 +221,8 @@ CREATE TABLE `user_registration` (
 --
 
 INSERT INTO `user_registration` (`user_no`, `user_ip`, `user_ID`, `email`, `student_no`, `fname`, `lname`, `bday`, `gender`, `coverphoto`, `profilepicture`, `created_at`, `updated_at`, `user_password`, `is_setup_complete`) VALUES
-(48, '192.168.100.5', '@john_paul206', 'tmc.johnpaul.naag@cvsu.edu.ph', '2022-100-0349', 'John Paul', 'Naag', '2024-08-13', 'Male', 'FB_IMG_1718520279758.jpg', 'IMG_20230313_190514.jpg', '2024-08-12 15:30:04', '2024-08-12 15:41:42', '$2y$10$XEP3vl9rZvsTapKY.0.TUeTA2FnYR2JOOm4Oe5IxCKTozfBEAzd8C', 0);
+(48, '192.168.100.5', '@john_paul206', 'tmc.test2@cvsu.edu.ph', '2022-100-0349', 'John Paul', 'Naag', '2024-08-13', 'prefered-not-to-say', 'FB_IMG_1718520279758.jpg', 'IMG_20230313_190514.jpg', '2024-08-12 15:30:04', '2024-08-13 12:07:04', '$2y$10$WI8U3eFCMvKvhVScEiOeq.s2hcqNRwLF5R//ERrsKn9N9kJUJ165G', 0),
+(49, '::1', '@a900', 'tmc.test@cvsu.edu.ph', '2022-100-0341', 'A', 'A', '2024-08-08', 'prefered-not-to-say', '', '', '2024-08-13 11:02:55', '2024-08-13 12:53:40', '$2y$10$Vk7EzS8cORaYUDBpkZS.OuuXiLORZJHoHrGiNC50GXhk0nbm3S5LW', 0);
 
 --
 -- Indexes for dumped tables
@@ -256,6 +291,13 @@ ALTER TABLE `shares`
   ADD KEY `user_no` (`user_no`);
 
 --
+-- Indexes for table `users_preferences`
+--
+ALTER TABLE `users_preferences`
+  ADD PRIMARY KEY (`prefered_id`),
+  ADD KEY `user_no` (`user_no`);
+
+--
 -- Indexes for table `user_registration`
 --
 ALTER TABLE `user_registration`
@@ -284,19 +326,19 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `heart_reactions`
 --
 ALTER TABLE `heart_reactions`
-  MODIFY `reaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `reaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `post_reports`
 --
 ALTER TABLE `post_reports`
-  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `saves`
@@ -308,7 +350,7 @@ ALTER TABLE `saves`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `shares`
@@ -317,10 +359,16 @@ ALTER TABLE `shares`
   MODIFY `share_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `users_preferences`
+--
+ALTER TABLE `users_preferences`
+  MODIFY `prefered_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `user_registration`
 --
 ALTER TABLE `user_registration`
-  MODIFY `user_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `user_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- Constraints for dumped tables
@@ -373,6 +421,12 @@ ALTER TABLE `schedules`
 ALTER TABLE `shares`
   ADD CONSTRAINT `shares_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`),
   ADD CONSTRAINT `shares_ibfk_2` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`);
+
+--
+-- Constraints for table `users_preferences`
+--
+ALTER TABLE `users_preferences`
+  ADD CONSTRAINT `users_preferences_ibfk_1` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
