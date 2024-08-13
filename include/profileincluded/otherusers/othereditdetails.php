@@ -39,6 +39,15 @@ if ($other_user_no) {
             ?></div>
         </div>
         <div class="container-fluid lineedit"></div>
+        <div class="container-fluid birthdate">
+            <div>Student Number</div>
+            <div><?php echo htmlspecialchars($row['student_no']); ?></div>
+        </div>
+        <div class="container-fluid birthdate">
+            <div>Email</div>
+            <div><?php echo htmlspecialchars($row['email']); ?></div>
+        </div>
+        
     </div>
 <?php
 }

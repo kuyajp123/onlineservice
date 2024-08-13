@@ -1,14 +1,13 @@
 <?php
 session_start();
-// if (!isset($_SESSION['admin_logged_in'])) {
-//     header('Location: ../login.php');
-//     exit;
-// }
+if (!isset($_SESSION['admin'])) {
+    header('Location: admin_login.php');
+}
 require_once '../include/connect.php';
 require_once '../include/bootsrap.php';
 
 // Fetch users and their report status
-$usersQuery = 'SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, pr.report_reason, pr.post_id, IFNULL(COUNT(pr.report_id), 0) AS report_count 
+$usersQuery = 'SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, pr.report_reason, ur.created_at, pr.post_id, IFNULL(COUNT(pr.report_id), 0) AS report_count 
                FROM user_registration ur
                LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
                GROUP BY ur.user_no';
@@ -177,7 +176,7 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $offset = ($page - 1) * $rows_per_page;
 
 // Validate sort column
-$valid_columns = ['fname', 'lname', 'user_no', 'student_no', 'email', 'report_count'];
+$valid_columns = ['fname', 'lname', 'user_no', 'student_no', 'email', 'report_count', 'create_at'];
 if (!in_array($sort_column, $valid_columns)) {
     $sort_column = 'lname'; // default sort column
 }
@@ -190,7 +189,7 @@ if (!in_array($rows_per_page, $valid_rows_per_page)) {
 
 // Fetch users and their report status with search, sorting, and pagination
 $searchFilter = !empty($search) ? " AND (ur.fname LIKE '%$search%' OR ur.lname LIKE '%$search%' OR ur.email LIKE '%$search%' OR ur.student_no LIKE '%$search%' OR ur.user_no LIKE '%$search%')" : "";
-$usersQuery = "SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, IFNULL(COUNT(pr.report_id), 0) AS report_count 
+$usersQuery = "SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.created_at, ur.email, IFNULL(COUNT(pr.report_id), 0) AS report_count 
                FROM user_registration ur
                LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
                WHERE 1=1 $searchFilter
@@ -241,6 +240,7 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                     <th scope="col" class="sortable <?php echo ($sort_column == 'user_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('user_no')">User No<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'student_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('student_no')">Student No<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'email') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('email')">Email<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
+                    <th scope="col" class="sortable <?php echo ($sort_column == 'create_at') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('date_created')">Date Created<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'report_count') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('report_count')">Reports<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col">Review posts</th>
                     <th scope="col">Action</th>
@@ -250,12 +250,19 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                 <?php
                 $line_number = $offset + 1;
                 while ($user = $usersResult->fetch_assoc()): ?>
+                <?php
+                $timestamp = htmlspecialchars($user['created_at']);
+                $created_at = new DateTime($timestamp);
+
+                $formattedDate = $created_at->format('F j, Y'); // e.g., July 24, 2023
+                ?>
                     <tr>
                         <th scope="row"><?php echo htmlspecialchars($line_number++); ?></th>
                         <td><?php echo htmlspecialchars($user['fname'] . ' ' . $user['lname']); ?></td>
                         <td><?php echo htmlspecialchars($user['user_no']); ?></td>
                         <td><?php echo htmlspecialchars($user['student_no']); ?></td>
                         <td><?php echo htmlspecialchars($user['email']); ?></td>
+                        <td><?php echo htmlspecialchars($formattedDate); ?></td>
                         <td><?php echo htmlspecialchars($user['report_count']); ?></td>
                         <td>
                         <?php if ($user['report_count'] > 0): ?>

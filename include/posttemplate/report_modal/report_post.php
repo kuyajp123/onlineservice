@@ -12,6 +12,8 @@ if (isset($_POST['submit_report_imagepost'])) {
     $report_reason = isset($_POST['report_reason']) ? htmlspecialchars($_POST['report_reason']) : '';
     $reporter_user_no = isset($_POST['reporter_user_no']) ? intval($_POST['reporter_user_no']) : 0;
 
+    
+
     // Validate input
     if ($post_id > 0 && $user_no > 0 && !empty($report_reason) && $reporter_user_no > 0) {
         // Prepare SQL query to insert the report
@@ -33,6 +35,7 @@ if (isset($_POST['submit_report_imagepost'])) {
     } else {
         $message = "Please provide the reason for your report.";
         $messageType = "error";
+        
     }
 
     // Set message in session and redirect
