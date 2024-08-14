@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 13, 2024 at 03:34 PM
+-- Generation Time: Aug 14, 2024 at 05:18 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,6 +33,13 @@ CREATE TABLE `admin` (
   `password_hash` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`admin_id`, `username`, `password_hash`) VALUES
+(1, 'admin', 'admin');
+
 -- --------------------------------------------------------
 
 --
@@ -52,7 +59,8 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`comment_id`, `post_id`, `user_no`, `comment_text`, `timestamp`) VALUES
-(1, 23, 48, 'Inaantok na\'ko 2ll', '2024-08-12 15:51:35');
+(1, 23, 48, 'Inaantok na\'ko 2ll', '2024-08-12 15:51:35'),
+(2, 25, 49, 'hi', '2024-08-13 14:15:34');
 
 -- --------------------------------------------------------
 
@@ -79,6 +87,21 @@ INSERT INTO `heart_reactions` (`reaction_id`, `post_id`, `user_no`, `reaction_ty
 (8, 23, 49, '', '2024-08-13 11:15:40'),
 (9, 25, 48, '', '2024-08-13 11:44:07'),
 (10, 24, 48, '', '2024-08-13 11:44:40');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `notification_id` int(11) NOT NULL,
+  `user_no` int(11) DEFAULT NULL,
+  `admin_id` int(11) DEFAULT NULL,
+  `notification_type` enum('warning','ban') DEFAULT NULL,
+  `notification_text` varchar(255) DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -125,20 +148,11 @@ CREATE TABLE `post_reports` (
 --
 
 INSERT INTO `post_reports` (`report_id`, `post_id`, `user_no`, `reporter_user_no`, `report_reason`, `report_date`) VALUES
-(18, 25, 49, 48, 'Pretending to be someone else', '2024-08-13 11:39:43');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `saves`
---
-
-CREATE TABLE `saves` (
-  `save_id` int(11) NOT NULL,
-  `post_id` int(11) NOT NULL,
-  `user_no` int(11) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(18, 25, 49, 48, 'Pretending to be someone else', '2024-08-13 11:39:43'),
+(19, 23, 48, 49, 'Misleading or scam', '2024-08-13 14:13:29'),
+(20, 23, 48, 49, 'Spam', '2024-08-13 22:46:40'),
+(21, 25, 49, 48, 'Violence', '2024-08-13 22:47:09'),
+(22, 23, 48, 49, 'Other', '2024-08-14 03:16:12');
 
 -- --------------------------------------------------------
 
@@ -165,32 +179,6 @@ CREATE TABLE `schedules` (
 
 INSERT INTO `schedules` (`schedule_id`, `user_no`, `date_start`, `date_end`, `start_time`, `end_time`, `days`, `name`, `description`, `color`) VALUES
 (8, 48, '2024-08-29', '2024-08-27', '01:00:00', '01:00:00', 'Monday', 'qwer', 'qwer', 'green');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `shares`
---
-
-CREATE TABLE `shares` (
-  `share_id` int(11) NOT NULL,
-  `post_id` int(11) NOT NULL,
-  `user_no` int(11) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users_preferences`
---
-
-CREATE TABLE `users_preferences` (
-  `prefered_id` int(11) NOT NULL,
-  `user_no` int(11) DEFAULT NULL,
-  `hide_birthdate` tinyint(1) DEFAULT 0,
-  `hide_gender` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -222,7 +210,22 @@ CREATE TABLE `user_registration` (
 
 INSERT INTO `user_registration` (`user_no`, `user_ip`, `user_ID`, `email`, `student_no`, `fname`, `lname`, `bday`, `gender`, `coverphoto`, `profilepicture`, `created_at`, `updated_at`, `user_password`, `is_setup_complete`) VALUES
 (48, '192.168.100.5', '@john_paul206', 'tmc.test2@cvsu.edu.ph', '2022-100-0349', 'John Paul', 'Naag', '2024-08-13', 'prefered-not-to-say', 'FB_IMG_1718520279758.jpg', 'IMG_20230313_190514.jpg', '2024-08-12 15:30:04', '2024-08-13 12:07:04', '$2y$10$WI8U3eFCMvKvhVScEiOeq.s2hcqNRwLF5R//ERrsKn9N9kJUJ165G', 0),
-(49, '::1', '@a900', 'tmc.test@cvsu.edu.ph', '2022-100-0341', 'A', 'A', '2024-08-08', 'prefered-not-to-say', '', '', '2024-08-13 11:02:55', '2024-08-13 12:53:40', '$2y$10$Vk7EzS8cORaYUDBpkZS.OuuXiLORZJHoHrGiNC50GXhk0nbm3S5LW', 0);
+(49, '::1', '@a900', 'tmc.test@cvsu.edu.ph', '2022-100-0341', 'A', 'A', '2024-08-08', 'Female', '', '', '2024-08-13 11:02:55', '2024-08-13 13:50:15', '$2y$10$Vk7EzS8cORaYUDBpkZS.OuuXiLORZJHoHrGiNC50GXhk0nbm3S5LW', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_restrictions`
+--
+
+CREATE TABLE `user_restrictions` (
+  `restrictions_id` int(11) NOT NULL,
+  `user_no` int(11) DEFAULT NULL,
+  `admin_id` int(11) DEFAULT NULL,
+  `warning_count` int(11) DEFAULT 0,
+  `banned` tinyint(1) DEFAULT 0,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
@@ -252,6 +255,14 @@ ALTER TABLE `heart_reactions`
   ADD KEY `user_no` (`user_no`);
 
 --
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`notification_id`),
+  ADD KEY `user_no` (`user_no`),
+  ADD KEY `admin_id` (`admin_id`);
+
+--
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
@@ -268,34 +279,11 @@ ALTER TABLE `post_reports`
   ADD KEY `post_reports_ibfk_3` (`reporter_user_no`);
 
 --
--- Indexes for table `saves`
---
-ALTER TABLE `saves`
-  ADD PRIMARY KEY (`save_id`),
-  ADD KEY `post_id` (`post_id`),
-  ADD KEY `user_no` (`user_no`);
-
---
 -- Indexes for table `schedules`
 --
 ALTER TABLE `schedules`
   ADD PRIMARY KEY (`schedule_id`),
   ADD KEY `fk_user_no` (`user_no`);
-
---
--- Indexes for table `shares`
---
-ALTER TABLE `shares`
-  ADD PRIMARY KEY (`share_id`),
-  ADD KEY `post_id` (`post_id`),
-  ADD KEY `user_no` (`user_no`);
-
---
--- Indexes for table `users_preferences`
---
-ALTER TABLE `users_preferences`
-  ADD PRIMARY KEY (`prefered_id`),
-  ADD KEY `user_no` (`user_no`);
 
 --
 -- Indexes for table `user_registration`
@@ -307,6 +295,14 @@ ALTER TABLE `user_registration`
   ADD UNIQUE KEY `student_no` (`student_no`);
 
 --
+-- Indexes for table `user_restrictions`
+--
+ALTER TABLE `user_restrictions`
+  ADD PRIMARY KEY (`restrictions_id`),
+  ADD KEY `user_no` (`user_no`),
+  ADD KEY `admin_id` (`admin_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -314,19 +310,25 @@ ALTER TABLE `user_registration`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `heart_reactions`
 --
 ALTER TABLE `heart_reactions`
   MODIFY `reaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -338,13 +340,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT for table `post_reports`
 --
 ALTER TABLE `post_reports`
-  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
--- AUTO_INCREMENT for table `saves`
---
-ALTER TABLE `saves`
-  MODIFY `save_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `schedules`
@@ -353,22 +349,16 @@ ALTER TABLE `schedules`
   MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `shares`
---
-ALTER TABLE `shares`
-  MODIFY `share_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `users_preferences`
---
-ALTER TABLE `users_preferences`
-  MODIFY `prefered_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `user_registration`
 --
 ALTER TABLE `user_registration`
   MODIFY `user_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+
+--
+-- AUTO_INCREMENT for table `user_restrictions`
+--
+ALTER TABLE `user_restrictions`
+  MODIFY `restrictions_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -389,6 +379,13 @@ ALTER TABLE `heart_reactions`
   ADD CONSTRAINT `heart_reactions_ibfk_2` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`);
 
 --
+-- Constraints for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`),
+  ADD CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`);
+
+--
 -- Constraints for table `posts`
 --
 ALTER TABLE `posts`
@@ -403,30 +400,17 @@ ALTER TABLE `post_reports`
   ADD CONSTRAINT `post_reports_ibfk_3` FOREIGN KEY (`reporter_user_no`) REFERENCES `user_registration` (`user_no`);
 
 --
--- Constraints for table `saves`
---
-ALTER TABLE `saves`
-  ADD CONSTRAINT `saves_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`),
-  ADD CONSTRAINT `saves_ibfk_2` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`);
-
---
 -- Constraints for table `schedules`
 --
 ALTER TABLE `schedules`
   ADD CONSTRAINT `fk_user_no` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `shares`
+-- Constraints for table `user_restrictions`
 --
-ALTER TABLE `shares`
-  ADD CONSTRAINT `shares_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`),
-  ADD CONSTRAINT `shares_ibfk_2` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`);
-
---
--- Constraints for table `users_preferences`
---
-ALTER TABLE `users_preferences`
-  ADD CONSTRAINT `users_preferences_ibfk_1` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`);
+ALTER TABLE `user_restrictions`
+  ADD CONSTRAINT `user_restrictions_ibfk_1` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`),
+  ADD CONSTRAINT `user_restrictions_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

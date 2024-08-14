@@ -1,4 +1,5 @@
 <?php
+session_name('admin_session');
 session_start();
 if (!isset($_SESSION['admin'])) {
     header('Location: admin_login.php');
@@ -143,7 +144,7 @@ $usersResult = $con->query($usersQuery);
                                                 <i class="fa-solid fa-power-off"></i>
                                                 </div>
                                                 <div class="container-fluid Deletedaccountsname">
-                                                        Logout
+                                                    <a href="admin_logout.php">Logout</a>
                                                 </div>
                                             </div>
                                         </a>
@@ -240,7 +241,7 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                     <th scope="col" class="sortable <?php echo ($sort_column == 'user_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('user_no')">User No<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'student_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('student_no')">Student No<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'email') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('email')">Email<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                    <th scope="col" class="sortable <?php echo ($sort_column == 'create_at') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('date_created')">Date Created<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
+                    <th scope="col" class="sortable <?php echo ($sort_column == 'create_at') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('date_created')">Created at<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'report_count') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('report_count')">Reports<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col">Review posts</th>
                     <th scope="col">Action</th>
@@ -255,6 +256,7 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                 $created_at = new DateTime($timestamp);
 
                 $formattedDate = $created_at->format('F j, Y'); // e.g., July 24, 2023
+                $formattedTime = $created_at->format('g:i a'); // e.g., 6:27 pm
                 ?>
                     <tr>
                         <th scope="row"><?php echo htmlspecialchars($line_number++); ?></th>
@@ -262,7 +264,7 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                         <td><?php echo htmlspecialchars($user['user_no']); ?></td>
                         <td><?php echo htmlspecialchars($user['student_no']); ?></td>
                         <td><?php echo htmlspecialchars($user['email']); ?></td>
-                        <td><?php echo htmlspecialchars($formattedDate); ?></td>
+                        <td><?php echo htmlspecialchars($formattedDate . ' ' . $formattedTime); ?></td>
                         <td><?php echo htmlspecialchars($user['report_count']); ?></td>
                         <td>
                         <?php if ($user['report_count'] > 0): ?>
@@ -275,8 +277,7 @@ $totalPages = ceil($totalRecords / $rows_per_page);
 
                         <td>
                             <?php if ($user['report_count'] > 0): ?>
-                                <a href="warn_user.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>" class="btn btn-warning btn-sm">Warn</a>
-                                <a href="ban_user.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>" class="btn btn-danger btn-sm">Ban</a>
+                                <a href="admin_action.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>" class="btn btn-primary btn-sm">Action</a>
                             <?php else: ?>
                                 <!-- leave blank here to get space for no report -->
                             <?php endif; ?>

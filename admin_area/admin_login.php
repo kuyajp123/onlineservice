@@ -1,16 +1,21 @@
 <?php
+session_name('admin_session');
 session_start();
 require_once "../include/bootsrap.php";
 require_once '../include/connect.php'; 
 require_once '../functions/common_function.php';
 
-$email = "admin";
-$password = "admin";
 
 if (isset($_POST['login'])) {
     $email_input = $_POST['admin'];
     $password_input = $_POST['admin_password'];
 
+    $sql = "select * from admin";
+    $result = $con->query($sql);
+    $row = $result->fetch_assoc();
+
+    $email = $row['username'];
+    $password = $row['password_hash'];
 
     if($email_input == $email && $password_input == $password){
         $_SESSION['admin'] = $email_input;

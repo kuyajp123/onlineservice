@@ -41,7 +41,7 @@ ul, li, a {
     height: calc(90vh - 10px); /* Adjust height based on the navbar height */
     width: 20%;
     transition: width 0.3s;
-    border: 1px solid red;
+
     z-index: 1000;
 }
 
@@ -82,18 +82,18 @@ ul, li, a {
 }
 .featurescont {
     height: 90%;
-    border: 1px solid red;
+
 }
 
 .buttonlinkside {
     height: 90%;
-    border: 1px solid red;
+
 }
 
 .logoutcont {
     width: 100%;
     height: 10%;
-    border: 1px solid red;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -147,7 +147,6 @@ ul, li, a {
 .sidenav.hidden .Bannedaccountsicon,
 .sidenav.hidden .Deletedaccountsicon {
     display: none;
-    justify-content: c
 }
 
 
@@ -212,4 +211,96 @@ ul, li, a {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+
+
+
+
+
+
+
+
+
+/* admin action */
+.actionbod{
+    height: 100%;
+    width: 100%;
+    
+}
+.actionbodchild{
+    height: 90%;
+    width: 70%;
+}
+.coverphotobod{
+    height: 30%;
+    width: 70%;
+
+}
+.profilephotobod{
+    height: 20%;
+    width: 70%;
+}
+.doaction{
+    height: 40%;
+    width: 70%;
+}
+.namebod{
+    height: 40%;
+    width: 70%;
+
+}
+.coverphoto{
+    height: 100%;
+    width: 100%;
+    border: 3px solid #333;
+}
+.coverphotodiv img{
+    position: relative;
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+}
+.profilephoto{
+    top: -65%;
+    left: -38%;
+    position: relative;
+    height: 60%;
+    width: 19%;
+    border-radius: 50%;
+    border: 3px solid #333;
+}
+.profilephoto img{
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+.ko{
+    height: 35%;
+    width: 100%;
+    margin-left: 0;
+}
+.name,.email,.student_no{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.warndiv,.bandiv{
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.optionalmessage,.warning{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
 }
