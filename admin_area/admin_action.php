@@ -75,6 +75,7 @@ if(isset($_POST['submit_warn'])){
         $user = $result->fetch_assoc();
 
         if($result->num_rows > 0){
+            $warn_appeal_id = mt_rand(100000, 999999);
 
             $timestamp = htmlspecialchars($user['report_date']);
             $report_date = new DateTime($timestamp);
@@ -92,13 +93,13 @@ if(isset($_POST['submit_warn'])){
             Violation Details:
 
             Date: $formattedReportDate
-            Description: [Brief description of the violation]
+            Description: Multiple report counts
             Community Standard Violated: ".$user['report_reason']."
             As this is a serious matter, we ask that you review our community guidelines to ensure that your future actions align with our standards. Repeated violations may result in further action, including temporary suspension or permanent banning of your account.
 
             Please note that this warning will be recorded in your account history. Should you receive additional warnings, the consequences may escalate as outlined in our community guidelines.
 
-            If you believe this warning was issued in error, or if you have any questions, you may contact our support team at [support contact information] within the next 7 days.
+            If you believe this warning was issued was mistake, or if you have any questions, you may contact our support team at [support contact information] and indicate this reference number: $warn_appeal_id within the next 7 days.
 
             We value your participation in our community and hope to see you continue to contribute positively.
 
@@ -139,11 +140,11 @@ if(isset($_POST['submit_warn'])){
             $result2 = $stmt2->get_result();
 
             if( $result2->num_rows === 0){
-                $query2 = "INSERT INTO `user_warnings` (`user_no`, `warning_level`, `issue_date`, `reset_date`)
-                        VALUES (?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 15 DAY))";
+                $query2 = "INSERT INTO `user_warnings` (`user_no`, `warn_appeal_id`, `warning_level`, `issue_date`, `reset_date`)
+                        VALUES (?, ?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 15 DAY))";
             
                 $stmt3 = $con->prepare($query2);
-                $stmt3->bind_param('ii', $user_no, $warning_level);
+                $stmt3->bind_param('iii', $user_no, $warn_appeal_id, $warning_level);
                 if ($stmt3->execute()) {
                     echo "Warning inserted successfully.";
                 } else {
@@ -152,7 +153,7 @@ if(isset($_POST['submit_warn'])){
             }else{
                 $warning_id = $user['warning_id'];
 
-                $query_update = "UPDATE `user_warnings` SET `warning_level` = ?, `reset_date` = DATE_ADD(CURDATE(), INTERVAL 15 DAY) WHERE `user_no` = ? AND `warning_id` = ?";
+                $query_update = "UPDATE `user_warnings` SET 'warn_appeal_id' = '$warn_appeal_id', `warning_level` = ?, `reset_date` = DATE_ADD(CURDATE(), INTERVAL 15 DAY) WHERE `user_no` = ? AND `warning_id` = ?";
                 $stmt_update = $con->prepare($query_update);
                 $stmt_update->bind_param('iii', $warning_level, $user_no, $warning_id);
                 if ($stmt_update->execute()) {
@@ -168,6 +169,81 @@ if(isset($_POST['submit_warn'])){
     } else {
         $error = 'password didn\'t match';
     }
+}
+
+$ban_type = '';
+$ban_pass = '';
+
+if(isset($_POST['submit_ban'])){
+    $ban_type = $_POST['ban_type'];
+    $ban_pass = $_POST['ban_pass'];
+
+    if($ban_type === 0){
+        $error = 'please choose ban type';
+    }
+    elseif($ban_pass == $admin_password){
+        
+        //getting the count user_warnings including post and to insert notif and banning level
+        $query = 'SELECT ur.fname, ur.lname, ur.student_no, ur.email, 
+        uw.warning_level, uw.issue_date, uw.reset_date, 
+        ub.ban_level, ub.ban_start_date, ub.ban_end_date
+        FROM user_registration ur
+        LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
+        LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
+        WHERE ur.user_no = ?
+        GROUP BY ur.user_no';
+
+        $stmt_ban = $con->prepare($query);
+        $stmt_ban->bind_param('i', $user_no);
+        $stmt_ban->execute();
+        $result = $stmt_ban->get_result();
+        $user = $result->fetch_assoc();
+
+        if($result->num_rows > 0){
+            
+            $ban_appeal_id = mt_rand(100000, 999999);
+
+            $timestamp = date('Y-m-d');
+            $report_date = new DateTime($timestamp);
+
+            $formattedReportDate = $report_date->format('F j, Y'); // e.g., July 24, 2023
+            $formattedReportTime= $report_date->format('g:i a'); // e.g., 6:27 pm
+
+            // insert if here for ban type and the duration of ban and check if theres existing ban level in user
+
+            $ban_msg = "
+            Subject: Account Suspension Notification
+
+            Dear ".$user['fname']." ".$user['lname'].",
+
+            We hope this message finds you well. This email is to inform you that your account has been suspended due to a violation of our community guidelines.
+
+            Details of Suspension:
+
+            Date: $formattedReportDate
+            Violation Reason: Multiple warning counts
+            Ban Level: [e.g., 7 days, 30 days, Permanent]
+            Ban Start Date: [Start Date]
+            Ban End Date: [End Date, if applicable]
+            We take our community standards very seriously and aim to ensure a positive experience for all users. This action was taken following a thorough review of the reports and your recent activity. If you believe this decision was made in error, or if you have any questions regarding this suspension, please contact our support team at [Support Contact Information] for further assistance.
+
+            Please take this time to review our community guidelines to avoid any future issues. We appreciate your understanding and cooperation.
+
+            Thank you for your attention to this matter.
+
+            Best regards,
+            [Your Company/Team Name]
+            [Contact Information]
+            ";
+        }else{
+            $error = 'no users found';
+        }
+
+
+    }else{
+        $error = 'password didnt match';
+    }
+    
 }
 
 ?>
@@ -441,10 +517,6 @@ if(isset($_POST['submit_warn'])){
                                         <option value="2">Ban for 30 Days</option>
                                         <option value="3">Permanently ban</option>
                                     </select>
-                                    <div class="form-floating" style="width:100%;">
-                                        <textarea class="form-control" placeholder="Leave a comment here" id="banTextarea" style="height: 100px"></textarea>
-                                        <label for="floatingTextarea2">Optional Ban message</label>
-                                    </div>
             Enter your password to confirm
             <input type="password" name="ban_pass" class="form-control">
         </div>  

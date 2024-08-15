@@ -222,15 +222,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </script>
 
-<!-- fetch heart button on post -->
+<!-- fetching heart reaction in post -->
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     // Fetch initial heart reaction states
     document.querySelectorAll('.heart-btn2').forEach(button => {
         const postId = button.getAttribute('data-post-id');
         const userNo = button.getAttribute('data-user-no');
         const icon = button.querySelector('i');
-        const countSpan = button.nextElementSibling; // Assumes count span is right after the button
+        const countSpan = button.nextElementSibling;
 
         fetch('scripts/fetch_heart_textpost/get_heart_status.php', {
             method: 'POST',
@@ -278,8 +278,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const postId = this.getAttribute('data-post-id');
             const userNo = this.getAttribute('data-user-no');
             const icon = this.querySelector('i');
-            const countSpan = this.nextElementSibling; // Assumes count span is right after the button
+            const countSpan = this.nextElementSibling;
 
+            // Check if the button is already in the process of toggling
+            if (this.classList.contains('toggling')) return;
+
+            this.classList.add('toggling'); // Add a class to indicate toggling
+
+            // Toggle heart icon and send AJAX request
             fetch('scripts/fetch_heart_textpost/heart_toggle_textpost.php', {
                 method: 'POST',
                 headers: {
@@ -303,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         icon.classList.add('fa-regular');
                         icon.style.color = '';
                     }
-                    
+
                     // Update the heart count and its visibility
                     const heartCount = data.heartCount;
                     countSpan.textContent = heartCount;
@@ -317,9 +323,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.error('Error:', data.message);
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+                this.classList.remove('toggling'); // Remove the class after request is done
+            });
         });
     });
 });
+
 </script>
 <?php require_once "include/posttemplate/comment_modal/post_comment.php"; ?>

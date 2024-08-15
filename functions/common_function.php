@@ -219,49 +219,49 @@ function getUserProfile($user_no) {
 }
 
 
-// function for warning and banning
-function issueBanOrWarning($admin_id, $user_no, $action_type, $ban_duration = null) {
-    global $con;    
+// // function for warning and banning
+// function issueBanOrWarning($admin_id, $user_no, $action_type, $ban_duration = null) {
+//     global $con;    
 
-    if ($con->connect_error) {
-        die("Connection failed: " . $con->connect_error);
-    }
+//     if ($con->connect_error) {
+//         die("Connection failed: " . $con->connect_error);
+//     }
 
-    $admin_id = $con->real_escape_string($admin_id);
-    $user_no = $con->real_escape_string($user_no);
-    $action_type = $con->real_escape_string($action_type);
+//     $admin_id = $con->real_escape_string($admin_id);
+//     $user_no = $con->real_escape_string($user_no);
+//     $action_type = $con->real_escape_string($action_type);
 
-    if ($action_type == 'warning') {
-        // Increment warning count
-        $stmt = $con->prepare("UPDATE user_restrictions SET warning_count = warning_count + 1 WHERE user_no = ?");
-        $stmt->bind_param("i", $user_no);
-        $stmt->execute();
-        $stmt->close();
+//     if ($action_type == 'warning') {
+//         // Increment warning count
+//         $stmt = $con->prepare("UPDATE user_restrictions SET warning_count = warning_count + 1 WHERE user_no = ?");
+//         $stmt->bind_param("i", $user_no);
+//         $stmt->execute();
+//         $stmt->close();
 
-    } elseif ($action_type == 'ban') {
-        // Calculate ban end date
-        $ban_start_date = date('Y-m-d');
-        $ban_end_date = null;
+//     } elseif ($action_type == 'ban') {
+//         // Calculate ban end date
+//         $ban_start_date = date('Y-m-d');
+//         $ban_end_date = null;
 
-        if ($ban_duration == '7_days') {
-            $ban_end_date = date('Y-m-d', strtotime($ban_start_date . ' + 7 days'));
-        } elseif ($ban_duration == '30_days') {
-            $ban_end_date = date('Y-m-d', strtotime($ban_start_date . ' + 30 days'));
-        }
+//         if ($ban_duration == '7_days') {
+//             $ban_end_date = date('Y-m-d', strtotime($ban_start_date . ' + 7 days'));
+//         } elseif ($ban_duration == '30_days') {
+//             $ban_end_date = date('Y-m-d', strtotime($ban_start_date . ' + 30 days'));
+//         }
 
-        // Update ban information
-        $stmt = $con->prepare(
-            "UPDATE user_restrictions 
-             SET banned = 1, ban_start_date = ?, ban_end_date = ?, ban_duration = ? 
-             WHERE user_no = ?"
-        );
-        $stmt->bind_param("sssi", $ban_start_date, $ban_end_date, $ban_duration, $user_no);
-        $stmt->execute();
-        $stmt->close();
-    }
+//         // Update ban information
+//         $stmt = $con->prepare(
+//             "UPDATE user_restrictions 
+//              SET banned = 1, ban_start_date = ?, ban_end_date = ?, ban_duration = ? 
+//              WHERE user_no = ?"
+//         );
+//         $stmt->bind_param("sssi", $ban_start_date, $ban_end_date, $ban_duration, $user_no);
+//         $stmt->execute();
+//         $stmt->close();
+//     }
 
-    $con->close();
-}
+//     $con->close();
+// }
 
 
 
