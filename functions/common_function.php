@@ -218,92 +218,52 @@ function getUserProfile($user_no) {
     return $result->fetch_assoc();
 }
 
-// follow_user Function
-function followUser($follower_id, $followed_id) {
-    global $con;
 
-    // Check if the follow relationship already exists
-    $query = "SELECT COUNT(*) AS count FROM follows WHERE follower_id = ? AND followed_id = ?";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param('ii', $follower_id, $followed_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $exists = $result->fetch_assoc()['count'] > 0;
+// function for warning and banning
+function issueBanOrWarning($admin_id, $user_no, $action_type, $ban_duration = null) {
+    global $con;    
 
-    if (!$exists) {
-        // Add a new follow record
-        $query = "INSERT INTO follows (follower_id, followed_id) VALUES (?, ?)";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param('ii', $follower_id, $followed_id);
-        $stmt->execute();
-
-        // Update the follow counts
-        $query = "UPDATE user_registration SET following = following + 1 WHERE user_no = ?";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param('i', $follower_id);
-        $stmt->execute();
-
-        $query = "UPDATE user_registration SET followers = followers + 1 WHERE user_no = ?";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param('i', $followed_id);
-        $stmt->execute();
-
-        return true;
+    if ($con->connect_error) {
+        die("Connection failed: " . $con->connect_error);
     }
 
-    return false;
-}
+    $admin_id = $con->real_escape_string($admin_id);
+    $user_no = $con->real_escape_string($user_no);
+    $action_type = $con->real_escape_string($action_type);
 
-
-// unfollow_user Function
-function unfollowUser($follower_id, $followed_id) {
-    global $con;
-
-    // Check if the follow relationship exists
-    $query = "SELECT COUNT(*) AS count FROM follows WHERE follower_id = ? AND followed_id = ?";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param('ii', $follower_id, $followed_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $exists = $result->fetch_assoc()['count'] > 0;
-
-    if ($exists) {
-        // Remove the follow record
-        $query = "DELETE FROM follows WHERE follower_id = ? AND followed_id = ?";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param('ii', $follower_id, $followed_id);
+    if ($action_type == 'warning') {
+        // Increment warning count
+        $stmt = $con->prepare("UPDATE user_restrictions SET warning_count = warning_count + 1 WHERE user_no = ?");
+        $stmt->bind_param("i", $user_no);
         $stmt->execute();
+        $stmt->close();
 
-        // Update the follow counts
-        $query = "UPDATE user_registration SET following = following - 1 WHERE user_no = ?";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param('i', $follower_id);
+    } elseif ($action_type == 'ban') {
+        // Calculate ban end date
+        $ban_start_date = date('Y-m-d');
+        $ban_end_date = null;
+
+        if ($ban_duration == '7_days') {
+            $ban_end_date = date('Y-m-d', strtotime($ban_start_date . ' + 7 days'));
+        } elseif ($ban_duration == '30_days') {
+            $ban_end_date = date('Y-m-d', strtotime($ban_start_date . ' + 30 days'));
+        }
+
+        // Update ban information
+        $stmt = $con->prepare(
+            "UPDATE user_restrictions 
+             SET banned = 1, ban_start_date = ?, ban_end_date = ?, ban_duration = ? 
+             WHERE user_no = ?"
+        );
+        $stmt->bind_param("sssi", $ban_start_date, $ban_end_date, $ban_duration, $user_no);
         $stmt->execute();
-
-        $query = "UPDATE user_registration SET followers = followers - 1 WHERE user_no = ?";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param('i', $followed_id);
-        $stmt->execute();
-
-        return true;
+        $stmt->close();
     }
 
-    return false;
+    $con->close();
 }
 
 
-// function to get the follow and follower counts
-function getFollowCounts($user_no) {
-    global $con;
-
-    $query = "SELECT (SELECT COUNT(*) FROM follows WHERE follower_id = ?) AS following, 
-                     (SELECT COUNT(*) FROM follows WHERE followed_id = ?) AS followers";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param('ii', $user_no, $user_no);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_assoc();
-}
 
 
 

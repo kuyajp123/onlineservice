@@ -35,91 +35,103 @@ if ($post) {
     $loggedInUserNo = isset($_SESSION['user_no']) ? $_SESSION['user_no'] : null;
 ?>
 
-<div class='container-fluid container_post' data-post-id='<?php echo htmlspecialchars($post_id); ?>'>
+<?php
+// Example variables
+$loggedInUserNo = $_SESSION['user_no']; // Current logged-in user's number
+$profilePic = getProfilePicture($user_no, $con);
+?>
 
-    <!-- Name and profile picture -->
-    <div class='container-fluid name'>
-        <div class='container-fluid lgyan'>
-            <div class='container-fluid prof_pic'>
-                <div>
-                    <?php if ($user_no == $loggedInUserNo): ?>
-                        <a href='users/profile.php?sideprof' style='font-size:1rem; text-decoration: none; color: black;'>
-                            <img src='users/images/profilepicture/<?php echo $profilePic; ?>' style='object-fit:contain; width: 40px; height: 40px; border-radius: 50%;' alt=''>
+<!---eto ang simula ng ipapasok mo sa loob ng div sa may comment--------->
+<div class="container-fluid container_post" data-post-id="<?php echo htmlspecialchars($post_id); ?>">
+
+<!-- lagayan ng pangalan 1st div -->
+<div class="container-fluid name">
+    
+    <div class="container-fluid lgyan">
+      
+      <div class="container-fluid prof_pic">
+        <!-- profile image inpost -->
+          <div>
+            <?php if ($user_no == $loggedInUserNo): ?>
+                        <!-- Link to the current user's profile -->
+                        <a href="users/profile.php?sideprof" style="font-size:1rem; text-decoration: none; color: black;">
+                            <img src="users/images/profilepicture/<?php echo htmlspecialchars($profilePic); ?>" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
                         </a>
                     <?php else: ?>
-                        <a href='users/other_profile.php?user_no=<?php echo $user_no; ?>' style='font-size:1rem; text-decoration: none; color: black;'>
-                            <img src='users/images/profilepicture/<?php echo $profilePic; ?>' style='object-fit:contain; width: 40px; height: 40px; border-radius: 50%;' alt=''>
+                        <!-- Link to the other user's profile -->
+                        <a href="users/other_profile.php?user_no=<?php echo htmlspecialchars($user_no); ?>" style="font-size:1rem; text-decoration: none; color: black;">
+                            <img src="users/images/profilepicture/<?php echo htmlspecialchars($profilePic); ?>" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
+                        </a>
+                    <?php endif; ?></div></a>
+      </div>
+      <div class="container-fluid pangalan">
+        <!-- profile name in post -->
+        <div>
+            <?php if ($user_no == $loggedInUserNo): ?>
+                        <!-- Display current user's name -->
+                        <a href="users/profile.php?sideprof"><span class="pangalantextpost"><?php echo htmlspecialchars($fname . ' ' . $lname); ?></span></a>
+                    <?php else: ?>
+                        <!-- Display other user's name -->
+                        <a href="users/other_profile.php?user_no=<?php echo htmlspecialchars($user_no); ?>" style="font-size:1rem; text-decoration: none; color: black;">
+                            <span class="pangalantextpost"><?php echo htmlspecialchars($fname . ' ' . $lname); ?></span>
                         </a>
                     <?php endif; ?>
                 </div>
-            </div>
-            <div class='container-fluid pangalan'>
                 <div>
-                    <?php if ($user_no == $loggedInUserNo): ?>
-                        <a href='users/profile.php?sideprof'><span class='pangalantextpost'><?php echo $fname . ' ' . $lname; ?></span></a>
-                    <?php else: ?>
-                        <a href='users/other_profile.php?user_no=<?php echo $user_no; ?>' style='font-size:1rem; text-decoration: none; color: black;'>
-                            <span class='pangalantextpost'><?php echo $fname . ' ' . $lname; ?></span>
-                        </a>
-                    <?php endif; ?>
-                </div>
-                <div>
-                    <small style='font-size:13px;'><span class='ipadname2'><?php echo $formattedDate . ' at ' . $formattedTime; ?></span></small>
+                    <small style="font-size:13px;"><span class="ipadname2"><?php echo htmlspecialchars($formattedDate . ' at ' . $formattedTime); ?></span></small>
                 </div>
             </div>
-        </div>
+      </div>
+      
 
-        <!-- 3 dots menu -->
-        <div class='container-fluid dots'>
-            <button>
-                <div class='container-fluid dot'>
-                    <i class='fa-solid fa-ellipsis fa-xl' style='color: #575b60; font-size:20px;'></i>
-                </div>
-            </button>
-        </div>
-    </div>
-
-    <!-- Post image -->
-    <div class='container-fluid image'>
-        <div class='container-fluid image_container'>
-            <img src='include/posts_images/<?php echo $postphoto; ?>' alt=''>
-        </div>
-    </div>
-
-    <!-- Heart, comment, share buttons -->
-    <div class='container-fluid heart'>
-        <div class='container-fluid thethree'>
-            <!-- <div class='container-fluid puso'>
-                <button><i class='fa-regular fa-heart'></i></button>
-            </div>
-            <div class='container-fluid comment'>
-                <button type='button' data-bs-toggle='modal' data-bs-target='#btn-comments'>
-                    <i class='fa-regular fa-comment-dots fa-flip-horizontal'></i>
+    <!-- 3dots 1st div -->
+    <div class="container-fluid dots">
+            <div class="dropdown dot">
+                <button class="btn btn-secondary dropdown-toggle bg-white" style="border:none;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-ellipsis fa-xl" style="color: #575b60; font-size:20px;"></i>
+                        <ul class="dropdown-menu">
+                        <?php if($user_no == $loggedInUserNo): ?>
+                            <li><a class="dropdown-item" href="#">Copy post</a></li>
+                            <li><a class="dropdown-item" href="#">Delete post</a></li>
+                        <?php else: ?>
+                            <!-- Pass the post_id and user_no as data attributes for the report option -->
+                            <li><a class="dropdown-item" href="#" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#reportmodal2"
+                                data-post-id="<?php echo htmlspecialchars($post_id); ?>" 
+                                data-user-no="<?php echo htmlspecialchars($user_no); ?>">Report</a></li>
+                            <li><a class="dropdown-item" href="#">Copy post</a></li>
+                        <?php endif; ?>
+                        </ul>
                 </button>
             </div>
-            <div class='container-fluid share'>
-                <button><i class='fa-regular fa-paper-plane'></i></button>
-            </div>
-        </div>
-
-        Collection (Save)
-        <div class='container-fluid collection'>
-            <div class='container-fluid save'>
-                <div class='container-fluid bookmarkicon'>
-                    <button><i class='fa-regular fa-bookmark'></i></button>
-                </div>
-            </div>
-        </div> -->
     </div>
+</div>
 
-    <div class='line'></div>
+<!-- image 1st div -->
+<div class="container-fluid image">
+<!-- image in post -->
+<div class="container-fluid image_container"><img src="include/posts_images/<?php echo htmlspecialchars($postphoto); ?>" alt=""></div>
+    
+</div>
 
-    <!-- Caption -->
-    <div class='container-fluid container_cap'>
-        <div class='container-fluid caption'><?php echo $caption; ?></div>
-    </div>
+
+<!-- heart,comment,share, 1st div -->
+<div class="container-fluid heart">
+
 
 </div>
+
+      <!-- line -->
+      <div class="line"></div>
+
+<!-- caption 1st div -->
+<div class="container-fluid container_cap">
+    <div class="container-fluid caption"><?php echo htmlspecialchars($caption) ?></div>
+</div>
+
+</div>
+<?php include 'report_post_incomment.php'; ?>
 
 <?php
 } else {

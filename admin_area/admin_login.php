@@ -14,14 +14,17 @@ if (isset($_POST['login'])) {
     $result = $con->query($sql);
     $row = $result->fetch_assoc();
 
+    $admin_id = $row['admin_id'];
     $email = $row['username'];
     $password = $row['password_hash'];
 
     if($email_input == $email && $password_input == $password){
         $_SESSION['admin'] = $email_input;
+        $_SESSION['admin_id'] = $admin_id;
+        $_SESSION['admin_password'] = $password;
         echo "<script>window.open('list_of_users.php','_self')</script>";
     }else{
-        print "error";
+        print "email or password didnt match";
     }
 }
 ?>

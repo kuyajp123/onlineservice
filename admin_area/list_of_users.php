@@ -8,9 +8,11 @@ require_once '../include/connect.php';
 require_once '../include/bootsrap.php';
 
 // Fetch users and their report status
-$usersQuery = 'SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, pr.report_reason, ur.created_at, pr.post_id, IFNULL(COUNT(pr.report_id), 0) AS report_count 
+$usersQuery = 'SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, pr.report_reason, ur.created_at, pr.post_id, IFNULL(COUNT(pr.report_id), 0) AS report_count, uw.warning_level, ub.ban_level
                FROM user_registration ur
                LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
+               LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
+               LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
                GROUP BY ur.user_no';
 $usersResult = $con->query($usersQuery);
 ?>
@@ -177,7 +179,7 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $offset = ($page - 1) * $rows_per_page;
 
 // Validate sort column
-$valid_columns = ['fname', 'lname', 'user_no', 'student_no', 'email', 'report_count', 'create_at'];
+$valid_columns = ['fname', 'lname', 'user_no', 'student_no', 'email', 'created_at', 'warning_level', 'ban_level', 'report_count'];
 if (!in_array($sort_column, $valid_columns)) {
     $sort_column = 'lname'; // default sort column
 }
@@ -190,9 +192,11 @@ if (!in_array($rows_per_page, $valid_rows_per_page)) {
 
 // Fetch users and their report status with search, sorting, and pagination
 $searchFilter = !empty($search) ? " AND (ur.fname LIKE '%$search%' OR ur.lname LIKE '%$search%' OR ur.email LIKE '%$search%' OR ur.student_no LIKE '%$search%' OR ur.user_no LIKE '%$search%')" : "";
-$usersQuery = "SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.created_at, ur.email, IFNULL(COUNT(pr.report_id), 0) AS report_count 
+$usersQuery = "SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.created_at, ur.email, uw.warning_level, ub.ban_level, IFNULL(COUNT(pr.report_id), 0) AS report_count 
                FROM user_registration ur
                LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
+               LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
+               LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
                WHERE 1=1 $searchFilter
                GROUP BY ur.user_no
                ORDER BY $sort_column $sort_direction
@@ -241,7 +245,9 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                     <th scope="col" class="sortable <?php echo ($sort_column == 'user_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('user_no')">User No<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'student_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('student_no')">Student No<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'email') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('email')">Email<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                    <th scope="col" class="sortable <?php echo ($sort_column == 'create_at') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('date_created')">Created at<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
+                    <th scope="col" class="sortable <?php echo ($sort_column == 'created_at') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('created_at')">Created at<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
+                    <th scope="col" class="sortable <?php echo ($sort_column == 'warning_level') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('warning_level')">Warning level<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
+                    <th scope="col" class="sortable <?php echo ($sort_column == 'ban_level') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('ban_level')">Ban level<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'report_count') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('report_count')">Reports<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col">Review posts</th>
                     <th scope="col">Action</th>
@@ -265,6 +271,8 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                         <td><?php echo htmlspecialchars($user['student_no']); ?></td>
                         <td><?php echo htmlspecialchars($user['email']); ?></td>
                         <td><?php echo htmlspecialchars($formattedDate . ' ' . $formattedTime); ?></td>
+                        <td><?php echo htmlspecialchars($user['warning_level']); ?></td>
+                        <td><?php echo htmlspecialchars($user['ban_level']); ?></td>
                         <td><?php echo htmlspecialchars($user['report_count']); ?></td>
                         <td>
                         <?php if ($user['report_count'] > 0): ?>

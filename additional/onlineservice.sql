@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 14, 2024 at 05:18 AM
+-- Generation Time: Aug 15, 2024 at 12:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `admin` (
   `admin_id` int(11) NOT NULL,
-  `username` varchar(50) NOT NULL,
+  `username` varchar(255) NOT NULL,
   `password_hash` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -60,7 +60,9 @@ CREATE TABLE `comments` (
 
 INSERT INTO `comments` (`comment_id`, `post_id`, `user_no`, `comment_text`, `timestamp`) VALUES
 (1, 23, 48, 'Inaantok na\'ko 2ll', '2024-08-12 15:51:35'),
-(2, 25, 49, 'hi', '2024-08-13 14:15:34');
+(2, 25, 49, 'hi', '2024-08-13 14:15:34'),
+(3, 24, 49, 'hi', '2024-08-14 07:22:56'),
+(4, 24, 49, 'yow', '2024-08-14 07:23:06');
 
 -- --------------------------------------------------------
 
@@ -81,12 +83,13 @@ CREATE TABLE `heart_reactions` (
 --
 
 INSERT INTO `heart_reactions` (`reaction_id`, `post_id`, `user_no`, `reaction_type`, `timestamp`) VALUES
-(4, 23, 48, '', '2024-08-12 15:42:54'),
 (6, 24, 49, '', '2024-08-13 11:14:27'),
 (7, 25, 49, '', '2024-08-13 11:14:41'),
 (8, 23, 49, '', '2024-08-13 11:15:40'),
-(9, 25, 48, '', '2024-08-13 11:44:07'),
-(10, 24, 48, '', '2024-08-13 11:44:40');
+(31, 27, 48, '', '2024-08-15 09:56:51'),
+(64, 24, 48, '', '2024-08-15 09:57:19'),
+(65, 25, 48, '', '2024-08-15 09:57:22'),
+(66, 23, 48, '', '2024-08-15 09:57:25');
 
 -- --------------------------------------------------------
 
@@ -98,10 +101,27 @@ CREATE TABLE `notifications` (
   `notification_id` int(11) NOT NULL,
   `user_no` int(11) DEFAULT NULL,
   `admin_id` int(11) DEFAULT NULL,
+  `comment_id` int(11) DEFAULT NULL,
+  `reaction_id` int(11) DEFAULT NULL,
+  `post_id` int(11) DEFAULT NULL,
+  `ban_id` int(11) DEFAULT NULL,
+  `warning_id` int(11) DEFAULT NULL,
+  `notification_photo` varchar(255) NOT NULL,
+  `notification_caption` varchar(255) NOT NULL,
   `notification_type` enum('warning','ban') DEFAULT NULL,
   `notification_text` varchar(255) DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`notification_id`, `user_no`, `admin_id`, `comment_id`, `reaction_id`, `post_id`, `ban_id`, `warning_id`, `notification_photo`, `notification_caption`, `notification_type`, `notification_text`, `timestamp`) VALUES
+(9, 48, 1, NULL, NULL, NULL, NULL, NULL, '', 'Welcome to CvS tagram', 'warning', '\r\n            Subject: Warning: Violation of Community Standards\r\n\r\n            Dear John Paul Naag,\r\n\r\n            We hope this message finds you well. This is a formal warning regarding recent activity on your account that has been found to be in violat', '2024-08-15 09:16:22'),
+(10, 49, 1, NULL, NULL, NULL, NULL, NULL, '5a91e8359f415e730c4ed61965ce7023.jpg', 'qwer', 'warning', '\r\n            Subject: Warning: Violation of Community Standards\r\n\r\n            Dear A A,\r\n\r\n            We hope this message finds you well. This is a formal warning regarding recent activity on your account that has been found to be in violation of our ', '2024-08-15 09:17:03'),
+(11, 49, 1, NULL, NULL, NULL, NULL, NULL, '5a91e8359f415e730c4ed61965ce7023.jpg', 'qwer', 'warning', '\r\n            Subject: Warning: Violation of Community Standards\r\n\r\n            Dear A A,\r\n\r\n            We hope this message finds you well. This is a formal warning regarding recent activity on your account that has been found to be in violation of our ', '2024-08-15 09:17:21'),
+(12, 49, 1, NULL, NULL, NULL, NULL, NULL, '5a91e8359f415e730c4ed61965ce7023.jpg', 'qwer', 'warning', '\r\n            Subject: Warning: Violation of Community Standards\r\n\r\n            Dear A A,\r\n\r\n            We hope this message finds you well. This is a formal warning regarding recent activity on your account that has been found to be in violation of our ', '2024-08-15 09:17:42');
 
 -- --------------------------------------------------------
 
@@ -126,7 +146,9 @@ CREATE TABLE `posts` (
 INSERT INTO `posts` (`post_id`, `user_no`, `relation`, `services`, `caption`, `postphoto`, `timestamp`) VALUES
 (23, 48, 'bothrelati', 'bothservic', 'Welcome to CvS tagram', '', '2024-08-12 15:42:25'),
 (24, 49, 'bothrelati', 'bothservic', 'qwer', '5a91e8359f415e730c4ed61965ce7023.jpg', '2024-08-13 11:14:25'),
-(25, 49, 'bothrelati', 'bothservic', '', 'Cavite_State_University_(CvSU).png', '2024-08-13 11:14:39');
+(25, 49, 'bothrelati', 'bothservic', '', 'Cavite_State_University_(CvSU).png', '2024-08-13 11:14:39'),
+(26, 48, 'bothrelati', 'bothservic', 'pang', 'sova.png', '2024-08-15 09:56:09'),
+(27, 48, 'bothrelati', 'bothservic', 'qwer', '', '2024-08-15 09:56:49');
 
 -- --------------------------------------------------------
 
@@ -152,7 +174,8 @@ INSERT INTO `post_reports` (`report_id`, `post_id`, `user_no`, `reporter_user_no
 (19, 23, 48, 49, 'Misleading or scam', '2024-08-13 14:13:29'),
 (20, 23, 48, 49, 'Spam', '2024-08-13 22:46:40'),
 (21, 25, 49, 48, 'Violence', '2024-08-13 22:47:09'),
-(22, 23, 48, 49, 'Other', '2024-08-14 03:16:12');
+(22, 23, 48, 49, 'Other', '2024-08-14 03:16:12'),
+(23, 24, 49, 48, 'Other', '2024-08-14 07:26:26');
 
 -- --------------------------------------------------------
 
@@ -183,6 +206,20 @@ INSERT INTO `schedules` (`schedule_id`, `user_no`, `date_start`, `date_end`, `st
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `user_bans`
+--
+
+CREATE TABLE `user_bans` (
+  `ban_id` int(11) NOT NULL,
+  `user_no` int(11) NOT NULL,
+  `ban_level` int(11) NOT NULL,
+  `ban_start_date` date NOT NULL,
+  `ban_end_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_registration`
 --
 
@@ -209,23 +246,30 @@ CREATE TABLE `user_registration` (
 --
 
 INSERT INTO `user_registration` (`user_no`, `user_ip`, `user_ID`, `email`, `student_no`, `fname`, `lname`, `bday`, `gender`, `coverphoto`, `profilepicture`, `created_at`, `updated_at`, `user_password`, `is_setup_complete`) VALUES
-(48, '192.168.100.5', '@john_paul206', 'tmc.test2@cvsu.edu.ph', '2022-100-0349', 'John Paul', 'Naag', '2024-08-13', 'prefered-not-to-say', 'FB_IMG_1718520279758.jpg', 'IMG_20230313_190514.jpg', '2024-08-12 15:30:04', '2024-08-13 12:07:04', '$2y$10$WI8U3eFCMvKvhVScEiOeq.s2hcqNRwLF5R//ERrsKn9N9kJUJ165G', 0),
-(49, '::1', '@a900', 'tmc.test@cvsu.edu.ph', '2022-100-0341', 'A', 'A', '2024-08-08', 'Female', '', '', '2024-08-13 11:02:55', '2024-08-13 13:50:15', '$2y$10$Vk7EzS8cORaYUDBpkZS.OuuXiLORZJHoHrGiNC50GXhk0nbm3S5LW', 0);
+(48, '192.168.100.5', '@john_paul206', 'tmc.test2@cvsu.edu.ph', '2022-100-0349', 'John Paul', 'Naag', '2024-08-13', 'prefered-not-to-say', 'default_coverphoto.jpg', 'IMG_20230313_190514.jpg', '2024-08-12 15:30:04', '2024-08-14 07:28:47', '$2y$10$WI8U3eFCMvKvhVScEiOeq.s2hcqNRwLF5R//ERrsKn9N9kJUJ165G', 0),
+(49, '::1', '@a900', 'tmc.test@cvsu.edu.ph', '2022-100-0341', 'A', 'A', '2024-08-08', 'Female', '', 'profile.jpg', '2024-08-13 11:02:55', '2024-08-14 07:23:18', '$2y$10$Vk7EzS8cORaYUDBpkZS.OuuXiLORZJHoHrGiNC50GXhk0nbm3S5LW', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_restrictions`
+-- Table structure for table `user_warnings`
 --
 
-CREATE TABLE `user_restrictions` (
-  `restrictions_id` int(11) NOT NULL,
-  `user_no` int(11) DEFAULT NULL,
-  `admin_id` int(11) DEFAULT NULL,
-  `warning_count` int(11) DEFAULT 0,
-  `banned` tinyint(1) DEFAULT 0,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+CREATE TABLE `user_warnings` (
+  `warning_id` int(11) NOT NULL,
+  `user_no` int(11) NOT NULL,
+  `warning_level` int(11) NOT NULL DEFAULT 1,
+  `issue_date` date NOT NULL,
+  `reset_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_warnings`
+--
+
+INSERT INTO `user_warnings` (`warning_id`, `user_no`, `warning_level`, `issue_date`, `reset_date`) VALUES
+(8, 48, 1, '2024-08-15', '2024-08-30'),
+(9, 49, 3, '2024-08-15', '2024-08-30');
 
 --
 -- Indexes for dumped tables
@@ -235,8 +279,7 @@ CREATE TABLE `user_restrictions` (
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
-  ADD PRIMARY KEY (`admin_id`),
-  ADD UNIQUE KEY `username` (`username`);
+  ADD PRIMARY KEY (`admin_id`);
 
 --
 -- Indexes for table `comments`
@@ -260,7 +303,12 @@ ALTER TABLE `heart_reactions`
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`notification_id`),
   ADD KEY `user_no` (`user_no`),
-  ADD KEY `admin_id` (`admin_id`);
+  ADD KEY `admin_id` (`admin_id`),
+  ADD KEY `comment_id` (`comment_id`),
+  ADD KEY `reaction_id` (`reaction_id`),
+  ADD KEY `post_id` (`post_id`),
+  ADD KEY `ban_id` (`ban_id`),
+  ADD KEY `warning_id` (`warning_id`);
 
 --
 -- Indexes for table `posts`
@@ -286,6 +334,13 @@ ALTER TABLE `schedules`
   ADD KEY `fk_user_no` (`user_no`);
 
 --
+-- Indexes for table `user_bans`
+--
+ALTER TABLE `user_bans`
+  ADD PRIMARY KEY (`ban_id`),
+  ADD KEY `user_no` (`user_no`);
+
+--
 -- Indexes for table `user_registration`
 --
 ALTER TABLE `user_registration`
@@ -295,12 +350,11 @@ ALTER TABLE `user_registration`
   ADD UNIQUE KEY `student_no` (`student_no`);
 
 --
--- Indexes for table `user_restrictions`
+-- Indexes for table `user_warnings`
 --
-ALTER TABLE `user_restrictions`
-  ADD PRIMARY KEY (`restrictions_id`),
-  ADD KEY `user_no` (`user_no`),
-  ADD KEY `admin_id` (`admin_id`);
+ALTER TABLE `user_warnings`
+  ADD PRIMARY KEY (`warning_id`),
+  ADD KEY `user_no` (`user_no`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -310,43 +364,49 @@ ALTER TABLE `user_restrictions`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `heart_reactions`
 --
 ALTER TABLE `heart_reactions`
-  MODIFY `reaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `reaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `post_reports`
 --
 ALTER TABLE `post_reports`
-  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `user_bans`
+--
+ALTER TABLE `user_bans`
+  MODIFY `ban_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_registration`
@@ -355,10 +415,10 @@ ALTER TABLE `user_registration`
   MODIFY `user_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
--- AUTO_INCREMENT for table `user_restrictions`
+-- AUTO_INCREMENT for table `user_warnings`
 --
-ALTER TABLE `user_restrictions`
-  MODIFY `restrictions_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `user_warnings`
+  MODIFY `warning_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
@@ -382,8 +442,13 @@ ALTER TABLE `heart_reactions`
 -- Constraints for table `notifications`
 --
 ALTER TABLE `notifications`
-  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`),
-  ADD CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`);
+  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`) ON DELETE SET NULL,
+  ADD CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `notifications_ibfk_3` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`comment_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `notifications_ibfk_4` FOREIGN KEY (`reaction_id`) REFERENCES `heart_reactions` (`reaction_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `notifications_ibfk_5` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `notifications_ibfk_6` FOREIGN KEY (`ban_id`) REFERENCES `user_bans` (`ban_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `notifications_ibfk_7` FOREIGN KEY (`warning_id`) REFERENCES `user_warnings` (`warning_id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `posts`
@@ -406,11 +471,16 @@ ALTER TABLE `schedules`
   ADD CONSTRAINT `fk_user_no` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `user_restrictions`
+-- Constraints for table `user_bans`
 --
-ALTER TABLE `user_restrictions`
-  ADD CONSTRAINT `user_restrictions_ibfk_1` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`),
-  ADD CONSTRAINT `user_restrictions_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`);
+ALTER TABLE `user_bans`
+  ADD CONSTRAINT `user_bans_ibfk_1` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `user_warnings`
+--
+ALTER TABLE `user_warnings`
+  ADD CONSTRAINT `user_warnings_ibfk_1` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

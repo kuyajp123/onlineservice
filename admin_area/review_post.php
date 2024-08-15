@@ -196,6 +196,7 @@ $reports = $stmt->get_result();
     <div class="container mt-4">
         <a href="../admin_area/list_of_users.php">Back</a>
         <h1>Reported Posts for User <?php echo htmlspecialchars($user_no); ?></h1>
+        <a href="admin_action.php?user_no=<?php echo htmlspecialchars($user_no); ?>"><button class="btn btn-primary">Action</button></a>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>

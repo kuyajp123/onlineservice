@@ -7,6 +7,11 @@ session_start();
 // }
 require_once '../include/connect.php';
 require_once '../include/bootsrap.php';
+require_once '../functions/common_function.php';
+
+$admin = $_SESSION['admin'];
+$admin_id = $_SESSION['admin_id'];
+$admin_password = $_SESSION['admin_password'];
 
 $user_no = isset($_GET['user_no']) ? $_GET['user_no'] : null;
 
@@ -36,6 +41,135 @@ $coverPhotoBasePath = '/onlineservice/users/images/coverphoto/';
 // Define default images
 $defaultProfilePic = 'profile.jpg';
 $defaultCoverPhoto = 'default_coverphoto.jpg';
+
+
+$admin_id = $_SESSION['admin_id']; // Retrieve admin ID from the session
+$user_no = isset($_GET['user_no']) ? $_GET['user_no'] : ''; // Retrieve user_no from URL parameter
+
+$warn_pass = '';
+$warn_post_id = '';
+$error = '';
+
+if(isset($_POST['submit_warn'])){
+    $warn_pass = $_POST['warn_pass'];
+    $warn_post_id = $_POST['warn_post_id'];
+
+    if($warn_pass == $admin_password){
+
+        //getting the count user_warnings including post and post_reports to insert notif and warning level
+        $query = 'SELECT ur.fname, ur.lname, 
+            p.post_id, p.caption, p.postphoto, p.timestamp, 
+            pr.report_reason, pr.report_date,
+            uw.warning_id, uw.reset_date, uw.warning_level
+            FROM user_registration ur
+            LEFT JOIN posts p ON ur.user_no = p.user_no
+            LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
+            LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
+            WHERE pr.post_id = ?
+            GROUP BY ur.user_no';
+
+        $stmt = $con->prepare($query);
+        $stmt->bind_param('i', $warn_post_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        if($result->num_rows > 0){
+
+            $timestamp = htmlspecialchars($user['report_date']);
+            $report_date = new DateTime($timestamp);
+
+            $formattedReportDate = $report_date->format('F j, Y'); // e.g., July 24, 2023
+            $formattedReportTime= $report_date->format('g:i a'); // e.g., 6:27 pm
+
+            $msgwarning = "
+            Subject: Warning: Violation of Community Standards
+
+            Dear ".$user['fname']." ".$user['lname'].",
+
+            We hope this message finds you well. This is a formal warning regarding recent activity on your account that has been found to be in violation of our community standards.
+
+            Violation Details:
+
+            Date: $formattedReportDate
+            Description: [Brief description of the violation]
+            Community Standard Violated: ".$user['report_reason']."
+            As this is a serious matter, we ask that you review our community guidelines to ensure that your future actions align with our standards. Repeated violations may result in further action, including temporary suspension or permanent banning of your account.
+
+            Please note that this warning will be recorded in your account history. Should you receive additional warnings, the consequences may escalate as outlined in our community guidelines.
+
+            If you believe this warning was issued in error, or if you have any questions, you may contact our support team at [support contact information] within the next 7 days.
+
+            We value your participation in our community and hope to see you continue to contribute positively.
+
+            Thank you for your attention to this matter.
+
+            Best regards,
+            CvStagram Team
+            ";
+
+            $caption = $user['caption'];
+            $postphoto = $user['postphoto'];
+
+            // Prepare the INSERT query with placeholders
+            $sql = "INSERT INTO notifications (user_no, admin_id, notification_photo, notification_caption, notification_type, notification_text, timestamp) VALUES (?, ?, ?, ?, 'warning', ?, NOW())";
+
+            $stmt2 = $con->prepare($sql);
+            $stmt2->bind_param('iisss', $user_no, $admin_id, $postphoto, $caption, $msgwarning);
+            if($stmt2->execute()) {
+                echo "Notification inserted successfully.";
+            } else {
+                echo "Error inserting notification: " . $stmt2->error;
+            }
+
+            $current_date = date('Y-m-d');
+            $warning_level = $user['warning_level'];
+            $reset_date = $user['reset_date'];
+            
+            // increment the warning_level
+            if ($warning_level == 0 || $current_date <= $reset_date) {
+                $warning_level++;
+            }
+
+
+            $query = "select * from user_warnings where user_no = ?";
+            $stmt2 = $con->prepare($query);
+            $stmt2->bind_param("i", $user_no,);
+            $stmt2->execute();
+            $result2 = $stmt2->get_result();
+
+            if( $result2->num_rows === 0){
+                $query2 = "INSERT INTO `user_warnings` (`user_no`, `warning_level`, `issue_date`, `reset_date`)
+                        VALUES (?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 15 DAY))";
+            
+                $stmt3 = $con->prepare($query2);
+                $stmt3->bind_param('ii', $user_no, $warning_level);
+                if ($stmt3->execute()) {
+                    echo "Warning inserted successfully.";
+                } else {
+                    echo "Error inserting warning: " . $stmt3->error;
+                }
+            }else{
+                $warning_id = $user['warning_id'];
+
+                $query_update = "UPDATE `user_warnings` SET `warning_level` = ?, `reset_date` = DATE_ADD(CURDATE(), INTERVAL 15 DAY) WHERE `user_no` = ? AND `warning_id` = ?";
+                $stmt_update = $con->prepare($query_update);
+                $stmt_update->bind_param('iii', $warning_level, $user_no, $warning_id);
+                if ($stmt_update->execute()) {
+                    echo "User warning level updated successfully.";
+                } else {
+                    echo "Error updating user warning level: " . $stmt_update->error;
+                }
+            }
+
+        } else {
+            $error = 'Theres no data retrieved';
+        }
+    } else {
+        $error = 'password didn\'t match';
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -181,6 +315,7 @@ $defaultCoverPhoto = 'default_coverphoto.jpg';
         <div class="container-fluid content">
             <div class="container-fluid actionbod">
                 <div class="container-fluid actionbodchild">
+                <a href="review_post.php?user_no=<?php echo htmlspecialchars($user_no) ?>">Back</a>
                     <?php if ($row) { 
                         // Determine the profile and cover photo paths
                         $profilePicPath = !empty($row['profilepicture']) ? $profilePicBasePath . $row['profilepicture'] : $profilePicBasePath . $defaultProfilePic;
@@ -220,42 +355,29 @@ $defaultCoverPhoto = 'default_coverphoto.jpg';
                     
                     <div class="container-fluid doaction">
                         <!-- Form for warning a user -->
-                        <form action="" method="post">
+
                             <div class="container-fluid warndiv">
                                 <div class="container-fluid warning">
-                                    <button type="submit" name="submit_warn" class="btn btn-warning">Warn</button>
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"  class="btn btn-warning" data-user-no="<?php echo htmlspecialchars($user_no); ?>" data-admin-id="<?php echo htmlspecialchars($admin_id); ?>">Warn</button>
                                 </div>
                                 <div class="container-fluid optionalmessage">
-                                    <div class="form-floating" style="width:100%;">
-                                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                                        <label for="floatingTextarea2">Optional warning message</label>
-                                    </div>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2" class="btn btn-danger" data-user-no="<?php echo htmlspecialchars($user_no); ?>" data-admin-id="<?php echo htmlspecialchars($admin_id); ?>">Ban</button>
+                                    
                                 </div>
                             </div>
-                        </form>
+  
 
                         <!-- Form for banning a user -->
-                        <form action="" method="post">
                             <div class="container-fluid bandiv">
                                 <div class="container-fluid warning">
-                                    <button type="submit" name="submit_ban" class="btn btn-danger">Ban</button>
-                                    <select name="ban_type" class="form-select" aria-label="Default select example">
-                                        <option value="0" selected>Choose ban type</option>
-                                        <option value="1">Ban for 7 Days</option>
-                                        <option value="2">Ban for 30 Days</option>
-                                        <option value="3">Permanently ban</option>
-                                    </select>
                                     
                                 </div>
                                 <div class="container-fluid optionalmessage">
-                                    <div class="form-floating" style="width:100%;">
-                                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                                        <label for="floatingTextarea2">Optional Ban message</label>
-                                    </div>
+
                                 </div>
                                 
                             </div>
-                        </form>
+
                     </div>
 
 
@@ -266,6 +388,77 @@ $defaultCoverPhoto = 'default_coverphoto.jpg';
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Warn user</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <form action="" method="post">
+            <input type="hidden" name="user_no" value="<?php echo htmlspecialchars($user_no) ?>">
+          <input type="hidden" name="admin_id" value="<?php echo htmlspecialchars($admin_id) ?>">
+      </div>
+      <div class="modal-body">
+          
+        <div class="container-fluid warnmodalbod">
+            Enter post ID
+            <div class="container-fluid">
+                <input type="text" class="form-control" name="warn_post_id">
+            </div>
+            Enter your password to confirm
+            <input type="password" name="warn_pass" class="form-control">
+        </div>  
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" name="submit_warn" class="btn btn-primary">Save changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal2 -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Ban user</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <form action="" method="post">
+        <input type="hidden" name="user_no" value="<?php echo htmlspecialchars($user_no) ?>">
+        <input type="hidden" name="admin_id" value="<?php echo htmlspecialchars($admin_id) ?>">
+      </div>
+      <div class="modal-body">
+        
+        <div class="container-fluid warnmodalbod">
+            
+                                    <select name="ban_type" class="form-select" aria-label="Default select example">
+                                        <option value="0" selected>Choose ban type</option>
+                                        <option value="1">Ban for 7 Days</option>
+                                        <option value="2">Ban for 30 Days</option>
+                                        <option value="3">Permanently ban</option>
+                                    </select>
+                                    <div class="form-floating" style="width:100%;">
+                                        <textarea class="form-control" placeholder="Leave a comment here" id="banTextarea" style="height: 100px"></textarea>
+                                        <label for="floatingTextarea2">Optional Ban message</label>
+                                    </div>
+            Enter your password to confirm
+            <input type="password" name="ban_pass" class="form-control">
+        </div>  
+          
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" name="submit_ban" class="btn btn-primary">Save changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
 <script>
@@ -312,4 +505,22 @@ $defaultCoverPhoto = 'default_coverphoto.jpg';
     
     // Load the sidenav state when the page loads
     window.onload = loadSidenavState;
+</script>
+<script>
+// Listen for the modal to be shown
+$('#exampleModal, #exampleModal2').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var userNo = button.data('user-no'); // Extract info from data-* attributes
+    var adminId = button.data('admin-id');
+
+    // Now you can use userNo and adminId within the modal
+    console.log("User No: " + userNo);
+    console.log("Admin ID: " + adminId);
+
+    // Example: Set these values in hidden inputs within the modal (if needed)
+    $(this).find('input[name="user_no"]').val(userNo);
+    $(this).find('input[name="admin_id"]').val(adminId);
+});
+
+
 </script>
