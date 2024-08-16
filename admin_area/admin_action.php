@@ -55,21 +55,21 @@ $url = "https://www.facebook.com/CvSUTreceCampus";
 
 if(isset($_POST['submit_warn'])){
     $warn_pass = $_POST['warn_pass'];
-    $warn_post_id = $_POST['warn_post_id'];
+    $user_no = $_POST['user_no'];
+    $warn_post_id = intval($_POST['warn_post_id']);
 
     if($warn_pass == $admin_password){
 
         //getting the count user_warnings including post and post_reports to insert notif and warning level
         $query = 'SELECT ur.fname, ur.lname, 
-            p.post_id, p.caption, p.postphoto, p.timestamp, 
-            pr.report_reason, pr.report_date,
+			p.caption, p.postphoto, p.timestamp, 
+            pr.post_id, pr.report_reason, pr.report_date,
             uw.warning_id, uw.reset_date, uw.warning_level
             FROM user_registration ur
             LEFT JOIN posts p ON ur.user_no = p.user_no
-            LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
+            LEFT JOIN post_reports pr ON p.post_id = pr.post_id
             LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
-            WHERE pr.post_id = ?
-            GROUP BY ur.user_no';
+            WHERE pr.post_id = ?';
 
         $stmt = $con->prepare($query);
         $stmt->bind_param('i', $warn_post_id);
@@ -544,7 +544,7 @@ if(isset($_POST['submit_ban'])){
         <div class="container-fluid warnmodalbod">
             Enter post ID
             <div class="container-fluid">
-                <input type="text" class="form-control" name="warn_post_id">
+                <input type="text" class="form-control" value="<?php echo htmlspecialchars($warn_post_id) ?>" name="warn_post_id">
             </div>
             Enter your password to confirm
             <input type="password" name="warn_pass" class="form-control">
