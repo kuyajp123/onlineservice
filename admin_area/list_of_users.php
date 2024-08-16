@@ -66,7 +66,7 @@ $usersResult = $con->query($usersQuery);
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="">
+                                    <a href="warned_user.php">
                                         <div class="container-fluid listofusers">
                                             <div class="container-fluid listusericon">
                                             <i class="fa-solid fa-circle-exclamation"></i>
@@ -84,7 +84,7 @@ $usersResult = $con->query($usersQuery);
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="">
+                                    <a href="banned_user.php">
                                         <div class="container-fluid Bannedaccounts">
                                             <div class="container-fluid Bannedaccountsicon">
                                             <i class="fa-solid fa-user-slash fa-lg"></i>
@@ -246,8 +246,6 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                     <th scope="col" class="sortable <?php echo ($sort_column == 'student_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('student_no')">Student No<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'email') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('email')">Email<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'created_at') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('created_at')">Created at<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                    <th scope="col" class="sortable <?php echo ($sort_column == 'warning_level') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('warning_level')">Warning level<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                    <th scope="col" class="sortable <?php echo ($sort_column == 'ban_level') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('ban_level')">Ban level<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'report_count') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('report_count')">Reports<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col">Review posts</th>
                     <th scope="col">Action</th>
@@ -271,8 +269,6 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                         <td><?php echo htmlspecialchars($user['student_no']); ?></td>
                         <td><?php echo htmlspecialchars($user['email']); ?></td>
                         <td><?php echo htmlspecialchars($formattedDate . ' ' . $formattedTime); ?></td>
-                        <td><?php echo htmlspecialchars($user['warning_level']); ?></td>
-                        <td><?php echo htmlspecialchars($user['ban_level']); ?></td>
                         <td><?php echo htmlspecialchars($user['report_count']); ?></td>
                         <td>
                         <?php if ($user['report_count'] > 0): ?>

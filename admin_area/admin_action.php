@@ -50,6 +50,9 @@ $warn_pass = '';
 $warn_post_id = '';
 $error = '';
 
+$message_link = "Contact us";
+$url = "https://www.facebook.com/CvSUTreceCampus";
+
 if(isset($_POST['submit_warn'])){
     $warn_pass = $_POST['warn_pass'];
     $warn_post_id = $_POST['warn_post_id'];
@@ -95,33 +98,21 @@ if(isset($_POST['submit_warn'])){
             Date: $formattedReportDate
             Description: Multiple report counts
             Community Standard Violated: ".$user['report_reason']."
+
             As this is a serious matter, we ask that you review our community guidelines to ensure that your future actions align with our standards. Repeated violations may result in further action, including temporary suspension or permanent banning of your account.
 
             Please note that this warning will be recorded in your account history. Should you receive additional warnings, the consequences may escalate as outlined in our community guidelines.
 
-            If you believe this warning was issued was mistake, or if you have any questions, you may contact our support team at [support contact information] and indicate this reference number: $warn_appeal_id within the next 7 days.
+            If you believe this warning was issued in error, or if you have any questions, you may contact our support team at <a href=\"$url\">$message_link</a> and indicate this reference number: $warn_appeal_id within the next 7 days.
 
             We value your participation in our community and hope to see you continue to contribute positively.
 
             Thank you for your attention to this matter.
 
             Best regards,
-            CvStagram Team
+            CvSTagram Team
+            <a href=\"$url\">Visit our Facebook page</a>
             ";
-
-            $caption = $user['caption'];
-            $postphoto = $user['postphoto'];
-
-            // Prepare the INSERT query with placeholders
-            $sql = "INSERT INTO notifications (user_no, admin_id, notification_photo, notification_caption, notification_type, notification_text, timestamp) VALUES (?, ?, ?, ?, 'warning', ?, NOW())";
-
-            $stmt2 = $con->prepare($sql);
-            $stmt2->bind_param('iisss', $user_no, $admin_id, $postphoto, $caption, $msgwarning);
-            if($stmt2->execute()) {
-                echo "Notification inserted successfully.";
-            } else {
-                echo "Error inserting notification: " . $stmt2->error;
-            }
 
             $current_date = date('Y-m-d');
             $warning_level = $user['warning_level'];
@@ -153,14 +144,30 @@ if(isset($_POST['submit_warn'])){
             }else{
                 $warning_id = $user['warning_id'];
 
-                $query_update = "UPDATE `user_warnings` SET 'warn_appeal_id' = '$warn_appeal_id', `warning_level` = ?, `reset_date` = DATE_ADD(CURDATE(), INTERVAL 15 DAY) WHERE `user_no` = ? AND `warning_id` = ?";
+                $query_update = "UPDATE `user_warnings` SET `warn_appeal_id` = ?, `warning_level` = ?, `reset_date` = DATE_ADD(CURDATE(),INTERVAL 15 DAY) WHERE `user_no` = ? AND `warning_id` = ?";
+
                 $stmt_update = $con->prepare($query_update);
-                $stmt_update->bind_param('iii', $warning_level, $user_no, $warning_id);
+                $stmt_update->bind_param('iiii', $warn_appeal_id, $warning_level, $user_no, $warning_id);
+
                 if ($stmt_update->execute()) {
                     echo "User warning level updated successfully.";
                 } else {
                     echo "Error updating user warning level: " . $stmt_update->error;
                 }
+            }
+
+            $caption = $user['caption'];
+            $postphoto = $user['postphoto'];
+
+            // Prepare the INSERT query with placeholders
+            $sql = "INSERT INTO notifications (user_no, admin_id, notification_photo, notification_caption, notification_type, notification_text, timestamp) VALUES (?, ?, ?, ?, 'warning', ?, NOW())";
+
+            $stmt2 = $con->prepare($sql);
+            $stmt2->bind_param('iisss', $user_no, $admin_id, $postphoto, $caption, $msgwarning);
+            if($stmt2->execute()) {
+                echo "Notification inserted successfully.";
+            } else {
+                echo "Error inserting notification: " . $stmt2->error;
             }
 
         } else {
@@ -175,18 +182,18 @@ $ban_type = '';
 $ban_pass = '';
 
 if(isset($_POST['submit_ban'])){
-    $ban_type = $_POST['ban_type'];
+    $ban_type = intval($_POST['ban_type']);
     $ban_pass = $_POST['ban_pass'];
 
-    if($ban_type === 0){
+    if($ban_type == 0){
         $error = 'please choose ban type';
-    }
-    elseif($ban_pass == $admin_password){
+    }else{
         
+        if($ban_pass == $admin_password){
         //getting the count user_warnings including post and to insert notif and banning level
         $query = 'SELECT ur.fname, ur.lname, ur.student_no, ur.email, 
         uw.warning_level, uw.issue_date, uw.reset_date, 
-        ub.ban_level, ub.ban_start_date, ub.ban_end_date
+        ub.ban_id, ub.ban_level, ub.ban_start_date, ub.ban_end_date
         FROM user_registration ur
         LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
         LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
@@ -201,15 +208,29 @@ if(isset($_POST['submit_ban'])){
 
         if($result->num_rows > 0){
             
-            $ban_appeal_id = mt_rand(100000, 999999);
-
             $timestamp = date('Y-m-d');
             $report_date = new DateTime($timestamp);
 
             $formattedReportDate = $report_date->format('F j, Y'); // e.g., July 24, 2023
             $formattedReportTime= $report_date->format('g:i a'); // e.g., 6:27 pm
 
-            // insert if here for ban type and the duration of ban and check if theres existing ban level in user
+            $start_date = new DateTime(); // Today's date
+           
+            //7 days ban
+            if($ban_type == 1){
+                $start_date->add(new DateInterval('P7D'));
+                $end_days_ban = $start_date->format('F j, Y'); // e.g., July 24, 2023
+                $end_days_ban2 = $start_date->format('Y-m-d');
+            }elseif($ban_type == 2){
+                $start_date->add(new DateInterval('P30D'));
+                $end_days_ban = $start_date->format('F j, Y'); // e.g., July 24, 2023
+                $end_days_ban2 = $start_date->format('Y-m-d');
+            }else{
+                $end_days_ban2 = NULL;
+                $end_days_ban = 'Permanent ban';
+            }
+
+            $ban_appeal_id = mt_rand(100000, 999999);
 
             $ban_msg = "
             Subject: Account Suspension Notification
@@ -221,27 +242,70 @@ if(isset($_POST['submit_ban'])){
             Details of Suspension:
 
             Date: $formattedReportDate
-            Violation Reason: Multiple warning counts
-            Ban Level: [e.g., 7 days, 30 days, Permanent]
-            Ban Start Date: [Start Date]
-            Ban End Date: [End Date, if applicable]
-            We take our community standards very seriously and aim to ensure a positive experience for all users. This action was taken following a thorough review of the reports and your recent activity. If you believe this decision was made in error, or if you have any questions regarding this suspension, please contact our support team at [Support Contact Information] for further assistance.
+            Violation Reason: violate community standards
+            Ban Level: $ban_type
+            Ban Start Date: $formattedReportDate
+            Ban End Date: $end_days_ban
+
+            We take our community standards very seriously and aim to ensure a positive experience for all users. This action was taken following a thorough review of the reports and your recent activity. If you believe this decision was made in error, or if you have any questions regarding this suspension, please contact our support team at <a href=\"$url\">$message_link</a> and provide the following reference number for further assistance: $ban_appeal_id.
 
             Please take this time to review our community guidelines to avoid any future issues. We appreciate your understanding and cooperation.
 
             Thank you for your attention to this matter.
 
             Best regards,
-            [Your Company/Team Name]
-            [Contact Information]
+            CvSTagram
+            <a href=\"$url\">Visit our Facebook page</a>
             ";
+
+            if($ban_msg){
+
+                $query = "SELECT * FROM `user_bans` WHERE ban_id = ? and user_no = ?";
+                $stmt = $con->prepare($query);
+                $stmt->bind_param("ii", $user['ban_id'], $user_no);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                
+                if($result->num_rows > 0){
+                    $sql = "UPDATE user_bans set ban_level = ?, ban_start_date = ?, ban_end_date = ? where user_no = ? and ban_id = ?";
+                    $stmt = $con->prepare($sql);
+                    $stmt->bind_param("issii", $ban_type, $timestamp, $end_days_ban2, $user_no, $user['ban_id']);
+                    
+                    if($stmt->execute()){
+                        echo  'Successfully updated';
+                    }
+                }else{
+                    $sql = "INSERT INTO user_bans (user_no, ban_level, ban_start_date, ban_end_date) values (?,?,?,?)";
+                    $stmt = $con->prepare($sql);
+                    $stmt->bind_param("iiss", $user_no, $ban_type, $timestamp, $end_days_ban2);
+                    
+                    if($stmt->execute() ){
+                        echo "Successfully inserted";
+                    }
+                }
+                
+            }else{
+                $error = 'no message contructed';
+            }
+
+            $sql = "INSERT INTO notifications (user_no, admin_id, notification_type, notification_text, timestamp) VALUES (?, ?, 'ban', ?, NOW())";
+
+            $stmt2 = $con->prepare($sql);
+            $stmt2->bind_param('iis', $user_no, $admin_id, $ban_msg);
+            
+            if ($stmt2->execute()) {
+                echo "Notification inserted successfully.";
+            } else {
+                echo "Error inserting notification: " . $stmt2->error;
+            }
+
         }else{
             $error = 'no users found';
         }
-
-
     }else{
-        $error = 'password didnt match';
+        $error = 'Password didnt match';
+    }
+
     }
     
 }
@@ -263,7 +327,7 @@ if(isset($_POST['submit_ban'])){
             <div class="container-fluid" >
                 <a class="navbar-brand" href="#">
                 <img src="../images/Cavite_State_University_(CvSU).png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-                CvS Tagram
+                CvSTagram
                 </a>
             </div>
         </nav>
@@ -297,7 +361,7 @@ if(isset($_POST['submit_ban'])){
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="">
+                                    <a href="warned_user.php">
                                         <div class="container-fluid listofusers">
                                             <div class="container-fluid listusericon">
                                             <i class="fa-solid fa-circle-exclamation"></i>
@@ -315,7 +379,7 @@ if(isset($_POST['submit_ban'])){
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="">
+                                    <a href="banned_user.php">
                                         <div class="container-fluid Bannedaccounts">
                                             <div class="container-fluid Bannedaccountsicon">
                                             <i class="fa-solid fa-user-slash fa-lg"></i>
