@@ -216,6 +216,7 @@ $totalRecords = $totalResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRecords / $rows_per_page);
 ?>
     <div class="container mt-4 ">
+        <h1>BANNED USERS</h1>
         <div class="container-fluid operations">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

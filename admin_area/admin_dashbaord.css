@@ -226,6 +226,7 @@ ul, li, a {
 .actionbod{
     height: 100%;
     width: 100%;
+
     
 }
 .actionbodchild{
@@ -280,6 +281,9 @@ ul, li, a {
     height: 35%;
     width: 100%;
     margin-left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .name,.email,.student_no{
     display: flex;
@@ -294,13 +298,23 @@ ul, li, a {
     align-items: center;
     justify-content: center;
     gap: 10px;
+   
 }
-.optionalmessage,.warning{
+.optionalmessage{
     height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
+    flex-direction: column;
+    gap: 10px;
+}
+.warning{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     flex-direction: column;
     gap: 10px;
 }
@@ -310,4 +324,22 @@ ul, li, a {
     justify-content: center;
     flex-direction: column;
     gap: 15px;
+}
+.warning2{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+.optionalmessage2{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
 }

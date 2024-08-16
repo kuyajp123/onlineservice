@@ -18,9 +18,14 @@ $user_no = isset($_GET['user_no']) ? $_GET['user_no'] : null;
 // Query to fetch user information and report count
 $userQuery = 'SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, 
                      ur.profilepicture, ur.coverphoto, 
-                     IFNULL(COUNT(pr.report_id), 0) AS report_count 
+                     IFNULL(COUNT(pr.report_id), 0) AS report_count,
+                     uw.*, ub.*,
+                     IF(COUNT(uw.warning_id) > 0, 1, 0) AS has_warning,
+           			 IF(COUNT(ub.ban_id) > 0, 1, 0) AS has_ban
               FROM user_registration ur
               LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
+              LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
+              LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
               WHERE ur.user_no = ?
               GROUP BY ur.user_no';
 
@@ -69,7 +74,7 @@ if(isset($_POST['submit_warn'])){
             LEFT JOIN posts p ON ur.user_no = p.user_no
             LEFT JOIN post_reports pr ON p.post_id = pr.post_id
             LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
-            WHERE pr.post_id = ?';
+            WHERE pr.report_id = ?';
 
         $stmt = $con->prepare($query);
         $stmt->bind_param('i', $warn_post_id);
@@ -92,6 +97,8 @@ if(isset($_POST['submit_warn'])){
             Dear ".$user['fname']." ".$user['lname'].",
 
             We hope this message finds you well. This is a formal warning regarding recent activity on your account that has been found to be in violation of our community standards.
+
+            <h2>$warn_appeal_id</h2>
 
             Violation Details:
 
@@ -239,6 +246,8 @@ if(isset($_POST['submit_ban'])){
 
             We hope this message finds you well. This email is to inform you that your account has been suspended due to a violation of our community guidelines.
 
+            <h2>$ban_appeal_id</h2>
+
             Details of Suspension:
 
             Date: $formattedReportDate
@@ -267,17 +276,20 @@ if(isset($_POST['submit_ban'])){
                 $result = $stmt->get_result();
                 
                 if($result->num_rows > 0){
-                    $sql = "UPDATE user_bans set ban_level = ?, ban_start_date = ?, ban_end_date = ? where user_no = ? and ban_id = ?";
+                    $sql = "UPDATE user_bans 
+                            SET ban_appeal_id = ?, ban_level = ?, ban_start_date = ?, ban_end_date = ? 
+                            WHERE user_no = ? AND ban_id = ?";
                     $stmt = $con->prepare($sql);
-                    $stmt->bind_param("issii", $ban_type, $timestamp, $end_days_ban2, $user_no, $user['ban_id']);
+                    $stmt->bind_param("iissii", $ban_appeal_id, $ban_type, $timestamp, $end_days_ban2, $user_no, $user['ban_id']);
+
                     
                     if($stmt->execute()){
                         echo  'Successfully updated';
                     }
                 }else{
-                    $sql = "INSERT INTO user_bans (user_no, ban_level, ban_start_date, ban_end_date) values (?,?,?,?)";
+                    $sql = "INSERT INTO user_bans (user_no, ban_appeal_id, ban_level, ban_start_date, ban_end_date) values (?,?,?,?,?)";
                     $stmt = $con->prepare($sql);
-                    $stmt->bind_param("iiss", $user_no, $ban_type, $timestamp, $end_days_ban2);
+                    $stmt->bind_param("iiiss", $user_no, $ban_appeal_id, $ban_type, $timestamp, $end_days_ban2);
                     
                     if($stmt->execute() ){
                         echo "Successfully inserted";
@@ -474,6 +486,11 @@ if(isset($_POST['submit_ban'])){
                     <div class="container-fluid profilephotobod">
                         <div class="row ko">
                             <div class="container-fluid name">
+                                User no: <?php echo htmlspecialchars($row['user_no']); ?>
+                            </div>
+                        </div>
+                        <div class="row ko">
+                            <div class="container-fluid name">
                                 Name: <?php echo htmlspecialchars($row['fname'] . ' ' . $row['lname']); ?>
                             </div>
                         </div>
@@ -508,15 +525,26 @@ if(isset($_POST['submit_ban'])){
   
 
                         <!-- Form for banning a user -->
-                            <div class="container-fluid bandiv">
-                                <div class="container-fluid warning">
-                                    
+                        <div class="container-fluid bandiv">
+                            <?php if($row['has_warning']) { ?>
+                                <div class="container-fluid warning2">
+                                <?php //echo "Warning level: " .$row['warning_level']; ?>
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal3"  class="btn btn-warning" data-user-no="<?php echo htmlspecialchars($user_no); ?>" data-admin-id="<?php echo htmlspecialchars($admin_id); ?>">Remove warning</button>
                                 </div>
-                                <div class="container-fluid optionalmessage">
+                            <?php } else { ?>
+                                <!-- put space if there's no warning -->
+                                <div class="container-fluid empty-warning-space"></div>
+                            <?php } ?>
 
+                            <?php if($row['has_ban']) { ?>
+                                <div class="container-fluid optionalmessage2">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal4" class="btn btn-danger" data-user-no="<?php echo htmlspecialchars($user_no); ?>" data-admin-id="<?php echo htmlspecialchars($admin_id); ?>">Unban</button>
                                 </div>
-                                
-                            </div>
+                            <?php } else { ?>
+                                <!-- put space if there's no ban -->
+                                <div class="container-fluid empty-ban-space"></div>
+                            <?php } ?>
+                        </div>
 
                     </div>
 
@@ -528,73 +556,7 @@ if(isset($_POST['submit_ban'])){
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Warn user</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        <form action="" method="post">
-            <input type="hidden" name="user_no" value="<?php echo htmlspecialchars($user_no) ?>">
-          <input type="hidden" name="admin_id" value="<?php echo htmlspecialchars($admin_id) ?>">
-      </div>
-      <div class="modal-body">
-          
-        <div class="container-fluid warnmodalbod">
-            Enter post ID
-            <div class="container-fluid">
-                <input type="text" class="form-control" value="<?php echo htmlspecialchars($warn_post_id) ?>" name="warn_post_id">
-            </div>
-            Enter your password to confirm
-            <input type="password" name="warn_pass" class="form-control">
-        </div>  
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" name="submit_warn" class="btn btn-primary">Save changes</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal2 -->
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Ban user</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        <form action="" method="post">
-        <input type="hidden" name="user_no" value="<?php echo htmlspecialchars($user_no) ?>">
-        <input type="hidden" name="admin_id" value="<?php echo htmlspecialchars($admin_id) ?>">
-      </div>
-      <div class="modal-body">
-        
-        <div class="container-fluid warnmodalbod">
-            
-                                    <select name="ban_type" class="form-select" aria-label="Default select example">
-                                        <option value="0" selected>Choose ban type</option>
-                                        <option value="1">Ban for 7 Days</option>
-                                        <option value="2">Ban for 30 Days</option>
-                                        <option value="3">Permanently ban</option>
-                                    </select>
-            Enter your password to confirm
-            <input type="password" name="ban_pass" class="form-control">
-        </div>  
-          
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" name="submit_ban" class="btn btn-primary">Save changes</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+<?php include('admin_modal.php') ?>
 </body>
 </html>
 <script>
@@ -644,7 +606,7 @@ if(isset($_POST['submit_ban'])){
 </script>
 <script>
 // Listen for the modal to be shown
-$('#exampleModal, #exampleModal2').on('show.bs.modal', function (event) {
+$('#exampleModal, #exampleModal2, #exampleModal3, #exampleModal4').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget); // Button that triggered the modal
     var userNo = button.data('user-no'); // Extract info from data-* attributes
     var adminId = button.data('admin-id');

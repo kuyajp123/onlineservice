@@ -6,7 +6,7 @@ $con=mysqli_connect('localhost', 'root', '', 'onlineservice');
 //     echo "successfully connected";
 
 
-// $query = "select notification_text from notifications where notification_id = 27";
+// $query = "select notification_text from notifications where notification_id = 32";
 // $stmt = $con->query($query);
 
 // $row = mysqli_fetch_array($stmt);
