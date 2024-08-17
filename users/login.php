@@ -13,6 +13,7 @@ $error = ''; // Initialize error variable
 $ums = ''; // Initialize $ums variable
 $user_password = ''; // Initialize $user_password variable
 $row = null; // Initialize $row variable
+$user_ban = false;
 
 if (isset($_POST['login'])) {
     $ums = $_POST['user'];
@@ -24,25 +25,45 @@ if (isset($_POST['login'])) {
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
+    
 
-    if ($result->num_rows > 0) {
+    if($result->num_rows > 0) {
         if (password_verify($user_password, $row['user_password'])) {
-            $_SESSION['ip'] = getIPAddress();
             $_SESSION['user_no'] = $row['user_no'];
-            $_SESSION['user_ID'] = $row['user_ID'];
-            $_SESSION['email'] = $row['email'];
-            $_SESSION['student_no'] = $row['student_no'];
-            $_SESSION['fname'] = $row['fname'];
-            $_SESSION['lname'] = $row['lname'];
-            $_SESSION['bday'] = $row['bday'];
-            $_SESSION['gender'] = $row['gender'];
-            $_SESSION['user_password'] = $row['user_password'];
-            $_SESSION['profilepicture'] = $row['profilepicture'];
-            $_SESSION['coverphoto'] = $row['coverphoto'];
             $current_user_no = $_SESSION['user_no'];
-            $profilepicture = $_SESSION['profilepicture'];
-            $coverphoto = $_SESSION['coverphoto'];
-            echo "<script>window.open('../index.php?newsfeed=$current_user_no','_self')</script>";
+
+            if(CheckBanStatus($current_user_no)){
+                $user_ban = true;
+
+                $sql = "
+                    SELECT notification_text FROM `notifications` WHERE user_no = ? AND notification_type = 'ban' 
+                    ORDER BY timestamp DESC LIMIT 1";
+
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("i", $current_user_no);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $row = $result->fetch_assoc();
+                $message = $row['notification_text'];
+
+            }else{
+                $_SESSION['ip'] = getIPAddress();         
+                $_SESSION['user_ID'] = $row['user_ID'];
+                $_SESSION['email'] = $row['email'];
+                $_SESSION['student_no'] = $row['student_no'];
+                $_SESSION['fname'] = $row['fname'];
+                $_SESSION['lname'] = $row['lname'];
+                $_SESSION['bday'] = $row['bday'];
+                $_SESSION['gender'] = $row['gender'];
+                $_SESSION['user_password'] = $row['user_password'];
+                $_SESSION['profilepicture'] = $row['profilepicture'];
+                $_SESSION['coverphoto'] = $row['coverphoto'];           
+                $profilepicture = $_SESSION['profilepicture'];
+                $coverphoto = $_SESSION['coverphoto'];
+                echo "<script>window.open('../index.php?newsfeed=$current_user_no','_self')</script>";
+            }
+
+
         } else {
             $error = "Incorrect password.";
         }
@@ -152,3 +173,39 @@ if (isset($_POST['login'])) {
     <script src="../functions/JsFunction.js"></script>
 </body>
 </html>
+<?php if ($user_ban): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalHtml = `
+            <div class="modal fade" id="user_ban" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Account Suspension Notification</h5>
+                        </div>
+                        <div class="modal-body">
+                            <?php echo addslashes($message); ?>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="understandButton" class="btn btn-primary">I understand</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+            var user_ban = new bootstrap.Modal(document.getElementById('user_ban'), {
+                backdrop: 'static',  // Prevents closing the modal by clicking outside
+                keyboard: false      // Prevents closing the modal with the Esc key
+            });
+            user_ban.show();
+
+            // Event listener for "I understand" button
+            document.getElementById('understandButton').addEventListener('click', function() {
+                user_ban.hide();
+            });
+        });
+    </script>
+<?php endif; ?>

@@ -140,7 +140,6 @@ if(isset($_POST['submit'])){
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Register</h1>
-        <!-- <button id="close_button" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
       </div>
       <div class="modal-body">
       <form id="exampleModal" action="" method="post">
@@ -213,7 +212,6 @@ if(isset($_POST['submit'])){
     </div>
   </div>
 </div> 
-
 
 <?php if ($emailInvalid || $studentNoInvalid || $emailExist || $studentNoExist || $conf_user_password): ?>
     <script>

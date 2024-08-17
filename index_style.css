@@ -647,6 +647,102 @@ button{
 
 
 
+/* notifications */
+.notifmodal1{
+  min-height: 40vh;
+  padding: 0;
+  height: auto;
+}
+.nonotif{
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.notifbody{
+  height: 10vh;
+  max-height: 15vh;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.notifbody:hover {
+  background-color: #f0f0f0; /* Change background color on hover */
+}
+.notificonnotifmessage{
+  height: 100%;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  padding: 0;
+}
+.messagelink{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.notificon{
+  height: 100%;
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+ }
+.notifmessage{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  /* flex-wrap: wrap; */
+  padding: 0;
+}
+.notifdots{
+  height: 100%;
+  width: 10vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.notificondots{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.titlenotif{
+height: 40%;
+width: 100%;
+padding: 0;
+font-size: 1.3rem;
+display: flex;
+align-items: center;
+}
+.textnotif{
+  align-items: flex-start;
+  height: 60%;
+  padding: 0;
+  display: block; /* Ensure it's a block element */
+            width: 100%; /* Define a fixed width or max-width */
+            white-space: nowrap; /* Prevent text from wrapping */
+            overflow: hidden; /* Hide overflow */
+            text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+  font-size: .9rem;
+}
+
+
 
 
 

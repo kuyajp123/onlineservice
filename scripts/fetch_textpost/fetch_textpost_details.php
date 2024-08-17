@@ -38,46 +38,58 @@ if (isset($_POST['post_id'])) {
 
         // Prepare dynamic content
         echo "
-        <div class='container-fluid containertextpostpost' data-post-id='" . htmlspecialchars($post_id) . "'>
-            <div class='container-fluid nametextpost'>
-                <div class='container-fluid lgyan'>
-                    <div class='container-fluid prof_pic'>
-                        <div>
-                            <a href='" . ($user_no == $loggedInUserNo ? "users/profile.php?sideprof" : "users/other_profile.php?user_no=" . htmlspecialchars($user_no)) . "' style='font-size:1rem; text-decoration: none; color: black;'>
-                                <img src='users/images/profilepicture/" . htmlspecialchars($profilePic) . "' style='object-fit:contain; width: 40px; height: 40px; border-radius: 50%;' alt=''>
-                            </a>
-                        </div>
-                    </div>
-                    <div class='container-fluid pangalan'>
-                        <div>
-                            <a href='" . ($user_no == $loggedInUserNo ? "users/profile.php?sideprof" : "users/other_profile.php?user_no=" . htmlspecialchars($user_no)) . "' style='font-size:1rem; text-decoration: none; color: black;'>
-                                <span class='pangalantextpost'>" . htmlspecialchars($fname . ' ' . $lname) . "</span>
-                            </a>
-                        </div>
-                        <div>
-                            <small style='font-size:13px;'><span class='timetextpost'>" . htmlspecialchars($formattedDate . ' at ' . $formattedTime) . "</span></small>
-                        </div>
+    <div class='container-fluid containertextpostpost' data-post-id='" . htmlspecialchars($post_id) . "'>
+        <div class='container-fluid nametextpost'>
+            <div class='container-fluid lgyan'>
+                <div class='container-fluid prof_pic'>
+                    <div>
+                        <a href='" . ($user_no == $loggedInUserNo ? "users/profile.php?sideprof" : "users/other_profile.php?user_no=" . htmlspecialchars($user_no)) . "' style='font-size:1rem; text-decoration: none; color: black;'>
+                            <img src='users/images/profilepicture/" . htmlspecialchars($profilePic) . "' style='object-fit:contain; width: 40px; height: 40px; border-radius: 50%;' alt=''>
+                        </a>
                     </div>
                 </div>
-                <div class='container-fluid dots'>
-                    <button>
-                        <div class='container-fluid dot'>
-                            <i class='fa-solid fa-ellipsis fa-xl' style='color: #575b60; font-size:20px;'></i>
-                        </div>
-                    </button>
+                <div class='container-fluid pangalan'>
+                    <div>
+                        <a href='" . ($user_no == $loggedInUserNo ? "users/profile.php?sideprof" : "users/other_profile.php?user_no=" . htmlspecialchars($user_no)) . "' style='font-size:1rem; text-decoration: none; color: black;'>
+                            <span class='pangalantextpost'>" . htmlspecialchars($fname . ' ' . $lname) . "</span>
+                        </a>
+                    </div>
+                    <div>
+                        <small style='font-size:13px;'><span class='timetextpost'>" . htmlspecialchars($formattedDate . ' at ' . $formattedTime) . "</span></small>
+                    </div>
                 </div>
             </div>
-
-            <div class='container-fluid captiontextpost'>
-                <div class='container-fluid textcontainerpost'>
-                    <figure>
-                        <figcaption>" . htmlspecialchars($caption) . "</figcaption>
-                    </figure>
-                </div>
+            <div class='container-fluid dots'>
+                <button class='btn btn-secondary dropdown-toggle bg-white' style='border:none;' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
+                    <i class='fa-solid fa-ellipsis fa-xl' style='color: #575b60; font-size:20px;'></i>
+                </button>
+                <ul class='dropdown-menu'>";
+                    if ($user_no == $loggedInUserNo) {
+                        echo "
+                        <li><a class='dropdown-item' href='#'>Copy post</a></li>
+                        <li><a class='dropdown-item' href='#'>Delete post</a></li>";
+                    } else {
+                        echo "
+                        <li><a class='dropdown-item' href='#' 
+                            data-bs-toggle='modal' 
+                            data-bs-target='#reportmodal2'
+                            data-post-id='" . htmlspecialchars($post_id) . "' 
+                            data-user-no='" . htmlspecialchars($user_no) . "'>Report</a></li>
+                        <li><a class='dropdown-item' href='#'>Copy post</a></li>";
+                    }
+                echo "
+                </ul>
             </div>
+        </div>
+        <div class='container-fluid captiontextpost'>
+            <div class='container-fluid textcontainerpost'>
+                <figure>
+                    <figcaption>" . htmlspecialchars($caption) . "</figcaption>
+                </figure>
+            </div>
+        </div>
+        ";
 
-            
-            ";
     } else {
         echo "Invalid request.";
     }

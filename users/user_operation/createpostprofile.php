@@ -1,6 +1,5 @@
 <!-- post creation -->
 <?php
-
 // Initialize an empty string for error messages
 $error = "";
 $postphoto = "";

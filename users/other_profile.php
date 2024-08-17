@@ -9,6 +9,15 @@ if (!isset($_SESSION['user_ID']) && !isset($_SESSION['email']) && !isset($_SESSI
     exit();
 }
 
+$current_user_no = $_SESSION['user_no'];
+
+if(CheckBanStatus($current_user_no)){
+    session_unset();
+    session_destroy();
+    header("Location: ../users/login.php");
+    exit();
+  }
+
 // Get the user number from query parameters
 $other_user_no = isset($_GET['user_no']) ? intval($_GET['user_no']) : null;
 

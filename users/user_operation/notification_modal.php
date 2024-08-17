@@ -31,13 +31,13 @@ $stmt->close();
 
                     <div class="container-fluid notificon">
                       <!-- Change icon based on notification type -->
-                      <?php if ($notification['type'] == 'warning'): ?>
+                      <?php if ($notification['notification_type'] == 'warning'): ?>
                         <i class="fa-solid fa-triangle-exclamation" style="color: #836a11;"></i>
-                      <?php elseif ($notification['type'] == 'ban'): ?>
+                      <?php elseif ($notification['notification_type'] == 'ban'): ?>
                         <i class="fa-solid fa-circle-exclamation" style="color: #d01b24;"></i>
-                      <?php elseif ($notification['type'] == 'reaction'): ?>
+                      <?php elseif ($notification['notification_type'] == 'reaction'): ?>
                         <i class="fa-solid fa-heart" style="color: #d11f1f;"></i>
-                      <?php elseif ($notification['type'] == 'comment'): ?>
+                      <?php elseif ($notification['notification_type'] == 'comment'): ?>
                         <i class="fa-solid fa-comment" style="color: #1fa836;"></i>
                       <?php else: ?>
                         <i class="fa-solid fa-bell" style="color: #000;"></i> <!-- Default icon -->
@@ -47,11 +47,11 @@ $stmt->close();
                     <div class="container-fluid notifmessage">
                       <!-- Display notification type -->
                       <div class="container-fluid titlenotif">
-                        <?php echo ucfirst($notification['type']); ?>
+                        <?php echo ucfirst($notification['notification_type']); ?>
                       </div>
                       <!-- Display notification text -->
                       <div class="container-fluid text-wrap text-break d-inline-block text-truncate textnotif">
-                        <?php echo htmlspecialchars($notification['message']); ?>
+                        <?php echo htmlspecialchars($notification['notification_text']); ?>
                       </div>
                     </div>
 

@@ -23,7 +23,13 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
   $profilepicture = $_SESSION['profilepicture'];
   $current_user_no = $_SESSION['user_no'];
     
-  
+  if(CheckBanStatus($current_user_no)){
+    session_unset();
+    session_destroy();
+    header("Location: logout.php");
+    exit();
+  }
+
   $query = "SELECT * FROM posts WHERE user_no = ? ORDER BY timestamp DESC";
   $stmt = $con->prepare($query);
   $stmt->bind_param('i', $current_user_no);

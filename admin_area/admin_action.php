@@ -92,34 +92,35 @@ if(isset($_POST['submit_warn'])){
             $formattedReportTime= $report_date->format('g:i a'); // e.g., 6:27 pm
 
             $msgwarning = "
-            Subject: Warning: Violation of Community Standards
+            Subject: Warning: Violation of Community Standards<br><br>
 
-            Dear ".$user['fname']." ".$user['lname'].",
+            Dear ".$user['fname']." ".$user['lname'].",<br><br>
 
-            We hope this message finds you well. This is a formal warning regarding recent activity on your account that has been found to be in violation of our community standards.
+            We hope this message finds you well. This is a formal warning regarding recent activity on your account that has been found to be in violation of our community standards.<br><br>
 
             <h2>$warn_appeal_id</h2>
 
-            Violation Details:
+            Violation Details:<br><br>
 
-            Date: $formattedReportDate
-            Description: Multiple report counts
-            Community Standard Violated: ".$user['report_reason']."
+            Date: $formattedReportDate<br>
+            Description: Multiple report counts<br>
+            Community Standard Violated: ".$user['report_reason']."<br><br>
 
-            As this is a serious matter, we ask that you review our community guidelines to ensure that your future actions align with our standards. Repeated violations may result in further action, including temporary suspension or permanent banning of your account.
+            As this is a serious matter, we ask that you review our community guidelines to ensure that your future actions align with our standards. Repeated violations may result in further action, including temporary suspension or permanent banning of your account.<br><br>
 
-            Please note that this warning will be recorded in your account history. Should you receive additional warnings, the consequences may escalate as outlined in our community guidelines.
+            Please note that this warning will be recorded in your account history. Should you receive additional warnings, the consequences may escalate as outlined in our community guidelines.<br><br>
 
-            If you believe this warning was issued in error, or if you have any questions, you may contact our support team at <a href=\"$url\">$message_link</a> and indicate this reference number: $warn_appeal_id within the next 7 days.
+            If you believe this warning was issued in error, or if you have any questions, you may contact our support team at <a href=\"$url\" target='_blank' style='text-decoration: underline; color:#0000EE;'>$message_link</a> and indicate this reference number: $warn_appeal_id within the next 7 days.<br><br>
 
-            We value your participation in our community and hope to see you continue to contribute positively.
+            We value your participation in our community and hope to see you continue to contribute positively.<br><br>
 
-            Thank you for your attention to this matter.
+            Thank you for your attention to this matter.<br><br>
 
-            Best regards,
-            CvSTagram Team
-            <a href=\"$url\">Visit our Facebook page</a>
+            Best regards,<br>
+            CvSTagram Team<br>
+            <a href=\"$url\" target='_blank' style='text-decoration: underline; color:#0000EE;'>Visit our Facebook page</a><br>
             ";
+
 
             $current_date = date('Y-m-d');
             $warning_level = $user['warning_level'];
@@ -239,32 +240,30 @@ if(isset($_POST['submit_ban'])){
 
             $ban_appeal_id = mt_rand(100000, 999999);
 
-            $ban_msg = "
-            Subject: Account Suspension Notification
+            $ban_msg = "      
+            Dear ".strtoupper($user['fname'])." ".strtoupper($user['lname']).",<br><br>
 
-            Dear ".$user['fname']." ".$user['lname'].",
-
-            We hope this message finds you well. This email is to inform you that your account has been suspended due to a violation of our community guidelines.
+            We hope this message finds you well. This email is to inform you that your account has been suspended due to a violation of our community guidelines.<br><br>
 
             <h2>$ban_appeal_id</h2>
 
-            Details of Suspension:
+            Details of Suspension:<br><br>
 
-            Date: $formattedReportDate
-            Violation Reason: violate community standards
-            Ban Level: $ban_type
-            Ban Start Date: $formattedReportDate
-            Ban End Date: $end_days_ban
+            Date: $formattedReportDate<br>
+            Violation Reason: Violate community standards<br>
+            Ban Level: $ban_type<br>
+            Ban Start Date: $formattedReportDate<br>
+            Ban End Date: $end_days_ban<br><br>
 
-            We take our community standards very seriously and aim to ensure a positive experience for all users. This action was taken following a thorough review of the reports and your recent activity. If you believe this decision was made in error, or if you have any questions regarding this suspension, please contact our support team at <a href=\"$url\">$message_link</a> and provide the following reference number for further assistance: $ban_appeal_id.
+            We take our community standards very seriously and aim to ensure a positive experience for all users. This action was taken following a thorough review of the reports and your recent activity. If you believe this decision was made in error, or if you have any questions regarding this suspension, please contact our support team at <a href=\"$url\" target='_blank' style='text-decoration: underline; color:#0000EE;'>$message_link</a> and provide the following reference number for further assistance: $ban_appeal_id.<br><br>
 
-            Please take this time to review our community guidelines to avoid any future issues. We appreciate your understanding and cooperation.
+            Please take this time to review our community guidelines to avoid any future issues. We appreciate your understanding and cooperation.<br><br>
 
-            Thank you for your attention to this matter.
+            Thank you for your attention to this matter.<br><br>
 
-            Best regards,
-            CvSTagram
-            <a href=\"$url\">Visit our Facebook page</a>
+            Best regards,<br>
+            CvSTagram<br>
+            <a href=\"$url\" target='_blank' style='text-decoration: underline; color:#0000EE;'>Visit our Facebook page</a><br>
             ";
 
             if($ban_msg){
@@ -284,7 +283,8 @@ if(isset($_POST['submit_ban'])){
 
                     
                     if($stmt->execute()){
-                        echo  'Successfully updated';
+                        // echo  'Successfully updated';
+                        echo "<script>window.open('admin_action.php?user_no=" . $user_no . "');</script>";
                     }
                 }else{
                     $sql = "INSERT INTO user_bans (user_no, ban_appeal_id, ban_level, ban_start_date, ban_end_date) values (?,?,?,?,?)";
@@ -292,7 +292,8 @@ if(isset($_POST['submit_ban'])){
                     $stmt->bind_param("iiiss", $user_no, $ban_appeal_id, $ban_type, $timestamp, $end_days_ban2);
                     
                     if($stmt->execute() ){
-                        echo "Successfully inserted";
+                        // echo "Successfully inserted";
+                        // echo "<script>window.open('admin_action.php?user_no=" . $user_no . "');</script>";
                     }
                 }
                 
@@ -306,7 +307,8 @@ if(isset($_POST['submit_ban'])){
             $stmt2->bind_param('iis', $user_no, $admin_id, $ban_msg);
             
             if ($stmt2->execute()) {
-                echo "Notification inserted successfully.";
+                // echo "Notification inserted successfully.";
+                echo "<script>window.open('admin_action.php?user_no=" . $user_no . "');</script>";
             } else {
                 echo "Error inserting notification: " . $stmt2->error;
             }

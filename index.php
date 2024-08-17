@@ -22,6 +22,15 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
   $_SESSION['coverphoto'];
   $current_user_no = $_SESSION['user_no'];
 
+  if(CheckBanStatus($current_user_no)){
+    session_unset();
+    session_destroy();
+    header("Location: users/logout.php");
+    exit();
+  }
+
+  
+
 
   $defaultProfilePicture = 'users/images/profilepicture/profile.jpg';
 
@@ -189,7 +198,7 @@ $rows = $data['rows'];
                           </form>
                         </div>
                         <li><a href="#" data-open-modal="createpost"><div class="container-fluid post">Create post</div></a></li>
-                        <li><a href="additional/under_maitenance.php"><div class="container-fluid notification">Notification</div></a></li>
+                        <li><a href="#" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"><div class="container-fluid notification">Notification</div></a></li>
                         <li><a href="additional/under_maitenance.php"><div class="container-fluid collect">Collection</div></a></li>
                         <li><div class="container-fluid services" style="padding:0;">
                           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><div class="container" >Under construction<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i></div></a>
@@ -327,12 +336,11 @@ endforeach;
 
 <!-- create post modal -->
  <?php include 'users/user_operation/createpostmodal.php'; ?>
+ <?php include 'users/user_operation/notification_modal.php'; ?>
  
 <!-- modal profile -->
 <script src="functions/JsFunction.js"></script>
-<script>
 
-</script>
 </body>
 
 </html>

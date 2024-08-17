@@ -1,5 +1,7 @@
 <?php
+
 if (isset($_POST['submit_sched'])) {
+  
     // Get form data
     $name = $_POST['name'];
     $description = $_POST['description'];
