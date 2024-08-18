@@ -67,6 +67,18 @@ $data = getPosts($con);
 $result = $data['result'];
 $rows = $data['rows'];
 
+
+
+// getting a notification count
+$query = "SELECT COUNT(*) AS unread_count FROM notifications WHERE user_no = ? AND is_opened = 0";
+$stmt = $con->prepare($query);
+$stmt->bind_param("i", $current_user_no);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+
+$unread_count = $row['unread_count'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -180,7 +192,6 @@ $rows = $data['rows'];
         </div>
     </a>
 </div>
-
             
 
                 <div class="container-fluid linesidenav"></div>
@@ -198,7 +209,15 @@ $rows = $data['rows'];
                           </form>
                         </div>
                         <li><a href="#" data-open-modal="createpost"><div class="container-fluid post">Create post</div></a></li>
-                        <li><a href="#" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"><div class="container-fluid notification">Notification</div></a></li>
+                        <li>
+                          <a href="#" class="notification-icon" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
+                            <div class="container-fluid notification">Notification &nbsp;
+                              <?php if ($unread_count > 0): ?>
+                                <span class="badge text-bg-danger"><?= $unread_count ?></span>
+                              <?php endif; ?>
+                            </div>
+                          </a>
+                        </li>
                         <li><a href="additional/under_maitenance.php"><div class="container-fluid collect">Collection</div></a></li>
                         <li><div class="container-fluid services" style="padding:0;">
                           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><div class="container" >Under construction<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i></div></a>
@@ -344,3 +363,74 @@ endforeach;
 </body>
 
 </html>
+<script>
+function updateNotificationCount() {
+    fetch('get_unread_count.php')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Unread count:', data.unread_count);
+            let badge = document.querySelector('.badge');
+            const notificationContainer = document.querySelector('.notification');
+
+            if (data.unread_count > 0) {
+                if (!badge) {
+                    // Badge does not exist, create it
+                    console.log('Badge does not exist, creating new one');
+                    badge = document.createElement('span');
+                    badge.classList.add('badge', 'text-bg-danger');
+                    notificationContainer.appendChild(badge);
+                }
+
+                // Update the badge count and make sure it is visible
+                badge.innerText = data.unread_count;
+                badge.style.display = 'inline-block';
+                badge.style.visibility = 'visible';
+            } else {
+                // If unread_count is 0 and the badge exists, hide it
+                if (badge) {
+                    console.log('No unread notifications, hiding badge');
+                    badge.style.display = 'none';
+                }
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Initial update
+updateNotificationCount();
+
+// Periodic update every 5 seconds
+setInterval(updateNotificationCount, 5000);
+
+// Update notification when read
+function handleNotificationClick(event) {
+    event.preventDefault(); // Prevent the default action
+
+    // Make an AJAX request to update notifications
+    fetch('update_notifications.php')
+        .then(response => response.text())
+        .then(data => {
+            if (data.trim() === 'success') {
+                // Hide the badge after successfully updating the notification status
+                const badges = document.querySelectorAll('.badge');
+                badges.forEach(badge => {
+                    if (badge) {
+                        badge.style.display = 'none';
+                    }
+                });
+            } else {
+                console.error('Failed to update notifications');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Attach event listener to all elements with the notification-icon class
+document.querySelectorAll('.notification-icon').forEach(icon => {
+    icon.addEventListener('click', handleNotificationClick);
+});
+</script>
+
+
+
+

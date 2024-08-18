@@ -1,5 +1,5 @@
 <?php
-include("../functions/follow_user.php");
+// include("../functions/follow_user.php");
 ?>
 
 <!-- <div class="container-fluid follow">

@@ -42,6 +42,12 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
       $posts[] = $post;
   }
 
+  $query2 = "SELECT * FROM user_warnings WHERE user_no = ?";
+  $stmt2 = $con->prepare($query2);
+  $stmt2->bind_param('i', $current_user_no);
+  $stmt2->execute();
+  $result2 = $stmt2->get_result();
+
 
 ?>
 
@@ -151,7 +157,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 
             <div class="container-fluid grid3">
                 <div class="container-fluid rightnav">
-                    <div class="container-fluid rightnavcont"><!-- mobile device -->
+                    <div class="container-fluid rightnavcont">
                         <div class="container-fluid displayprof">
 
                             <div class="container-fluid settingsicon">
@@ -191,7 +197,16 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                                         align-items: center;
                                         justify-content: center;">Followers</div>
                                 </div> -->
+                                <?php if($result2->num_rows > 0){ ?>
+                                    <div class="alert alert-warning d-flex align-items-center warningalert" role="alert">
+                                    <div class="warningtext">
+                                    <i class="fa-solid fa-exclamation"></i> You have Warning violation
+                                    <span style="font-size:80%;">This alert will disappear after your violation reset</span>
+                                    </div>
+                                    </div>
+                                <?php }else{ ?>
 
+                                <?php }; ?>
                             </div>
 
 
@@ -286,6 +301,17 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                                         align-items: center;
                                         justify-content: center;">Followers</div>
                                 </div> -->
+
+                                <?php if($result2->num_rows > 0){ ?>
+                                    <div class="alert alert-warning d-flex align-items-center warningalert" role="alert">
+                                    <div class="warningtext">
+                                    <i class="fa-solid fa-exclamation"></i> You have Warning violation
+                                    <span style="font-size:80%;">This alert will disappear after your violation reset</span>
+                                    </div>
+                                    </div>
+                                <?php }else{ ?>
+
+                                <?php }; ?>
 
                             </div>
 

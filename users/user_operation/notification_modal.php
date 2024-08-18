@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
 
             var notificationId = button.getAttribute('data-id');
-            var notifBody = button.closest('.notifbody'); // Get the specific notification element
+            var notifBody = button.closest('.notifbody'); // Correctly find the specific notification element
 
             console.log('Delete button clicked for ID:', notificationId);
 
@@ -203,8 +203,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-
 
 </script>
 

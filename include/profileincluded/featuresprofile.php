@@ -15,9 +15,6 @@
                     <li><a href="#" data-open-modal="createpostprofile">
                         <div class="container-fluid post">Create post</div>
                     </a></li>
-                    <li><a href="../additional/under_maitenance.php" >
-                        <div class="container-fluid notification">Notification</div>
-                    </a></li>
                     <li><a href="profile.php?schedule" >
                         <div class="container-fluid collect">Schedule</div>
                     </a></li>

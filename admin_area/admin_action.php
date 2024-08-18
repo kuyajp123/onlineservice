@@ -103,7 +103,7 @@ if(isset($_POST['submit_warn'])){
 
             Violation Details:<br><br>
 
-            Date: $formattedReportDate<br>
+            Reported Date: $formattedReportDate<br>
             Description: Multiple report counts<br>
             Community Standard Violated: ".$user['report_reason']."<br><br>
 

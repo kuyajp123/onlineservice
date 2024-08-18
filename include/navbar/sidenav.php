@@ -62,7 +62,14 @@
                         </div>
                        <ul>
                         <li><a href="#" data-open-modal="createpost"><div class="container-fluid post">Create post</div></a></li>
-                        <li><a href="additional/under_maitenance.php"><div class="container-fluid notification">Notification</div></a></li>
+                        <li><a href="#" class="notification-icon" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
+                            <div class="container-fluid notification">Notification &nbsp;
+                              <?php if ($unread_count > 0): ?>
+                                <span class="badge text-bg-danger"><?= $unread_count ?></span>
+                              <?php endif; ?>
+                            </div>
+                          </a>
+                        </li>
                         <li><a href="additional/under_maitenance.php"><div class="container-fluid collect">Collection</div></a></li>
                         <li><div class="container-fluid services" style="padding:0;">
                           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><div class="container" >Under construction<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i></div></a>
