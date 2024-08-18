@@ -13,7 +13,8 @@ $admin = $_SESSION['admin'];
 $admin_id = $_SESSION['admin_id'];
 $admin_password = $_SESSION['admin_password'];
 
-$user_no = isset($_GET['user_no']) ? $_GET['user_no'] : null;
+// $user_no = isset($_GET['user_no']) ? $_GET['user_no'] : null;
+$user_no = isset($_GET['user_no']) ? $_GET['user_no'] : ''; // Retrieve user_no from URL parameter
 
 // Query to fetch user information and report count
 $userQuery = 'SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, 
@@ -49,7 +50,7 @@ $defaultCoverPhoto = 'default_coverphoto.jpg';
 
 
 $admin_id = $_SESSION['admin_id']; // Retrieve admin ID from the session
-$user_no = isset($_GET['user_no']) ? $_GET['user_no'] : ''; // Retrieve user_no from URL parameter
+
 
 $warn_pass = '';
 $warn_post_id = '';
@@ -240,7 +241,9 @@ if(isset($_POST['submit_ban'])){
 
             $ban_appeal_id = mt_rand(100000, 999999);
 
-            $ban_msg = "      
+            $ban_msg = "
+            Subject: Violation of Community Standards<br><br>
+
             Dear ".strtoupper($user['fname'])." ".strtoupper($user['lname']).",<br><br>
 
             We hope this message finds you well. This email is to inform you that your account has been suspended due to a violation of our community guidelines.<br><br>
@@ -488,7 +491,7 @@ if(isset($_POST['submit_ban'])){
                     <div class="container-fluid profilephotobod">
                         <div class="row ko">
                             <div class="container-fluid name">
-                                User no: <?php echo htmlspecialchars($row['user_no']); ?>
+                                User no: <?php echo htmlspecialchars($user_no); ?>
                             </div>
                         </div>
                         <div class="row ko">

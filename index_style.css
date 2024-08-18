@@ -741,6 +741,9 @@ align-items: center;
             text-overflow: ellipsis; /* Add ellipsis for overflowed text */
   font-size: .9rem;
 }
+.notiffull{
+height: auto;
+}
 
 
 

@@ -1,14 +1,35 @@
-<?php
-include("../include/connect.php");
-global $con;
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var deleteButtons = document.querySelectorAll('.delete-notification');
+    deleteButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
 
-$sql = "SELECT * FROM notifications WHERE user_no = 49 ORDER BY timestamp DESC";
-$stmt = $con->prepare($sql);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
+            var notificationId = button.getAttribute('data-id');
+            var notifContainer = button.closest('.notifbody');
 
+            fetch('index.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'notification_id': notificationId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    notifContainer.remove(); // Remove the correct element
+                } else {
+                    alert('Failed to delete notification: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+});
 
-
-echo $row['notification_text'];
-?>
+</script>
