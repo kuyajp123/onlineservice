@@ -138,6 +138,62 @@ function getName($user_no = null) {
 }
 
 
+// Function to handle post
+function handlePost($con, $user_no) {
+    // Initialize flags to check if any content is provided
+    $error = "";
+    $postphoto = "";
+
+    // Check for required fields
+    $is_relation_set = isset($_POST['relation']) && !empty($_POST['relation']);
+    $is_services_set = isset($_POST['services']) && !empty($_POST['services']);
+    $is_caption_set = isset($_POST['caption']) && !empty(trim($_POST['caption']));
+    $is_postphoto_set = isset($_FILES['postphoto']['name']) && !empty($_FILES['postphoto']['name']);
+
+    // Check if category fields (relation and services) are empty
+    if (!$is_relation_set || !$is_services_set) {
+        $error = "Please provide a category to post.";
+    }
+
+    // Check if both caption and postphoto are empty
+    if (!$is_caption_set && !$is_postphoto_set) {
+        $error = "Please provide content for your post.";
+    }
+
+    // If no errors, process the post
+    if (empty($error)) {
+        $relation = $_POST['relation'];
+        $services = $_POST['services'];
+        $caption = $_POST['caption'];
+        $postphoto = isset($_FILES['postphoto']['name']) ? $_FILES['postphoto']['name'] : '';
+
+        // Handle file upload
+        if ($postphoto) {
+            $tmp_postphoto = $_FILES['postphoto']['tmp_name'];
+            $upload_path = "../include/posts_images/$postphoto";
+
+            if (move_uploaded_file($tmp_postphoto, $upload_path)) {
+                $sql = "INSERT INTO posts (user_no, relation, services, caption, postphoto) VALUES (?, ?, ?, ?, ?)";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param('issss', $user_no, $relation, $services, $caption, $postphoto);
+                $stmt->execute();
+                echo "<script>window.open('../users/profile.php?sideprof','_self')</script>";
+            } else {
+                $error = "Failed to upload photo.";
+            }
+        } else {
+            // Insert post without photo
+            $sql = "INSERT INTO posts (user_no, relation, services, caption, postphoto) VALUES (?, ?, ?, ?, '')";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param('isss', $user_no, $relation, $services, $caption);
+            $stmt->execute();
+            echo "<script>window.open('../users/profile.php?sideprof','_self')</script>";
+        }
+    } else {
+        // Display error message
+        echo "<div class='error'>$error</div>";
+    }
+}
 
  
 
@@ -253,6 +309,35 @@ function CheckBanStatus($user_no) {
 
 }
 
+
+// function to check Warning Status
+function WarningStatus($user_no){
+    global $con;
+
+    $sql = "SELECT * from user_warnings where user_no = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param("i", $user_no);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    $currentDate = date('Y-m-d');
+
+    if($result->num_rows > 0){
+        if($row['reset_date'] < $currentDate){
+            $query = "DELETE FROM user_warnings where user_no = ?";
+            $stmt = $con->prepare($query);
+            $stmt->bind_param("i", $user_no);
+            $stmt->execute();
+            // warning level is now remove becuase date interval for warning violation is already passed 
+            return ['status' => false, 'modal' => 0];
+        }else{
+            return ['status' => true, 'modal' => $row['warning_level']];
+        }
+    }else{
+        return ['status' => false, 'modal' => 0];
+    }
+}
 
 
 
