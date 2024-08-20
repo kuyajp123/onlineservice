@@ -1,5 +1,5 @@
   <!-- newsfeed navbar -->
-  <button class="btn text-light" style="background-color:#4BCBCB;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Newsfeed</button>
+  <!-- <button class="btn text-light" style="background-color:#4BCBCB;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Newsfeed</button> -->
 
 <div class="offcanvas offcanvas-top" style="background-color:#615EFC;" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
   <div class="offcanvas-header">

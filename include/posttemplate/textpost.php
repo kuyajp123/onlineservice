@@ -20,6 +20,8 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $heartCount = $row['heart_count'] ?? 0;
 
+$defaultProfilePic = 'profile.jpg';
+
 
 ?>
 
@@ -35,12 +37,13 @@ $heartCount = $row['heart_count'] ?? 0;
                     <?php if ($user_no == $loggedInUserNo): ?>
                         <!-- Link to the current user's profile -->
                         <a href="users/profile.php?sideprof" style="font-size:1rem; text-decoration: none; color: black;">
-                            <img src="users/images/profilepicture/<?php echo htmlspecialchars($profilePic); ?>" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
+                        <img src="users/images/profilepicture/<?php echo !empty($profilePic) ? $profilePic : $defaultProfilePic; ?>"
+                        style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
                         </a>
                     <?php else: ?>
                         <!-- Link to the other user's profile -->
                         <a href="users/other_profile.php?user_no=<?php echo htmlspecialchars($user_no); ?>" style="font-size:1rem; text-decoration: none; color: black;">
-                            <img src="users/images/profilepicture/<?php echo htmlspecialchars($profilePic); ?>" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
+                        <img src="users/images/profilepicture/<?php echo !empty($profilePic) ? $profilePic : $defaultProfilePic; ?>" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
                         </a>
                     <?php endif; ?>
                 </div>
@@ -71,8 +74,9 @@ $heartCount = $row['heart_count'] ?? 0;
                     <i class="fa-solid fa-ellipsis fa-xl" style="color: #575b60; font-size:20px;"></i>
                         <ul class="dropdown-menu">
                         <?php if($user_no == $loggedInUserNo): ?>
-                            <li><a class="dropdown-item" href="#">Copy post</a></li>
-                            <li><a class="dropdown-item" href="#">Delete post</a></li>
+                            <!-- <li><a class="dropdown-item" href="#">Copy post</a></li>
+                            <li><a class="dropdown-item" href="#">Delete post</a></li> -->
+                            <li><a class="dropdown-item" href="#">Under maintenance</a></li>
                         <?php else: ?>
                             <!-- Pass the post_id and user_no as data attributes for the report option -->
                             <li><a class="dropdown-item" href="#" 
@@ -80,7 +84,7 @@ $heartCount = $row['heart_count'] ?? 0;
                                 data-bs-target="#reportmodal2"
                                 data-post-id="<?php echo htmlspecialchars($post_id); ?>" 
                                 data-user-no="<?php echo htmlspecialchars($user_no); ?>">Report</a></li>
-                            <li><a class="dropdown-item" href="#">Copy post</a></li>
+                            <!-- <li><a class="dropdown-item" href="#">Copy post</a></li> -->
                         <?php endif; ?>
                         </ul>
                 </button>
@@ -115,13 +119,15 @@ $heartCount = $row['heart_count'] ?? 0;
                 </button>
                 
             </div>
-            <div class="container-fluid share"><button><i class="fa-regular fa-share-from-square"></i></button></div>
+            <div class="container-fluid share">
+                <!-- <button><i class="fa-regular fa-share-from-square"></i></button> -->
+            </div>
         </div>
         <!-- Collection -->
         <div class="container-fluid collection">
             <div class="container-fluid save">
                 <div class="container-fluid bookmarkicon">
-                    <button><i class="fa-regular fa-bookmark"></i></button>
+                    <!-- <button><i class="fa-regular fa-bookmark"></i></button> -->
                 </div>
             </div>
         </div>

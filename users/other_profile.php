@@ -14,7 +14,7 @@ $current_user_no = $_SESSION['user_no'];
 if(CheckBanStatus($current_user_no)){
     session_unset();
     session_destroy();
-    header("Location: ../users/login.php");
+    header("Location: ../users/logout.php");
     exit();
   }
 

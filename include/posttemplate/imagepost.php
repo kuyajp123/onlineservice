@@ -3,6 +3,8 @@ require_once 'include/connect.php';
 // Example variables
 $loggedInUserNo = $_SESSION['user_no']; // Current logged-in user's number
 $profilePic = getProfilePicture($user_no, $con);
+
+$defaultProfilePic = 'profile.jpg';
 ?>
 
 <div class="container-fluid container_post" data-post-id="<?php echo htmlspecialchars($post_id); ?>">
@@ -15,12 +17,12 @@ $profilePic = getProfilePicture($user_no, $con);
                     <?php if ($user_no == $loggedInUserNo): ?>
                         <!-- Link to the current user's profile -->
                         <a href="users/profile.php?sideprof" style="font-size:1rem; text-decoration: none; color: black;">
-                            <img src="users/images/profilepicture/<?php echo htmlspecialchars($profilePic); ?>" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
+                        <img src="users/images/profilepicture/<?php echo !empty($profilePic) ? $profilePic : $defaultProfilePic; ?>"  style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
                         </a>
                     <?php else: ?>
                         <!-- Link to the other user's profile -->
                         <a href="users/other_profile.php?user_no=<?php echo htmlspecialchars($user_no); ?>" style="font-size:1rem; text-decoration: none; color: black;">
-                            <img src="users/images/profilepicture/<?php echo htmlspecialchars($profilePic); ?>" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
+                        <img src="users/images/profilepicture/<?php echo !empty($profilePic) ? $profilePic : $defaultProfilePic; ?>"  style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
                         </a>
                     <?php endif; ?>
                 </div>
@@ -52,8 +54,9 @@ $profilePic = getProfilePicture($user_no, $con);
                 </button>
                 <ul class="dropdown-menu">
                 <?php if($user_no == $loggedInUserNo): ?>
-                    <li><a class="dropdown-item" href="#">Copy post</a></li>
-                    <li><a class="dropdown-item" href="#">Delete post</a></li>
+                    <!-- <li><a class="dropdown-item" href="#">Copy post</a></li>
+                    <li><a class="dropdown-item" href="#">Delete post</a></li> -->
+                    <li><a class="dropdown-item" href="#">Under maintenance</a></li>
                 <?php else: ?>
                     <!-- Pass the post_id and user_no as data attributes for the report option -->
                     <li><a class="dropdown-item" href="#" 
@@ -61,7 +64,7 @@ $profilePic = getProfilePicture($user_no, $con);
                         data-bs-target="#reportmodal2"
                         data-post-id="<?php echo htmlspecialchars($post_id); ?>" 
                         data-user-no="<?php echo htmlspecialchars($user_no); ?>">Report</a></li>
-                    <li><a class="dropdown-item" href="#">Copy post</a></li>
+                    <!-- <li><a class="dropdown-item" href="#">Copy post</a></li> -->
                 <?php endif; ?>
                 </ul>
             </div>
@@ -91,13 +94,15 @@ $profilePic = getProfilePicture($user_no, $con);
             </button>
         </div>
 
-            <div class="container-fluid share"><button><i class="fa-regular fa-paper-plane"></i></button></div>
+            <div class="container-fluid share">
+                <!-- <button><i class="fa-regular fa-paper-plane"></i></button> -->
+            </div>
         </div>
         <!-- Collection section -->
         <div class="container-fluid collection">
             <div class="container-fluid save">
                 <div class="container-fluid bookmarkicon">
-                    <button><i class="fa-regular fa-bookmark"></i></button>
+                    <!-- <button><i class="fa-regular fa-bookmark"></i></button> -->
                 </div>
             </div>
         </div>

@@ -39,6 +39,8 @@ if ($post) {
 // Example variables
 $loggedInUserNo = $_SESSION['user_no']; // Current logged-in user's number
 $profilePic = getProfilePicture($user_no, $con);
+
+$defaultProfilePic = 'profile.jpg';
 ?>
 
 <div class="container-fluid container_post" data-post-id="<?php echo htmlspecialchars($post_id); ?>">
@@ -51,12 +53,12 @@ $profilePic = getProfilePicture($user_no, $con);
                     <?php if ($user_no == $loggedInUserNo): ?>
                         <!-- Link to the current user's profile -->
                         <a href="users/profile.php?sideprof" style="font-size:1rem; text-decoration: none; color: black;">
-                            <img src="users/images/profilepicture/<?php echo htmlspecialchars($profilePic); ?>" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
+                        <img src="users/images/profilepicture/<?php echo !empty($profilePic) ? $profilePic : $defaultProfilePic; ?>" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
                         </a>
                     <?php else: ?>
                         <!-- Link to the other user's profile -->
                         <a href="users/other_profile.php?user_no=<?php echo htmlspecialchars($user_no); ?>" style="font-size:1rem; text-decoration: none; color: black;">
-                            <img src="users/images/profilepicture/<?php echo htmlspecialchars($profilePic); ?>" style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
+                        <img src="users/images/profilepicture/<?php echo !empty($profilePic) ? $profilePic : $defaultProfilePic; ?>"style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
                         </a>
                     <?php endif; ?>
                 </div>

@@ -3,6 +3,8 @@ session_start();
 require_once '../../include/connect.php'; // Go up two directories from fetch_textpost to reach include
 require_once '../../functions/common_function.php'; // Go up two directories from
 
+$defaultProfilePic = 'profile.jpg';
+
 if (isset($_POST['post_id'])) {
     $post_id = $_POST['post_id'];
     $loggedInUserNo = $_SESSION['user_no'];
@@ -44,7 +46,7 @@ if (isset($_POST['post_id'])) {
                 <div class='container-fluid prof_pic'>
                     <div>
                         <a href='" . ($user_no == $loggedInUserNo ? "users/profile.php?sideprof" : "users/other_profile.php?user_no=" . htmlspecialchars($user_no)) . "' style='font-size:1rem; text-decoration: none; color: black;'>
-                            <img src='users/images/profilepicture/" . htmlspecialchars($profilePic) . "' style='object-fit:contain; width: 40px; height: 40px; border-radius: 50%;' alt=''>
+                            <img src='users/images/profilepicture/" . (!empty($profilePic) ? $profilePic : $defaultProfilePic) . "' style='object-fit:contain; width: 40px; height: 40px; border-radius: 50%;' alt=''>
                         </a>
                     </div>
                 </div>

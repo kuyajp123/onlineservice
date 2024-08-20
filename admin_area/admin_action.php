@@ -105,7 +105,6 @@ if(isset($_POST['submit_warn'])){
 
             Reported Date: $formattedReportDate<br>
             Description: Multiple report counts<br>
-            Warning level: ".$user['warning_level']."<br>
             Community Standard Violated: ".$user['report_reason']."<br><br>
 
             As this is a serious matter, we ask that you review our community guidelines to ensure that your future actions align with our standards. Repeated violations may result in further action, including temporary suspension or permanent banning of your account.<br><br>

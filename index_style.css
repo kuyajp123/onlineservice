@@ -315,7 +315,7 @@ button{
   min-height: 87vh;
   width: 100%;
   display: grid;
-  grid-template-rows: 2fr 0fr 1fr 1fr;
+  grid-template-rows: 2fr 0fr 3fr 1fr;
   align-items: center;
   padding: 0;
   gap: 10px;
@@ -492,7 +492,9 @@ button{
   display: flex;
   justify-content: center;
 }
-
+.temporary{
+  height: 5vh;
+}
 
 
 
@@ -800,7 +802,7 @@ height: auto;
     overflow: hidden;
   }
   .considenav{
-    grid-template-rows: 3fr 0fr 0fr 3fr;
+    grid-template-rows: 3fr 1fr 0fr 3fr; /* edit this if theres another feuture*/
     overflow: hidden;
   }
   .contprofname{

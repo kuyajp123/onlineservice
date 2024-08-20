@@ -32,7 +32,7 @@ $usersResult = $con->query($usersQuery);
             <div class="container-fluid" >
                 <a class="navbar-brand" href="#">
                 <img src="../images/Cavite_State_University_(CvSU).png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-                CvS Tagram
+                CvS Tagram 
                 </a>
             </div>
         </nav>

@@ -18,7 +18,24 @@
                     <li><a href="profile.php?schedule" >
                         <div class="container-fluid collect">Schedule</div>
                     </a></li>
-                    <li>
+                    
+
+
+
+
+
+                    <li><a href="profile.php?editdetails" >
+                        <div class="container-fluid settings">Personal Information</div>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </div>';
+    }
+    
+
+?>
+                    <!-- <li>
                         <div class="container-fluid services" style="padding:0;">
                             <a class="nav-link dropdown-toggle" style="padding:none;" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
                                 <div class="container" style="padding:none;">
@@ -38,15 +55,4 @@
                                 </a></li>
                             </ul>
                         </div>
-                    </li>
-                    <li><a href="profile.php?editdetails" >
-                        <div class="container-fluid settings">Personal Information</div>
-                    </a></li>
-                </ul>
-            </div>
-        </div>
-    </div>';
-    }
-    
-
-?>
+                    </li> -->

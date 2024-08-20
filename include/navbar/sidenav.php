@@ -71,14 +71,14 @@
                           </a>
                         </li>
                         <li><a href="additional/under_maitenance.php"><div class="container-fluid collect">Collection</div></a></li>
-                        <li><div class="container-fluid services" style="padding:0;">
+                        <!-- <li><div class="container-fluid services" style="padding:0;">
                           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><div class="container" >Under construction<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i></div></a>
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item" href="#"><div class="container">Store</div></a></li>
                               <li><a class="dropdown-item" href="#"><div class="container">Books</div></a></li>
                               <li><a class="dropdown-item" href="https://trece.cvsu.edu.ph/student/dashboard"><div class="container">Student Dashboard</div></a></li>
-                            </ul></div></li>
-                            <li><a href="additional/under_maitenance.php"><div class="container-fluid settings">Settings</div></a></li>
+                            </ul></div></li> -->
+                            <!-- <li><a href="additional/under_maitenance.php"><div class="container-fluid settings">Settings</div></a></li> -->
                        </ul>
                       </div>
                     </div>

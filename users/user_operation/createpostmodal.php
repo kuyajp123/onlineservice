@@ -1,8 +1,13 @@
 <!-- post creation -->
 <?php
 // Initialize an empty string for error messages
+$warning_modal = false;
 $error = "";
 $postphoto = "";
+
+$WS = WarningStatus($current_user_no);
+
+// $WS = WarningStatus($current_user_no);
 
 // Prepare SQL query to fetch user data
 $sql = "SELECT * FROM user_registration WHERE user_ID = ? OR email = ? OR student_no = ?";
@@ -13,10 +18,67 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 
 
-$_SESSION['user_no'] = $row['user_no'];
+  
 
 if (isset($_POST['post'])) {
-    // Initialize flags to check if any content is provided
+ 
+  if($WS['status']){
+    if ($WS['modal'] >= 2) {
+      $warning_modal = true;
+    }else{
+      // process post even theres level 1 warning
+      $is_relation_set = isset($_POST['relation']) && !empty($_POST['relation']);
+      $is_services_set = isset($_POST['services']) && !empty($_POST['services']);
+      $is_caption_set = isset($_POST['caption']) && !empty(trim($_POST['caption']));
+      $is_postphoto_set = isset($_FILES['postphoto']['name']) && !empty($_FILES['postphoto']['name']);
+
+      // Check if category fields (relation and services) are empty
+      if (!$is_relation_set || !$is_services_set) {
+          $error = "Please provide a category to post.";
+      }
+
+      // Check if both caption and postphoto are empty
+      if (!$is_caption_set && !$is_postphoto_set) {
+          $error = "Please provide content for your post.";
+      }
+
+        // If no errors, process the post
+        if (empty($error)) {
+          $user_no = $_SESSION['user_no'];
+          $relation = $_POST['relation'];
+          $services = $_POST['services'];
+          $caption = $_POST['caption'];
+          $postphoto = isset($_FILES['postphoto']['name']) ? $_FILES['postphoto']['name'] : '';
+
+
+          // Handle file upload
+          if ($postphoto) {
+            $tmp_postphoto = $_FILES['postphoto']['tmp_name'];
+            $upload_path = "include/posts_images/$postphoto";
+
+            if (move_uploaded_file($tmp_postphoto, $upload_path)) {
+                $sql = "INSERT INTO posts (user_no, relation, services, caption, postphoto) VALUES (?, ?, ?, ?, ?)";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param('issss', $user_no, $relation, $services, $caption, $postphoto);
+                $stmt->execute();
+
+                echo "<script>window.open('index.php','_self')</script>";
+            } else {
+                $error = "Failed to upload photo.";
+            }
+        } else {
+            // Insert post without photo
+            $sql = "INSERT INTO posts (user_no, relation, services, caption, postphoto) VALUES (?, ?, ?, ?, '')";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param('isss', $user_no, $relation, $services, $caption);
+            $stmt->execute();
+            echo "<script>window.open('index.php','_self')</script>";
+        }
+      }
+
+    }
+  }else{
+    // process post if theres no warning
     $is_relation_set = isset($_POST['relation']) && !empty($_POST['relation']);
     $is_services_set = isset($_POST['services']) && !empty($_POST['services']);
     $is_caption_set = isset($_POST['caption']) && !empty(trim($_POST['caption']));
@@ -32,42 +94,41 @@ if (isset($_POST['post'])) {
         $error = "Please provide content for your post.";
     }
 
-    // If no errors, process the post
-    if (empty($error)) {
-      $user_no = $_SESSION['user_no'];
-      $relation = $_POST['relation'];
-      $services = $_POST['services'];
-      $caption = $_POST['caption'];
-      $postphoto = isset($_FILES['postphoto']['name']) ? $_FILES['postphoto']['name'] : '';
+      // If no errors, process the post
+      if (empty($error)) {
+        $user_no = $_SESSION['user_no'];
+        $relation = $_POST['relation'];
+        $services = $_POST['services'];
+        $caption = $_POST['caption'];
+        $postphoto = isset($_FILES['postphoto']['name']) ? $_FILES['postphoto']['name'] : '';
 
 
-      // Handle file upload
-      if ($postphoto) {
-        $tmp_postphoto = $_FILES['postphoto']['tmp_name'];
-        $upload_path = "include/posts_images/$postphoto";
+        // Handle file upload
+        if ($postphoto) {
+          $tmp_postphoto = $_FILES['postphoto']['tmp_name'];
+          $upload_path = "include/posts_images/$postphoto";
 
-        if (move_uploaded_file($tmp_postphoto, $upload_path)) {
-            $sql = "INSERT INTO posts (user_no, relation, services, caption, postphoto) VALUES (?, ?, ?, ?, ?)";
-            $stmt = $con->prepare($sql);
-            $stmt->bind_param('issss', $user_no, $relation, $services, $caption, $postphoto);
-            $stmt->execute();
+          if (move_uploaded_file($tmp_postphoto, $upload_path)) {
+              $sql = "INSERT INTO posts (user_no, relation, services, caption, postphoto) VALUES (?, ?, ?, ?, ?)";
+              $stmt = $con->prepare($sql);
+              $stmt->bind_param('issss', $user_no, $relation, $services, $caption, $postphoto);
+              $stmt->execute();
 
-            echo "<script>window.open('index.php','_self')</script>";
-        } else {
-            $error = "Failed to upload photo.";
-        }
-    } else {
-        // Insert post without photo
-        $sql = "INSERT INTO posts (user_no, relation, services, caption, postphoto) VALUES (?, ?, ?, ?, '')";
-        $stmt = $con->prepare($sql);
-        $stmt->bind_param('isss', $user_no, $relation, $services, $caption);
-        $stmt->execute();
-        echo "<script>window.open('index.php','_self')</script>";
+              echo "<script>window.open('index.php','_self')</script>";
+          } else {
+              $error = "Failed to upload photo.";
+          }
+      } else {
+          // Insert post without photo
+          $sql = "INSERT INTO posts (user_no, relation, services, caption, postphoto) VALUES (?, ?, ?, ?, '')";
+          $stmt = $con->prepare($sql);
+          $stmt->bind_param('isss', $user_no, $relation, $services, $caption);
+          $stmt->execute();
+          echo "<script>window.open('index.php','_self')</script>";
+      }
     }
   }
 }
-
-
 ?>
 
 
@@ -144,6 +205,46 @@ if (isset($_POST['post'])) {
     </div>
   </div>
 </div>
+
+
+<!-- Modal for user has warning lvl 2-->
+<?php if ($warning_modal): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalHtml = `
+            <div class="modal fade" id="user_ban" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Message for Warning Level 2</h5>
+                        </div>
+                        <div class="modal-body" style="padding:10px;">
+                            You are temporarily restricted from using the posting feature due to reaching Warning Level 2. Please review your notifications for further details and guidance.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="understandButton" class="btn btn-primary">I understand</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+            var user_ban = new bootstrap.Modal(document.getElementById('user_ban'), {
+                backdrop: 'static',  // Prevents closing the modal by clicking outside
+                keyboard: false      // Prevents closing the modal with the Esc key
+            });
+            user_ban.show();
+
+            // Event listener for "I understand" button
+            document.getElementById('understandButton').addEventListener('click', function() {
+                user_ban.hide();
+            });
+        });
+    </script>
+<?php endif; ?>
+
 
 <!-- // toast message popup on creating post -->
 <script>

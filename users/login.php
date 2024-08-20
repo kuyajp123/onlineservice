@@ -83,8 +83,8 @@ if (isset($_POST['login'])) {
     <?php require_once "../include/bootsrap.php"; ?>
 </head>
 <body>
-<div class="bod2">
-    <div class="container text-center">
+<div class="bod2" style="width:100%;">
+    <div class="container-fluid text-center">
         <div class="p-3 column1">
             <div class="container container2">
                 <div class="row row-form">

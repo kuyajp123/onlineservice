@@ -9,6 +9,13 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
       exit();
     }
 
+    if(CheckBanStatus($_SESSION['user_no'])){
+      session_unset();
+      session_destroy();
+      header("Location: users/logout.php");
+      exit();
+    }
+
   $_SESSION['ip'] = getIPAddress();
   $_SESSION['user_ID'];
   $_SESSION['email'];
@@ -22,12 +29,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
   $_SESSION['coverphoto'];
   $current_user_no = $_SESSION['user_no'];
 
-  if(CheckBanStatus($current_user_no)){
-    session_unset();
-    session_destroy();
-    header("Location: users/logout.php");
-    exit();
-  }
+ 
 
   
 
@@ -109,7 +111,8 @@ $unread_count = $row['unread_count'];
     <!-- navbar for desktop -->
         <div class="container-fluid navcon"> 
             <!-- NAV -->
-            <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
+             <div class="container-fluid temporary"></div>
+            <!-- <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
   <li class="nav-item" role="presentation">
     <button class="nav-link active text-light" id="pills-bothf-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true"><i class="fa-solid fa-eye-slash" style="color: #ffffff;"></i></button>
   </li>
@@ -140,7 +143,7 @@ $unread_count = $row['unread_count'];
   <li class="nav-item" role="presentation">
     <button class="nav-link text-light" id="pills-bothf-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true"><i class="fa-solid fa-eye-slash" style="color: #ffffff;"></i></button>
   </li>
-</ul>
+</ul> -->
 
 
         </div>
@@ -219,14 +222,14 @@ $unread_count = $row['unread_count'];
                           </a>
                         </li>
                         <li><a href="additional/under_maitenance.php"><div class="container-fluid collect">Collection</div></a></li>
-                        <li><div class="container-fluid services" style="padding:0;">
+                        <!-- <li><div class="container-fluid services" style="padding:0;">
                           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><div class="container" >Under construction<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i></div></a>
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item" href="#"><div class="container">Store</div></a></li>
                               <li><a class="dropdown-item" href="#"><div class="container">Books</div></a></li>
                               <li><a class="dropdown-item" href="https://trece.cvsu.edu.ph/student/dashboard"><div class="container">Student Dashboard</div></a></li>
-                            </ul></div></li>
-                        <li><a href="additional/under_maitenance.php"><div class="container-fluid settings">Settings</div></a></li>
+                            </ul></div></li> -->
+                        <!-- <li><a href="additional/under_maitenance.php"><div class="container-fluid settings">Settings</div></a></li> -->
                        </ul>
                       </div>
                     </div>
@@ -328,8 +331,9 @@ endforeach;
 
         <div class="container-fluid olservices">
             <div class="container-fluid sticky-top conolservice">
-                <div class="container-fluid cvsustore">cvsustore</div>
-                <div class="container-fluid books">books</div>
+              <!-- services -->
+                <div class="container-fluid cvsustore"></div>
+                <div class="container-fluid books"></div>
             </div>
         </div>
     </div>

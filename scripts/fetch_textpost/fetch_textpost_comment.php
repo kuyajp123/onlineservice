@@ -3,6 +3,8 @@ session_start();
 require_once '../../include/connect.php'; // Go up two directories from fetch_textpost to reach include
 require_once '../../functions/common_function.php'; // Go up two directories from
 
+$defaultProfilePic = 'profile.jpg';
+
 // Fetch comments for the post
 if (isset($_POST['post_id'])) {
     $post_id = $_POST['post_id'];
@@ -24,7 +26,7 @@ if (isset($_POST['post_id'])) {
                         <div class='container-fluid prof_pic' style='display: flex; align-items: center; justify-content: flex-start; width:auto;'>
                             <div>
                                 <a href='#' style='font-size:1rem; text-decoration: none; color: black;'>
-                                    <img src='users/images/profilepicture/".htmlspecialchars($row['profilepicture'])."' style='object-fit:contain; width: 40px; height: 40px; border-radius: 50%;' alt=''>
+                                    <img src='users/images/profilepicture/" . (!empty($profilePic) ? $profilePic : $defaultProfilePic) . "' style='object-fit:contain; width: 40px; height: 40px; border-radius: 50%;' alt=''>
                                 </a>
                             </div>
                         </div>

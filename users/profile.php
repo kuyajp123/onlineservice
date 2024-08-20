@@ -8,6 +8,14 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
     header('location: login.php');
     exit();
   }
+
+  if(CheckBanStatus($_SESSION['user_no'])){
+    session_unset();
+    session_destroy();
+    header("Location: logout.php");
+    exit();
+  }
+
   $_SESSION['ip'] = getIPAddress();
   $_SESSION['user_no'];
   $_SESSION['user_ID'];
@@ -23,12 +31,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
   $profilepicture = $_SESSION['profilepicture'];
   $current_user_no = $_SESSION['user_no'];
     
-  if(CheckBanStatus($current_user_no)){
-    session_unset();
-    session_destroy();
-    header("Location: logout.php");
-    exit();
-  }
+
 
   $query = "SELECT * FROM posts WHERE user_no = ? ORDER BY timestamp DESC";
   $stmt = $con->prepare($query);
@@ -49,6 +52,8 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
   $result2 = $stmt2->get_result();
 
 
+  $defaultProfilePic = 'profile.jpg';
+  $defaultCoverPhoto = 'default_coverphoto.jpg';
 ?>
 
 
@@ -82,9 +87,9 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
                     </div>
                     <div class="container-fluid header">
                         <!-- background photo here -->
-                        <div class="container-fluid imgcontainer"><img src="../users/images/coverphoto/<?php echo htmlspecialchars($coverphoto, ENT_QUOTES, 'UTF-8'); ?>" style="position:absolute;"><a href="#" class="editcoverphotolink" data-open-modal="editcoverphoto"><i class="fa-solid fa-pen-to-square" style="position:absolute;"></i></a></div>
+                        <div class="container-fluid imgcontainer"><img src="../users/images/coverphoto/<?php echo !empty($profilePic) ? $profilePic : $defaultCoverPhoto; ?>" style="position:absolute;"><a href="#" class="editcoverphotolink" data-open-modal="editcoverphoto"><i class="fa-solid fa-pen-to-square" style="position:absolute;"></i></a></div>
                         <!-- profile photo here -->
-                        <div class="container-fluid profilecontainer"><img src="../users/images/profilepicture/<?php echo htmlspecialchars($profilepicture, ENT_QUOTES, 'UTF-8'); ?>"><a href="#" class="editprofilephotolink" data-open-modal="editprofile"><i class="fa-solid fa-pen-to-square" style="position:absolute; left:0;"></i></a></div>
+                        <div class="container-fluid profilecontainer"><img src="../users/images/profilepicture/<?php echo !empty($profilePic) ? $profilePic : $defaultProfilePic; ?>"><a href="#" class="editprofilephotolink" data-open-modal="editprofile"><i class="fa-solid fa-pen-to-square" style="position:absolute; left:0;"></i></a></div>
                         <div class="container-fluid backbutton"><a href="../index.php?newsfeed=<?php echo urlencode($current_user_no) ?>"><button type="button" class="btn btn-primary"  style="background-color: #4BCBCB;border:none;">Back</button></a>
                         </div>
                     </div>
