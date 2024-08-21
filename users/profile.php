@@ -27,22 +27,8 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
   $_SESSION['gender'];
   $_SESSION['user_password'];
   $_SESSION['coverphoto'];
-  
   $profilepicture = $_SESSION['profilepicture'];
   $current_user_no = $_SESSION['user_no'];
-    
-  
-  $defaultCoverPhoto = '../users/images/coverphoto/default_coverphoto.jpg';
-  
-  // Check if the profile picture is set in the session
-  if (isset($_SESSION['coverphoto']) && !empty($_SESSION['coverphoto'])) {
-      $coverPhoto = '../users/images/coverphoto/' . htmlspecialchars($_SESSION['coverphoto'], ENT_QUOTES, 'UTF-8');
-  } else {
-      // Set the profile picture to the default if not set
-      $coverPhoto = $defaultCoverPhoto;
-      // Update the session with the default profile picture
-      $_SESSION['coverphoto'] = basename($defaultCoverPhoto);
-  }
 
 
   $query = "SELECT * FROM posts WHERE user_no = ? ORDER BY timestamp DESC";

@@ -34,13 +34,13 @@ if ($other_user_no !== null) {
         $other_coverphoto = htmlspecialchars($row['coverphoto'], ENT_QUOTES, 'UTF-8');
     } else {
         // Handle case where user_no is invalid or no data is found
-        $other_profilepicture = 'default_profile_picture.jpg';
-        $other_coverphoto = 'default_cover_photo.jpg';
+        $other_profilepicture = 'profile.jpg';
+        $other_coverphoto = 'default_coverphoto.jpg';
     }
 } else {
     // Handle case where user_no is not provided
-    $other_profilepicture = 'default_profile_picture.jpg';
-    $other_coverphoto = 'default_cover_photo.jpg';
+    $other_profilepicture = 'profile.jpg';
+    $other_coverphoto = 'default_coverphoto.jpg';
 }
 
 // Fetch profile details
@@ -82,18 +82,18 @@ $showPosts = !isset($_GET['othereditdetails']);
             <div class="container-fluid grid2">
                 <div class="container-fluid gri1cont">
                     <div class="container-fluid sticky-top sidenavprofile">
-                        <div class="container-fluid backbutton2"><a href="../index.php?newsfeed=<?php echo urlencode($other_user_no); ?>"><button style="height:5vh;background-color: #4BCBCB;border:none;" type="button" class="btn btn-primary">Back</button></a>
+                        <div class="container-fluid backbutton2"><a href="../index.php?newsfeed=<?php echo urlencode($current_user_no); ?>"><button style="height:5vh;background-color: #4BCBCB;border:none;" type="button" class="btn btn-primary">Back</button></a>
                         </div>
                         <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="height:5vh;background-color: #4BCBCB;border:none;"><i class="fa-solid fa-bars"></i></button>
                     </div>
                     <div class="container-fluid header">
                         <!-- Background photo -->
                         <div class="container-fluid imgcontainer">
-                            <img src="../users/images/coverphoto/<?php echo $other_coverphoto; ?>" alt="Cover Photo" style="position:absolute;">
+                            <img src="../users/images/coverphoto/<?php echo htmlspecialchars($other_coverphoto); ?>" alt="Cover Photo" style="position:absolute;">
                         </div>
                         <!-- Profile photo -->
                         <div class="container-fluid profilecontainer">
-                            <img src="../users/images/profilepicture/<?php echo $other_profilepicture; ?>" alt="Profile Photo">
+                            <img src="../users/images/profilepicture/<?php echo htmlspecialchars($other_profilepicture); ?>" alt="Profile Photo">
                         </div>
                         <div class="container-fluid backbutton"><a href="../index.php?newsfeed=<?php echo urlencode($other_user_no); ?>"><button type="button" class="btn btn-primary"  style="background-color: #4BCBCB;border:none;">Back</button></a>
                         </div>

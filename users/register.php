@@ -96,9 +96,11 @@ if(isset($_POST['submit'])){
                 }if($result_student_no > 0){
                     break;
                 }else {
-                    $query = "INSERT INTO user_registration (user_ip, user_ID, email, student_no, user_password, fname, lname, bday, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $profilepicture = 'profile.jpg'; // Default image
+                    $coverphoto = 'default_coverphoto.jpg'; // Default image
+                    $query = "INSERT INTO user_registration (user_ip, user_ID, email, student_no, user_password, fname, lname, bday, gender, coverphoto, profilepicture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     $stmt_insert = mysqli_prepare($con, $query);
-                    mysqli_stmt_bind_param($stmt_insert, "sssssssss", $user_ip, $user_id, $email, $student_no, $hashed_password, $formattedFirstName, $formattedLastName, $bday, $gender);
+                    mysqli_stmt_bind_param($stmt_insert, "sssssssssss", $user_ip, $user_id, $email, $student_no, $hashed_password, $formattedFirstName, $formattedLastName, $bday, $gender, $coverphoto, $profilepicture);
                     $sql = mysqli_stmt_execute($stmt_insert);
                     if($sql){
                         echo "<script>alert
