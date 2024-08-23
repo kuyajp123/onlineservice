@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 20, 2024 at 07:36 PM
+-- Generation Time: Aug 23, 2024 at 02:10 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -59,7 +59,9 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`comment_id`, `post_id`, `user_no`, `comment_text`, `timestamp`) VALUES
-(15, 39, 50, 'Hindi ito comment', '2024-08-20 17:01:02');
+(17, 45, 50, 'test', '2024-08-23 12:02:19'),
+(18, 39, 50, 'test', '2024-08-23 12:02:25'),
+(19, 47, 50, 'test', '2024-08-23 12:02:33');
 
 -- --------------------------------------------------------
 
@@ -80,7 +82,11 @@ CREATE TABLE `heart_reactions` (
 --
 
 INSERT INTO `heart_reactions` (`reaction_id`, `post_id`, `user_no`, `reaction_type`, `timestamp`) VALUES
-(107, 39, 50, '', '2024-08-20 17:01:21');
+(117, 39, 55, '', '2024-08-23 11:58:05'),
+(118, 45, 55, '', '2024-08-23 11:58:06'),
+(119, 46, 55, '', '2024-08-23 11:58:08'),
+(120, 39, 50, '', '2024-08-23 12:02:14'),
+(121, 45, 50, '', '2024-08-23 12:02:15');
 
 -- --------------------------------------------------------
 
@@ -127,7 +133,16 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`post_id`, `user_no`, `relation`, `services`, `caption`, `postphoto`, `timestamp`) VALUES
-(39, 50, 'bothrelati', 'bothservic', 'Welcome to mobile legends', '', '2024-08-20 14:50:21');
+(39, 50, 'bothrelati', 'bothservic', 'Welcome to mobile legends', '', '2024-08-20 14:50:21'),
+(45, 55, 'bothrelati', 'bothservic', 'sup', '0wzknw7460n31.jpg', '2024-08-21 11:40:00'),
+(46, 50, 'bothrelati', 'bothservic', '', 'Screenshot 2024-08-22 214241.png', '2024-08-23 02:31:20'),
+(47, 55, 'bothrelati', 'bothservic', 'hey', '', '2024-08-23 02:35:46'),
+(48, 50, 'bothrelati', 'bothservic', 'qwer', 'Screenshot 2024-08-14 074841.png', '2024-08-23 02:36:58'),
+(49, 55, 'bothrelati', 'bothservic', '', '451803876_779136454297409_3907025352395061169_n.jpg', '2024-08-23 02:52:30'),
+(50, 55, 'bothrelati', 'bothservic', 'post', '', '2024-08-23 10:28:30'),
+(51, 50, 'bothrelati', 'bothservic', '', 'Screenshot 2024-08-02 213541.png', '2024-08-23 10:30:49'),
+(52, 50, 'bothrelati', 'bothservic', 'hello\r\n', '', '2024-08-23 12:01:53'),
+(53, 55, 'bothrelati', 'bothservic', 'ako to', '215a1d22-7d9d-4f05-87ec-dd5125a7955a.jfif', '2024-08-23 12:05:03');
 
 -- --------------------------------------------------------
 
@@ -143,6 +158,21 @@ CREATE TABLE `post_reports` (
   `report_reason` varchar(100) NOT NULL,
   `report_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `post_reports`
+--
+
+INSERT INTO `post_reports` (`report_id`, `post_id`, `user_no`, `reporter_user_no`, `report_reason`, `report_date`) VALUES
+(41, 45, 55, 50, 'False news', '2024-08-21 11:41:11'),
+(42, 45, 55, 55, 'Pretending to be someone else', '2024-08-23 02:29:55'),
+(43, 48, 50, 55, 'Spam', '2024-08-23 10:25:36'),
+(44, 46, 50, 55, 'Other', '2024-08-23 10:28:40'),
+(45, 50, 55, 50, 'Violence', '2024-08-23 10:31:02'),
+(46, 49, 55, 50, 'False news', '2024-08-23 10:36:24'),
+(47, 50, 55, 50, 'Misleading or scam', '2024-08-23 12:01:58'),
+(48, 52, 50, 55, 'Misleading or scam', '2024-08-23 12:04:43'),
+(49, 51, 50, 55, 'Violence', '2024-08-23 12:05:12');
 
 -- --------------------------------------------------------
 
@@ -207,7 +237,8 @@ CREATE TABLE `user_registration` (
 --
 
 INSERT INTO `user_registration` (`user_no`, `user_ip`, `user_ID`, `email`, `student_no`, `fname`, `lname`, `bday`, `gender`, `coverphoto`, `profilepicture`, `created_at`, `updated_at`, `user_password`, `is_setup_complete`) VALUES
-(50, '::1', '@john_paul848', 'tmc.johnpaul.naag@cvsu.edu.ph', '2022-100-0349', 'John Paul', 'Naag', '2024-08-21', 'Male', '', '', '2024-08-20 14:22:45', '2024-08-20 14:22:45', '$2y$10$ahXq.TIKcymbeRQ33j5BcezN2tpdOvAjpB5jPqdWBqS09JUkqgfES', 0);
+(50, '::1', '@john_paul848', 'tmc.johnpaul.naag@cvsu.edu.ph', '2022-100-0349', 'John Paul', 'Naag', '2024-08-21', 'Male', '', '', '2024-08-20 14:22:45', '2024-08-20 14:22:45', '$2y$10$ahXq.TIKcymbeRQ33j5BcezN2tpdOvAjpB5jPqdWBqS09JUkqgfES', 0),
+(55, '::1', '@a901', 'tmc.test@cvsu.edu.ph', '2022-100-0341', 'A', 'A', '2024-08-07', 'Male', 'default_coverphoto.jpg', 'profile.jpg', '2024-08-21 11:38:53', '2024-08-21 11:38:53', '$2y$10$Y1cbdFPL3NZInFy1JowIPeJ5TkeBYClOCr14g/2w8H72d1E3/fjdC', 0);
 
 -- --------------------------------------------------------
 
@@ -324,31 +355,31 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `heart_reactions`
 --
 ALTER TABLE `heart_reactions`
-  MODIFY `reaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `reaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=282;
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=283;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `post_reports`
 --
 ALTER TABLE `post_reports`
-  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `schedules`
@@ -366,13 +397,13 @@ ALTER TABLE `user_bans`
 -- AUTO_INCREMENT for table `user_registration`
 --
 ALTER TABLE `user_registration`
-  MODIFY `user_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `user_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `user_warnings`
 --
 ALTER TABLE `user_warnings`
-  MODIFY `warning_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `warning_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- Constraints for dumped tables
