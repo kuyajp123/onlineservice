@@ -2,6 +2,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     padding: 0;
     margin: 0;
+    background-color: #D3E0D3;
 }
 
 ul, li, a {
@@ -26,7 +27,7 @@ ul, li, a {
     height: 10vh; /* Fixed height for the navbar */
     width: 100%;
     padding: 0;
-    border: 1px solid blue;
+    background-color: #367934;
 }
 
 .contbody {
@@ -41,8 +42,12 @@ ul, li, a {
     height: calc(90vh - 10px); /* Adjust height based on the navbar height */
     width: 20%;
     transition: width 0.3s;
-
+    background-color: #fff;
     z-index: 1000;
+}
+.navtexticon a{
+    color: #fff;
+    font-size: 1.8rem;
 }
 
 .sidenav.hidden {

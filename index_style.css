@@ -38,7 +38,7 @@ button{
   align-items: center;
   justify-content: center;
   width: 100%;
-  background-color: #615EFC;
+  background-color:  #367934;
   padding: 0;
       -ms-overflow-style: none; /* For Internet Explorer and Edge */
 }
@@ -416,10 +416,10 @@ button{
 
 }
 .dropup .btn{
-  background-color: #615EFC;
+  background-color: #367934;
 }
 .dropup .btn:hover{
-  background-color: #4E4BCB;
+  background-color: #2c6130;
 }
 .dropup .dropdown-menu .logoutbut:hover, .dropup .dropdown-menu .dropdown-item:hover {
   background-color: #F0F0F0;

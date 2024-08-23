@@ -1,4 +1,1 @@
-<?php
-
-
-?>
+background-color: #367934;

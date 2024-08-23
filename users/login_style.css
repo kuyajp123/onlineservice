@@ -64,7 +64,7 @@ body {
     margin: 0;
     padding: 0;
     height: 70%;
-    width: 70%;
+    width: 60%;
   }
   .form-container1{
     margin-top: 0;
@@ -76,6 +76,7 @@ body {
     align-items: center;
     border-radius: 10px;
     box-shadow: 1px 1px 30px #aaaaaa;
+    background-color: #fff;
   }
   .form-container2{
     margin: 0;
@@ -141,8 +142,45 @@ body {
         }
   
 
-
-
+.logo-img {
+    width: 100%;
+    height: auto;
+  }
+  .footer-left {
+    flex: 1; /* Takes up equal space as footer-right */
+    text-align: left;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+.footer-right {
+    flex: 1; /* Takes up equal space as footer-left */
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+.footer-right p {
+    margin: 0;
+}
+.footer-distributed {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* Ensures the items are spread out across the footer */
+  padding: 20px;
+  background-color: #333;
+  color: #fff;
+  flex-wrap: wrap; /* Allows the content to wrap if the screen is too small */
+  margin-top: auto;
+}
+.footer-company-name, .footer-company-about {
+  margin-top: 10px;
+}
+.footer-right div {
+  margin-bottom: 10px;
+}
+.footer-company-name {
+  font-size: 14px;
+  color: #808080;
+}
 
 
 
@@ -220,5 +258,12 @@ border: 1px solid #dadde1;
   @media (max-width: 768px) and (orientation: landscape) {
     .row-form {
         flex-direction: row; /* Revert to rows in landscape orientation */
+    }
+  }
+
+  @media (max-width: 768px) {
+    .footer-distributed {
+        flex-direction: column; /* Stacks the footer-left and footer-right vertically on smaller screens */
+        text-align: center; /* Centers the text on smaller screens */
     }
   }

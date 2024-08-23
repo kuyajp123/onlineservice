@@ -29,10 +29,10 @@ $usersResult = $con->query($usersQuery);
 <div class="container-fluid screen">
     <div class="container-fluid nav">
         <nav class="navbar">
-            <div class="container-fluid" >
-                <a class="navbar-brand" href="#">
-                <img src="../images/Cavite_State_University_(CvSU).png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-                CvS Tagram
+            <div class="container-fluid navtexticon">
+                <a class="navbar-brand px-2" href="#">
+                <img src="../images/Cavite_State_University_(CvSU).png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top">
+                CvSTagram 
                 </a>
             </div>
         </nav>

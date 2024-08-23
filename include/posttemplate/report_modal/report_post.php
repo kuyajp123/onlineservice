@@ -9,16 +9,16 @@ if (isset($_POST['submit_report_imagepost'])) {
     // Retrieve and sanitize form data
     $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
     $user_no = isset($_POST['user_no']) ? intval($_POST['user_no']) : 0;
-    $report_reason = $_POST['report_reason'];
+    $report_reason = isset($_POST['report_reason']) ? htmlspecialchars($_POST['report_reason']) : '';
+    $reporter_user_no = isset($_POST['reporter_user_no']) ? intval($_POST['reporter_user_no']) : 0;
 
     
 
-
     // Validate input
-    if ($post_id > 0 && $user_no > 0 && !empty($report_reason) && $loggedInUserNo > 0) {
+    if ($post_id > 0 && $user_no > 0 && !empty($report_reason) && $reporter_user_no > 0) {
         // Prepare SQL query to insert the report
         $stmt = $con->prepare("INSERT INTO post_reports (post_id, user_no, reporter_user_no, report_reason) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param('iiis', $post_id, $user_no, $loggedInUserNo, $report_reason);
+        $stmt->bind_param('iiis', $post_id, $user_no, $reporter_user_no, $report_reason);
 
         if ($stmt->execute()) {
             // Set success message and type
@@ -35,6 +35,7 @@ if (isset($_POST['submit_report_imagepost'])) {
     } else {
         $message = "Please provide the reason for your report.";
         $messageType = "error";
+        
     }
 
     // Set message in session and redirect
@@ -70,13 +71,10 @@ unset($_SESSION['messageType']);
       </div>
       <div class="modal-body">
         <form action="" method="post">
-        <input type="hidden" id="modal_post_id" name="post_id" value="<?php echo $post_id; ?>">
-        <input type="hidden" id="modal_user_no" name="user_no" value="<?php echo $user_no; ?>">
+        <input type="hidden" id="modal_post_id" name="post_id">
+        <input type="hidden" id="modal_user_no" name="user_no">
         <input type="hidden" id="modal_reporter_user_no" name="reporter_user_no">
           <div class="container">
-            <?php echo $user_no ?>
-            <?php echo $post_id ?>
-            <?php echo $loggedInUserNo ?>
             <div class="container-fluid text-center h4 mb-4">Why are you reporting this post?</div>
             <div class="container h5">
               <div class="form-check m-2">

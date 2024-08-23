@@ -84,12 +84,12 @@ if (isset($_POST['login'])) {
 </head>
 <body>
 <div class="bod2" style="width:100%;">
-    <div class="container-fluid text-center">
-        <div class="p-3 column1">
+    <div class="container-fluid p-0 text-center">
+        <div class="column1">
             <div class="container container2">
                 <div class="row row-form">
                     <div class="col col-form content1">
-                        Column
+                    <img class="logo-img" src="logo 1.png" alt="Logo">
                     </div>
                     <div class="col col-form">
                         <div class="container-fluid container-form">
@@ -166,7 +166,37 @@ if (isset($_POST['login'])) {
                 </div>
             </div>
         </div>
-        <div class="p-3 column2">Custom column padding</div>
+        <div class="column2">
+            <footer class="footer-distributed" style="padding:0;">
+                <div class="footer-right">
+                    <div>
+                        <i class="fa fa-map-marker"></i>
+                        <p><span>Brgy. Gregorio, Trece Martires City, Cavite 4109</span></p>
+                    </div>
+                    
+                    <div>
+                        <i class="fa fa-phone"></i>
+                        <p>(046) 866 4981</p>
+                    </div>
+                    
+                    <div>
+                        <i class="fa fa-envelope"></i>
+                        <p>cvsutrecemartires@cvsu.edu.ph</p>
+                    </div>
+                </div>
+                
+                <div class="footer-right">
+                    <!-- <p class="footer-company-about">
+                        <span>About the system</span>
+                        wa
+                    </p> -->
+                </div>
+                
+                <div class="footer-left">
+                    <p class="footer-company-name">Copyright © 2024 Cavite State University - Trece Martires City Campus All Rights Reserved</p>
+                </div>
+            </footer>
+        </div>
     </div>
 </div>
     <!-- show password -->
