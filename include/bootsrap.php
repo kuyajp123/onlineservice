@@ -41,3 +41,11 @@
 <link href="https://cdn.jsdelivr.net/npm/air-datepicker@3.5.3/air-datepicker.min.css" rel="stylesheet">
 
 <link rel="alternate" href="..\css\bootstrap.min.css" >
+
+
+<!-- <link rel="stylesheet" href="../additional/bootstrap/css/*">
+<link rel="stylesheet" href="../additional/bootstrap/js*">
+<link rel="stylesheet" href="../additional/font-awesome-4.7.0/css/*">
+<link rel="stylesheet" href="../additional/font-awesome-4.7.0/fonts/*">
+<link rel="stylesheet" href="../additional/font-awesome-4.7.0/less/*">
+<link rel="stylesheet" href="../additional/font-awesome-4.7.0/scss/*"> -->
