@@ -143,8 +143,8 @@ $WS = WarningStatus($current_user_no);
       <div class="modal-body postbody">
         <div class="modal-body bodypost">
             <div class="container-fluid chil1">
-              <div class="container-fluid category">Select Category</div>
-              <div class="container-fluid store">
+              <!-- <div class="container-fluid category">Select Category</div> -->
+              <div class="container-fluid store" style="display:none;">
                 <form action="" method="post" enctype="multipart/form-data">
                 <select class="form-select" name="relation" aria-label="Default select example">
                   <option selected value="bothrelation">All</option>
@@ -152,7 +152,7 @@ $WS = WarningStatus($current_user_no);
                   <option value="Followers">Followers</option>
                 </select>
               </div>
-              <div class="container-fluid bookspost">
+              <div class="container-fluid bookspost" style="display:none;">
                 <select class="form-select" name="services" aria-label="Default select example">
                   <option selected value="bothservices">all</option>
                   <option value="Store">Store</option>

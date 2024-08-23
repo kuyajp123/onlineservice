@@ -36,7 +36,7 @@
 
 
 
-    <!-- air date picker] -->
+    <!-- air date picker -->
     <script src="https://cdn.jsdelivr.net/npm/air-datepicker@3.5.3/air-datepicker.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/air-datepicker@3.5.3/air-datepicker.min.css" rel="stylesheet">
 

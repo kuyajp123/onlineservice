@@ -231,7 +231,7 @@ ul, li, a {
 .actionbod{
     height: 100%;
     width: 100%;
-
+    border: 1px solid red;
     
 }
 .actionbodchild{
@@ -250,6 +250,7 @@ ul, li, a {
 .doaction{
     height: 40%;
     width: 70%;
+    
 }
 .namebod{
     height: 40%;
@@ -303,7 +304,6 @@ ul, li, a {
     align-items: center;
     justify-content: center;
     gap: 10px;
-   
 }
 .optionalmessage{
     height: 100%;

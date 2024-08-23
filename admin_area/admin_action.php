@@ -55,6 +55,9 @@ $admin_id = $_SESSION['admin_id']; // Retrieve admin ID from the session
 $warn_pass = '';
 $warn_post_id = '';
 $error = '';
+$error1 = '';
+$success = '';
+$success1 = '';
 
 $message_link = "Contact us";
 $url = "https://www.facebook.com/CvSUTreceCampus";
@@ -146,9 +149,9 @@ if(isset($_POST['submit_warn'])){
                 $stmt3 = $con->prepare($query2);
                 $stmt3->bind_param('iii', $user_no, $warn_appeal_id, $warning_level);
                 if ($stmt3->execute()) {
-                    echo "Warning inserted successfully.";
+                    $success = "Warning inserted successfully.";
                 } else {
-                    echo "Error inserting warning: " . $stmt3->error;
+                    $error = "Error inserting warning: " . $stmt3->error;
                 }
             }else{
                 $warning_id = $user['warning_id'];
@@ -159,9 +162,9 @@ if(isset($_POST['submit_warn'])){
                 $stmt_update->bind_param('iiii', $warn_appeal_id, $warning_level, $user_no, $warning_id);
 
                 if ($stmt_update->execute()) {
-                    echo "User warning level updated successfully.";
+                    $success = "User warning level updated successfully.";
                 } else {
-                    echo "Error updating user warning level: " . $stmt_update->error;
+                    $error = "Error updating user warning level: " . $stmt_update->error;
                 }
             }
 
@@ -174,16 +177,17 @@ if(isset($_POST['submit_warn'])){
             $stmt2 = $con->prepare($sql);
             $stmt2->bind_param('iisss', $user_no, $admin_id, $postphoto, $caption, $msgwarning);
             if($stmt2->execute()) {
-                echo "Notification inserted successfully.";
+                $success1 = "Notification inserted successfully.";
+                echo "<script>window.open('admin_action.php?user_no=" . $user_no . "','_self');</script>";
             } else {
-                echo "Error inserting notification: " . $stmt2->error;
+                $error1 = "Error inserting notification: " . $stmt2->error;
             }
 
         } else {
-            $error = 'Theres no data retrieved';
+            $error1 = 'Theres no data retrieved';
         }
     } else {
-        $error = 'password didn\'t match';
+        $error1 = 'password didn\'t match';
     }
 }
 
@@ -287,7 +291,9 @@ if(isset($_POST['submit_ban'])){
                     
                     if($stmt->execute()){
                         // echo  'Successfully updated';
-                        echo "<script>window.open('admin_action.php?user_no=" . $user_no . "');</script>";
+                        $success = 'Successfully updated';
+                        
+                        
                     }
                 }else{
                     $sql = "INSERT INTO user_bans (user_no, ban_appeal_id, ban_level, ban_start_date, ban_end_date) values (?,?,?,?,?)";
@@ -295,8 +301,7 @@ if(isset($_POST['submit_ban'])){
                     $stmt->bind_param("iiiss", $user_no, $ban_appeal_id, $ban_type, $timestamp, $end_days_ban2);
                     
                     if($stmt->execute() ){
-                        // echo "Successfully inserted";
-                        // echo "<script>window.open('admin_action.php?user_no=" . $user_no . "');</script>";
+                        $success = "Successfully inserted";
                     }
                 }
                 
@@ -310,10 +315,10 @@ if(isset($_POST['submit_ban'])){
             $stmt2->bind_param('iis', $user_no, $admin_id, $ban_msg);
             
             if ($stmt2->execute()) {
-                // echo "Notification inserted successfully.";
-                echo "<script>window.open('admin_action.php?user_no=" . $user_no . "');</script>";
+                $success2 = "Notification inserted successfully.";
+                echo "<script>window.open('admin_action.php?user_no=" . $user_no . "','_self');</script>";
             } else {
-                echo "Error inserting notification: " . $stmt2->error;
+                $error = "Error inserting notification: " . $stmt2->error;
             }
 
         }else{
@@ -524,7 +529,10 @@ if(isset($_POST['submit_ban'])){
                                 </div>
                                 <div class="container-fluid optionalmessage">
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2" class="btn btn-danger" data-user-no="<?php echo htmlspecialchars($user_no); ?>" data-admin-id="<?php echo htmlspecialchars($admin_id); ?>">Ban</button>
-                                    
+                                        <?php echo $success ?>
+                                        <?php echo $success1 ?>
+                                        <?php echo $error ?>
+                                        <?php echo $error1 ?>
                                 </div>
                             </div>
   
@@ -535,7 +543,14 @@ if(isset($_POST['submit_ban'])){
                                 <div class="container-fluid warning2">
                                 <?php //echo "Warning level: " .$row['warning_level']; ?>
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal3"  class="btn btn-warning" data-user-no="<?php echo htmlspecialchars($user_no); ?>" data-admin-id="<?php echo htmlspecialchars($admin_id); ?>">Remove warning</button>
+                                    <div>
+                                        <?php echo $success ?>
+                                        <?php echo $success1 ?>
+                                        <?php echo $error ?>
+                                        <?php echo $error1 ?>
+                                    </div>
                                 </div>
+                                
                             <?php } else { ?>
                                 <!-- put space if there's no warning -->
                                 <div class="container-fluid empty-warning-space"></div>
