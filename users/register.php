@@ -101,34 +101,28 @@ if(isset($_POST['submit'])){
                     $query = "INSERT INTO user_registration (user_ip, user_ID, email, student_no, user_password, fname, lname, bday, gender, coverphoto, profilepicture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     $stmt_insert = mysqli_prepare($con, $query);
                     mysqli_stmt_bind_param($stmt_insert, "sssssssssss", $user_ip, $user_id, $email, $student_no, $hashed_password, $formattedFirstName, $formattedLastName, $bday, $gender, $coverphoto, $profilepicture);
+
+                    // Execute the query
                     $sql = mysqli_stmt_execute($stmt_insert);
-                    if($sql){
-                        echo "<script>alert
 
-                                                document.addEventListener('DOMContentLoaded', function() {
-                            var modalHtml = `
-                            <div class='modal fade' id='registrationSuccessModal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
-                                <div class='modal-dialog'>
-                                    <div class='modal-content'>
-                                        <div class='modal-header'>
-                                            <h5 class='modal-title' id='exampleModalLabel'>Registration Successful</h5>
-                                        </div>
+                    if ($sql) {
+                        // Get the ID of the newly registered user
+                        $current_user_no = mysqli_insert_id($con);
 
-                                            
-    Registration successful! 
-                                                                                 
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            `;
-                            document.body.insertAdjacentHTML('beforeend', modalHtml);
-                            var registrationSuccessModal = new bootstrap.Modal(document.getElementById('registrationSuccessModal'));
-                            registrationSuccessModal.show();
-                        }); </script>";
-                        
-                        $conf_user_password = $email = $student_no = $user_password = $fname = $lname = $bday = $gender = ''; // Reset form
-                        break;
+                        // Automatically log the user in by setting session variables
+                        $_SESSION['user_ID'] = $user_id;
+                        $_SESSION['user_no'] = $current_user_no;
+                        $_SESSION['email'] = $email;
+                        $_SESSION['student_no'] = $student_no;
+                        $_SESSION['fname'] = $formattedFirstName;
+                        $_SESSION['lname'] = $formattedLastName;
+                        $_SESSION['bday'] = $bday;
+                        $_SESSION['gender'] = $gender;
+                        $_SESSION['coverphoto'] = $coverphoto;
+                        $_SESSION['profilepicture'] = $profilepicture;
+
+                        // Redirect the user to their profile page
+                        echo "<script>window.location.href = 'profile.php?sideprof=" . $current_user_no . "';</script>";
                     }
                 }
             }
@@ -142,6 +136,7 @@ if(isset($_POST['submit'])){
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Register</h1>
+        <!-- <button type="button" class="btn-close" id="registercls"></button> -->
       </div>
       <div class="modal-body">
       <form id="exampleModal" action="" method="post">
@@ -193,21 +188,27 @@ if(isset($_POST['submit'])){
             <div class="col pt-3">
             <label>Gender: &nbsp; &nbsp;</label>
 
-            <div class="container-fluid genderinput">
-                <input class="form-check-input" type="radio" name="gender" id="gender" value="Male" required>
-                <label class="form-check-label" for="gender">Male</label>
-                &nbsp; &nbsp;
-                <input class="form-check-input" type="radio" name="gender" id="gender" value="Female" required>
-                <label class="form-check-label" for="gender">Female</label>
-                &nbsp; &nbsp;
-                <input class="form-check-input" type="radio" name="gender" id="gender" value="other" required>
-                <label class="form-check-label" for="gender">other</label>
+                <div class="container-fluid genderinput">
+                    <input class="form-check-input" type="radio" name="gender" id="gender" value="Male" required>
+                    <label class="form-check-label" for="gender">Male</label>
+                    &nbsp; &nbsp;
+                    <input class="form-check-input" type="radio" name="gender" id="gender" value="Female" required>
+                    <label class="form-check-label" for="gender">Female</label>
+                    &nbsp; &nbsp;
+                    <input class="form-check-input" type="radio" name="gender" id="gender" value="other" required>
+                    <label class="form-check-label" for="gender">other</label>
+                </div>
+                <div class="container p-0 mt-4 tac">
+                    <!-- T&C here -->
+                     <label>
+                        <input type="checkbox" id="termsCheckbox"> I agree to the <a href="t_c.php" target="_blank">Terms and Conditions</a>
+                    </label>
                 </div>
             </div>
         </div>
 
         <div class="col-12 t-2 pt-4 px-3">
-    <button type="submit" id="btn-signup2" value="Sign up" name="submit" class="btn btn-primary">Sign up</button>
+    <button type="submit" id="btn-signup2" value="Sign up" name="submit" class="btn btn-primary" disabled>Sign up</button>
   </div>
     </form>
       </div>
@@ -221,8 +222,6 @@ if(isset($_POST['submit'])){
         exampleModal.show();
     </script>
     <?php endif; ?>
-
-
 
 
     <?php if ($emailInvalid): ?>
@@ -403,5 +402,15 @@ Please double check your password
                     firstDay: 0
                 }
             });
+        });
+</script>
+<!-- function for T&C-->
+<script>
+        // JavaScript to handle enabling/disabling the submit button
+        const termsCheckbox = document.getElementById('termsCheckbox');
+        const submitButton = document.getElementById('btn-signup2');
+
+        termsCheckbox.addEventListener('change', function() {
+            submitButton.disabled = !termsCheckbox.checked;
         });
 </script>

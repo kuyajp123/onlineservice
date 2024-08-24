@@ -55,7 +55,6 @@ if (isset($_POST['login'])) {
                 $_SESSION['lname'] = $row['lname'];
                 $_SESSION['bday'] = $row['bday'];
                 $_SESSION['gender'] = $row['gender'];
-                $_SESSION['user_password'] = $row['user_password'];
                 $_SESSION['profilepicture'] = $row['profilepicture'];
                 $_SESSION['coverphoto'] = $row['coverphoto'];           
                 $profilepicture = $_SESSION['profilepicture'];

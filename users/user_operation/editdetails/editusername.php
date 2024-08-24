@@ -2,7 +2,6 @@
 
 $user_id = $_SESSION['user_ID'];
 $user_no = $_SESSION['user_no'];
-$password = $_SESSION['user_password'];
 $user_ID = "";
 $error = "";
 
@@ -12,6 +11,16 @@ $stmt = $con->prepare($sql);
 $stmt->bind_param("s", $user_id); // 's' for string
 $stmt->execute();
 $result = $stmt->get_result();
+
+ // Fetch the current hashed password from the database
+ $sql = "SELECT user_password FROM user_registration WHERE user_no = ?";
+ $stmt = $con->prepare($sql);
+ $stmt->bind_param("s", $user_no);
+ $stmt->execute();
+ $result = $stmt->get_result();
+ $row = $result->fetch_assoc();
+
+ $password = $row['user_password'];
 
 // Check if the user ID exists
 if ($result->num_rows > 0) {

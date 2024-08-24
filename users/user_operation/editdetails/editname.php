@@ -11,8 +11,18 @@ if (isset($current_user_no)) {
         $lname = $_POST['lname'];
         $user_password = $_POST['user_password'];
 
+        // Fetch the current hashed password from the database
+        $sql = "SELECT user_password FROM user_registration WHERE user_no = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("s", $current_user_no);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        $password = $row['user_password'];
+
         // Check if the entered password matches the session password
-        if (password_verify($user_password, $_SESSION['user_password'])) {
+        if (password_verify($user_password, $password)) {
             // Format names by removing special characters
             $formattedFirstName = formatName($fname);
             $formattedLastName = formatName($lname);

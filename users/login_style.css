@@ -186,6 +186,7 @@ body {
 #btn-signup2{
   background-color:#00A400;
   border:none;
+  cursor: pointer;
 }
 .gender-register{
   display: flex;
@@ -221,7 +222,10 @@ border-radius: 5px;
 width: 100%;
 border: 1px solid #dadde1;
 }
-
+.btn-signup2:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
 
 
 

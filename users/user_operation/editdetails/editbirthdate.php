@@ -9,7 +9,15 @@ if (isset($_POST["submit_bday"])) {
     $password = $_POST['user_password'];
 
             if(!empty($bday)){
-              $user_password = $_SESSION['user_password'];
+               // Fetch the current hashed password from the database
+              $sql = "SELECT user_password FROM user_registration WHERE user_no = ?";
+              $stmt = $con->prepare($sql);
+              $stmt->bind_param("s", $user_no);
+              $stmt->execute();
+              $result = $stmt->get_result();
+              $row = $result->fetch_assoc();
+
+              $user_password = $row['user_password'];
               if (password_verify($password, $user_password)) {
                 $sql = "UPDATE user_registration SET bday = ? WHERE user_no = ?";
                 $stmt = $con->prepare($sql);

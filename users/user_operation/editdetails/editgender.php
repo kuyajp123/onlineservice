@@ -1,13 +1,22 @@
 <?php
 
 $user_id = $_SESSION['user_ID'];
-$password = $_SESSION['user_password'];
 $error = "";
 
 if (isset($_POST['gender_submit'])) {
     $gender = $_POST['gender'];
     $customGender = isset($_POST['customGender']) ? $_POST['customGender'] : '';
     $user_password = $_POST['user_password'];
+
+    // Fetch the current hashed password from the database
+    $sql = "SELECT user_password FROM user_registration WHERE user_no = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param("s", $user_no);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    $password = $row['user_password'];
 
     // Verify if the provided password matches the session password
     if (password_verify($user_password, $password)) {
