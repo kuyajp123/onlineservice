@@ -89,9 +89,9 @@ if (isset($_POST['login'])) {
             <div class="container container2">
                 <div class="row row-form">
                     <div class="col col-form content1">
-                    <img class="logo-img" src="logo 1.png" alt="Logo">
+                        <img class="logo-img" src="logo 1.png" alt="Logo">
                     </div>
-                    <div class="col col-form">
+                    <div class="col col-form lagyanngform">
                         <div class="container-fluid container-form">
                             <div class="container form-container1">
                                 <div class="container form-container2">
@@ -192,7 +192,7 @@ if (isset($_POST['login'])) {
                     </p> -->
                 </div>
                 
-                <div class="footer-left">
+                <div class="footer-left text-center">
                     <p class="footer-company-name">Copyright © 2024 Cavite State University - Trece Martires City Campus All Rights Reserved</p>
                 </div>
             </footer>

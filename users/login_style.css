@@ -15,10 +15,6 @@ body {
     margin: 0;
     padding: 0;
   }
-  .container-form{
-    margin: 0;
-    padding: 0;
-  }
   .column1{
     height: 130%;
     width: 100%;
@@ -65,6 +61,9 @@ body {
     padding: 0;
     height: 70%;
     width: 60%;
+  }
+  .lagyanngform{
+    padding: 10px;
   }
   .form-container1{
     margin-top: 0;
@@ -140,10 +139,9 @@ body {
   .alert-container {
             height: 30px; /* Adjust this height according to your design */
         }
-  
 
 .logo-img {
-    width: 100%;
+    width: 70vh;
     height: auto;
   }
   .footer-left {
@@ -230,8 +228,6 @@ border: 1px solid #dadde1;
 
 
 
-
-
   
   /* responsive for phones */
   @media (max-width: 768px) {
@@ -251,19 +247,24 @@ border: 1px solid #dadde1;
     .form-container3{
         height: 35%;
     }
-    
+    .footer-distributed {
+      flex-direction: column; /* Stacks the footer-left and footer-right vertically on smaller screens */
+      text-align: center; /* Centers the text on smaller screens */
+    }
+    .logo-img {
+      width: 75%;
+      height: auto;
+      margin-bottom: 40px;
+    }
+    .content1{
+      height: 30vh;
+      margin-bottom: 20px;
+    }
   }
   
   /* landscape */
   @media (max-width: 768px) and (orientation: landscape) {
     .row-form {
         flex-direction: row; /* Revert to rows in landscape orientation */
-    }
-  }
-
-  @media (max-width: 768px) {
-    .footer-distributed {
-        flex-direction: column; /* Stacks the footer-left and footer-right vertically on smaller screens */
-        text-align: center; /* Centers the text on smaller screens */
     }
   }

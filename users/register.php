@@ -374,6 +374,19 @@ Please double check your password
   document.addEventListener('DOMContentLoaded', function () {
             // Initialize Air Datepicker
             new AirDatepicker('#datepicker', {
+                position({$datepicker, $target, $pointer}) {
+                let coords = $target.getBoundingClientRect(),
+                    dpHeight = $datepicker.clientHeight,
+                    dpWidth = $datepicker.clientWidth;
+
+                let top = coords.y + coords.height / 2 + window.scrollY - dpHeight / 2;
+                let left = coords.x + coords.width / 4 - dpWidth / 5;
+
+                $datepicker.style.left = `${left}px`;
+                $datepicker.style.top = `${top}px`;
+
+                $pointer.style.display = 'none';
+                },
                 buttons: ['clear'],
                 dateFormat: 'yyyy-MM-dd',
                 autoClose: true,
