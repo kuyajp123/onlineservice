@@ -160,7 +160,11 @@ if (isset($_POST['login'])) {
                                     <button type="button" id="btn-signup" class="btn btn-primary" onclick="openRegisterModal()" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Sign up</button>
                                 </div>
                             </div>
+                            <div class="container-fluid appeal">
+                                <a href="user_appeal.php" target="_blank">Click here</a> to appeal
+                            </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
