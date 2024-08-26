@@ -1,30 +1,39 @@
 <?php
-session_name('admin_session');
-session_start();
-// if (!isset($_SESSION['admin_logged_in'])) {
-//     header('Location: ../login.php');
-//     exit;
-// }
 require_once '../include/connect.php';
 require_once '../include/bootsrap.php';
+session_name('admin_session');
+session_start();
 
-// Fetch users and their report status
-$usersQuery = 'SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, pr.report_reason, pr.post_id, IFNULL(COUNT(pr.report_id), 0) AS report_count 
-               FROM user_registration ur
-               LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
-               GROUP BY ur.user_no';
-$usersResult = $con->query($usersQuery);
+$appeal_id = isset($_GET['appeal_id']) ? intval($_GET['appeal_id']) : 0;
+
+// echo "$appeal_id";
+
+$sql = "SELECT * FROM appeal where appeal_id = ?";
+$stmt = $con->prepare($sql);
+$stmt->bind_param("i", $appeal_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+
+$timeStamp = $row['timeStamp'];
+$formattedDate = new DateTime($timeStamp);
+$formattedDate = $formattedDate->format('F j, Y');
+
+$query = "SELECT uw.warn_appeal_id, ub.ban_appeal_id from user_warnings uw
+LEFT JOIN user_bans ub ON uw.user_no = ub.user_no";
+$stmt = $con->query($query);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin dashboard</title>
+    <title>Appeal messages</title>
     <link rel="stylesheet" href="admin_dashbaord.css?v=<?php echo time(); ?>">
 </head>
 <body>
-
 <div class="container-fluid screen">
     <div class="container-fluid nav">
         <nav class="navbar">
@@ -158,116 +167,46 @@ $usersResult = $con->query($usersQuery);
         </div>
         <div class="container-fluid content">
             
+        <div class="container-fluid messcont">
+            <div class="container-fluid messcontchild">
+                <div class="container contmess">
+                    <div class="container-fluid headermessage">
+                        <img src="logo 1.png">
+                        <div class="text-center">
+                        Republic of the Philippines <br>
+                        <span style="font-size:2rem;"><b>CVSTAGRAM</b></span><br>
+                        Cavite State University <br>
+                        Trece Martires City
+                        </div>
+                        
+                    </div>
+                    <div class="container-fluid contentmessage">
+                        <div class="container-fluid reqdetails">
+                            <div class="container detailschild">
+                                Name: <b><?php echo htmlspecialchars($row['fname']. ' ' .$row['lname']) ?></b>  <br>
+                                Email: <b><?php echo htmlspecialchars($row['email']) ?></b> <br>
+                                Student no: <b><?php echo htmlspecialchars($row['student_no']) ?></b> <br>
+                                Date: <b><?php echo htmlspecialchars($formattedDate); ?></b>
+                            </div>
+                            <div class="container detailschild">
+                                Appeal id: <b><?php echo htmlspecialchars($row['appeal_id']) ?></b> <br>
+                                User no: <b><?php echo htmlspecialchars($row['user_no']) ?></b> <br>
+                                Appeal no: <b><?php echo htmlspecialchars($row['appeal_no']) ?></b> <br>
+                            </div>
+                        </div>
+                        <div class="container-fluid text-break messagetext">
+                            <?php echo htmlspecialchars($row['appeal_message']) ?>
+                             
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
-
-
-
-
-
-        <?php
-// Check if user_no is set in the URL
-$user_no = isset($_GET['user_no']) ? intval($_GET['user_no']) : 0;
-
-// Fetch reported posts for the specified user
-$query = "SELECT 
-    pr.report_id,
-    pr.reporter_user_no,
-    pr.report_reason,
-    pr.report_date,
-    p.post_id,
-    ur.user_no,
-    ur.fname,
-    ur.lname,
-    p.postphoto,
-    p.caption
-FROM 
-    post_reports pr
-JOIN 
-    posts p ON pr.post_id = p.post_id
-JOIN 
-    user_registration ur ON pr.user_no = ur.user_no
-WHERE
-    ur.user_no = ?";
-$stmt = $con->prepare($query);
-$stmt->bind_param('i', $user_no);
-$stmt->execute();
-$reports = $stmt->get_result();
-?>
-    <div class="container mt-4">
-        <a href="../admin_area/list_of_users.php">Back</a>
-        <h1>Reported Posts for User <?php echo htmlspecialchars($user_no); ?></h1>
-        <a href="admin_action.php?user_no=<?php echo htmlspecialchars($user_no); ?>"><button class="btn btn-primary">Action</button></a>
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Report ID</th>
-                    <th scope="col">Reporter User No</th>
-                    <th scope="col">Reason</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Post ID</th>
-                    <th scope="col">Post Photo</th>
-                    <th scope="col">Caption</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($report = $reports->fetch_assoc()): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($report['report_id']); ?></td>
-                        <td><?php echo htmlspecialchars($report['reporter_user_no']); ?></td>
-                        <td><?php echo htmlspecialchars($report['report_reason']); ?></td>
-                        <td><?php echo htmlspecialchars($report['report_date']); ?></td>
-                        <td><?php echo htmlspecialchars($report['post_id']); ?></td>
-                        <td>
-                            <?php if ($report['postphoto']): ?>
-                                <img src="../include/posts_images/<?php echo htmlspecialchars($report['postphoto']); ?>" alt="Post Photo" width="100">
-                            <?php else: ?>
-                                No Photo
-                            <?php endif; ?>
-                        </td>
-                        <td><?php echo htmlspecialchars($report['caption']); ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <?php
-            // if (isset($_GET['list_of_users'])) {
-            //     include '../admin_area/list_of_users.php';                       
-            // }
-            // if (isset($_GET['user_no'])) {
-            //     $user_no = htmlspecialchars($_GET['user_no']);
-            //     include '../admin_area/review_post.php';
-            // }
-            ?>
         </div>
     </div>
 </div>
-
 </body>
 </html>
 <script>
@@ -315,6 +254,3 @@ $reports = $stmt->get_result();
     // Load the sidenav state when the page loads
     window.onload = loadSidenavState;
 </script>
-
-
-

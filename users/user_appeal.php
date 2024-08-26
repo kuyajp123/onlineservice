@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <div class="container-fluid contbody">
         <div class="container-fluid sidenav">
             <div class="container-fluid menubutton">
-            <button onclick="toggleSidenav()"><i class="fa-solid fa-bars"></i></button>
+            <!-- <button onclick="toggleSidenav()"><i class="fa-solid fa-bars"></i></button> -->
             </div>
             <div class="container-fluid featurescont">
                 <div class="container-fluid buttonlinkside">
@@ -287,52 +287,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </div>
 </body>
 </html>
-<script>
-        // Function to toggle the sidenav and save the state
-        function toggleSidenav() {
-        const sidenav = document.querySelector('.sidenav');
-        const content = document.querySelector('.content');
-    
-        if (sidenav.classList.contains('hidden')) {
-            sidenav.classList.remove('hidden');
-            content.classList.remove('expanded');
-            localStorage.setItem('sidenavState', 'open'); // Save state as 'open'
-        } else {
-            sidenav.classList.add('hidden');
-            content.classList.add('expanded');
-            localStorage.setItem('sidenavState', 'hidden'); // Save state as 'hidden'
-        }
-    }
-    
-    // Function to load the saved state from localStorage
-    function loadSidenavState() {
-        const sidenav = document.querySelector('.sidenav');
-        const content = document.querySelector('.content');
-        const savedState = localStorage.getItem('sidenavState');
-    
-        // Temporarily disable transitions
-        sidenav.classList.add('no-transition');
-        content.classList.add('no-transition');
-    
-        if (savedState === 'hidden') {
-            sidenav.classList.add('hidden');
-            content.classList.add('expanded');
-        } else {
-            sidenav.classList.remove('hidden');
-            content.classList.remove('expanded');
-        }
-    
-        // Re-enable transitions after a short delay
-        setTimeout(() => {
-            sidenav.classList.remove('no-transition');
-            content.classList.remove('no-transition');
-        }, 100); // Adjust delay if needed
-    }
-    
-    // Load the sidenav state when the page loads
-    window.onload = loadSidenavState;
-</script>
-
 <!-- function for student number -->
 <script>
     document.getElementById('user_std_num1').addEventListener('input', function(e) {
