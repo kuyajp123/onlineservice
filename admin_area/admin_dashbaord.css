@@ -372,7 +372,8 @@ ul, li, a {
 }
 .contentmessage{
     height: 75%;
-    border: 1px solid red;
+    border: 2px solid #C0C0C0;
+    border-radius: 10px;
 }
 .headermessage{
     min-height: 25%;
@@ -386,11 +387,11 @@ ul, li, a {
 }
 .messagetext{
     height: 60%;
-    border: 1px solid red ;
+    padding: 10px;
+    border-top: #C0C0C0 2px solid;
 }
 .reqdetails{
     height: 40%;
-    border: 1px solid red ;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -398,5 +399,4 @@ ul, li, a {
 .detailschild{
     height: 100%;
     width: 50%;
-    border: 1px solid red;
 }

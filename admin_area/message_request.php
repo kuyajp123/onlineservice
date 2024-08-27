@@ -19,9 +19,29 @@ $timeStamp = $row['timeStamp'];
 $formattedDate = new DateTime($timeStamp);
 $formattedDate = $formattedDate->format('F j, Y');
 
-$query = "SELECT uw.warn_appeal_id, ub.ban_appeal_id from user_warnings uw
-LEFT JOIN user_bans ub ON uw.user_no = ub.user_no";
-$stmt = $con->query($query);
+$user_no = $row['user_no'];
+
+$query = "SELECT * FROM user_warnings uw WHERE uw.user_no = ?";
+$stmt = $con->prepare($query);
+$stmt->bind_param("i", $user_no);
+$stmt->execute();
+$result_uw = $stmt->get_result();
+$uw = $result_uw->fetch_assoc();
+
+$sql = "SELECT * FROM user_bans uw WHERE uw.user_no = ?";
+$stmt = $con->prepare($sql);
+$stmt->bind_param("i", $user_no);
+$stmt->execute();
+$result_ub = $stmt->get_result();
+$ub = $result_ub->fetch_assoc();
+
+function formatDate($date) {
+    if ($date === null || $date === '') {
+        return 'Permanent ban'; // Or an empty string or another placeholder
+    }
+    return date('F j, Y', strtotime($date)); // Example format: August 27, 2024
+}
+
 
 
 ?>
@@ -183,15 +203,34 @@ $stmt = $con->query($query);
                     <div class="container-fluid contentmessage">
                         <div class="container-fluid reqdetails">
                             <div class="container detailschild">
+                                Appeal id: <b><?php echo htmlspecialchars($row['appeal_id']) ?></b> <br>
+                                User no: <b><?php echo htmlspecialchars($user_no) ?></b> <br>
+                                Appeal no: <b><?php echo htmlspecialchars($row['appeal_no']) ?></b> <br>
                                 Name: <b><?php echo htmlspecialchars($row['fname']. ' ' .$row['lname']) ?></b>  <br>
                                 Email: <b><?php echo htmlspecialchars($row['email']) ?></b> <br>
                                 Student no: <b><?php echo htmlspecialchars($row['student_no']) ?></b> <br>
-                                Date: <b><?php echo htmlspecialchars($formattedDate); ?></b>
+                                Date: <b><?php echo htmlspecialchars($formattedDate); ?></b> <br>
+                                
                             </div>
                             <div class="container detailschild">
-                                Appeal id: <b><?php echo htmlspecialchars($row['appeal_id']) ?></b> <br>
-                                User no: <b><?php echo htmlspecialchars($row['user_no']) ?></b> <br>
-                                Appeal no: <b><?php echo htmlspecialchars($row['appeal_no']) ?></b> <br>
+                                
+                            <?php
+                            if ($result_uw->num_rows > 0) {
+                                echo "Warning level: <b>" . htmlspecialchars($uw['warning_level']) . "</b><br>";
+                                echo "Issue date: <b>" . formatDate($uw['issue_date']) . "</b><br>";
+                                echo "Reset date: <b>" . formatDate($uw['reset_date']) . "</b><br>";
+                            } else {
+                                echo ' ';
+                            }
+                            echo "<br>";
+                            if ($result_ub->num_rows > 0) {
+                                echo "Ban level: <b>" . htmlspecialchars($ub['ban_level']) . "</b><br>";
+                                echo "Ban start date: <b>" . formatDate($ub['ban_start_date']) . "</b><br>";
+                                echo "Ban end date: <b>" . formatDate($ub['ban_end_date']) . "</b><br>";
+                            } else {
+                                echo ' ';
+                            }
+                            ?>
                             </div>
                         </div>
                         <div class="container-fluid text-break messagetext">

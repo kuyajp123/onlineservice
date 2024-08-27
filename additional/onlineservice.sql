@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 26, 2024 at 12:34 PM
+-- Generation Time: Aug 27, 2024 at 03:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -56,18 +56,18 @@ CREATE TABLE `appeal` (
   `appeal_no` int(11) NOT NULL,
   `appeal_message` text DEFAULT NULL,
   `user_ban_no` int(11) DEFAULT NULL,
-  `user_warning_no` int(11) DEFAULT NULL
+  `user_warning_no` int(11) DEFAULT NULL,
+  `timeStamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `appeal`
 --
 
-INSERT INTO `appeal` (`appeal_id`, `user_no`, `fname`, `lname`, `email`, `student_no`, `appeal_no`, `appeal_message`, `user_ban_no`, `user_warning_no`) VALUES
-(4, 50, 'John Paul', 'Naag', 'tmc.johnpaul.naag@cvsu.edu.ph', '2022-100-0349', 123, 'asdsad', NULL, 50),
-(5, 55, 'A', 'A', 'tmc.test@cvsu.edu.ph', '2022-100-0341', 801007, 'asd', 55, NULL),
-(6, 55, 'A', 'A', 'tmc.test@cvsu.edu.ph', '2022-100-0341', 801007, 'asd', 55, NULL),
-(7, 55, 'A', 'A', 'tmc.test@cvsu.edu.ph', '2022-100-0341', 212, 'asd', 55, NULL);
+INSERT INTO `appeal` (`appeal_id`, `user_no`, `fname`, `lname`, `email`, `student_no`, `appeal_no`, `appeal_message`, `user_ban_no`, `user_warning_no`, `timeStamp`) VALUES
+(4, 50, 'John Paul', 'Naag', 'tmc.johnpaul.naag@cvsu.edu.ph', '2022-100-0349', 123, 'asdsad', NULL, 50, '2024-08-26 10:40:07'),
+(8, 55, 'A', 'A', 'tmc.test@cvsu.edu.ph', '2022-100-0341', 325014, 'please forgive me', 55, NULL, '2024-08-27 13:13:19'),
+(9, 55, 'A', 'A', 'tmc.test@cvsu.edu.ph', '2022-100-0341', 324234, '', 55, NULL, '2024-08-27 13:42:21');
 
 -- --------------------------------------------------------
 
@@ -94,7 +94,9 @@ INSERT INTO `comments` (`comment_id`, `post_id`, `user_no`, `comment_text`, `tim
 (20, 45, 50, 'Hi', '2024-08-24 07:54:03'),
 (21, 53, 50, 'Ikaw yan?', '2024-08-24 08:35:06'),
 (22, 53, 55, 'comment', '2024-08-24 14:42:22'),
-(23, 49, 50, 'ssd', '2024-08-25 02:49:10');
+(23, 49, 50, 'ssd', '2024-08-25 02:49:10'),
+(29, 53, 50, 'a', '2024-08-27 13:44:03'),
+(30, 54, 50, 'qwe', '2024-08-27 13:44:10');
 
 -- --------------------------------------------------------
 
@@ -127,7 +129,8 @@ INSERT INTO `heart_reactions` (`reaction_id`, `post_id`, `user_no`, `reaction_ty
 (134, 53, 50, '', '2024-08-25 02:36:47'),
 (136, 51, 50, '', '2024-08-25 02:49:01'),
 (137, 54, 55, '', '2024-08-25 03:04:03'),
-(138, 54, 50, '', '2024-08-25 13:49:42');
+(138, 54, 50, '', '2024-08-25 13:49:42'),
+(145, 50, 50, '', '2024-08-27 13:44:14');
 
 -- --------------------------------------------------------
 
@@ -162,7 +165,11 @@ INSERT INTO `notifications` (`notification_id`, `user_no`, `admin_id`, `comment_
 (330, 55, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ban', '\r\n            Subject: Violation of Community Standards<br><br>\r\n\r\n            Dear A A,<br><br>\r\n\r\n            We hope this message finds you well. This email is to inform you that your account has been suspended due to a violation of our community guidelines.<br><br>\r\n\r\n            <h2>801007</h2>\r\n\r\n            Details of Suspension:<br><br>\r\n\r\n            Date: August 25, 2024<br>\r\n            Violation Reason: Violate community standards<br>\r\n            Ban Level: 1<br>\r\n            Ban Start Date: August 25, 2024<br>\r\n            Ban End Date: September 1, 2024<br><br>\r\n\r\n            We take our community standards very seriously and aim to ensure a positive experience for all users. This action was taken following a thorough review of the reports and your recent activity. If you believe this decision was made in error, or if you have any questions regarding this suspension, please contact our support team at <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Contact us</a> and provide the following reference number for further assistance: 801007.<br><br>\r\n\r\n            Please take this time to review our community guidelines to avoid any future issues. We appreciate your understanding and cooperation.<br><br>\r\n\r\n            Thank you for your attention to this matter.<br><br>\r\n\r\n            Best regards,<br>\r\n            CvSTagram<br>\r\n            <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Visit our Facebook page</a><br>\r\n            ', '2024-08-25 11:27:18', 0),
 (331, 50, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'Screenshot 2024-08-22 214241.png', '', 'warning', '\r\n            Subject: Warning: Violation of Community Standards<br><br>\r\n\r\n            Dear John Paul Naag,<br><br>\r\n\r\n            We hope this message finds you well. This is a formal warning regarding recent activity on your account that has been found to be in violation of our community standards.<br><br>\r\n\r\n            <h2>958541</h2>\r\n\r\n            Violation Details:<br><br>\r\n\r\n            Reported Date: August 23, 2024<br>\r\n            Description: Multiple report counts<br>\r\n            Community Standard Violated: Other<br><br>\r\n\r\n            As this is a serious matter, we ask that you review our community guidelines to ensure that your future actions align with our standards. Repeated violations may result in further action, including temporary suspension or permanent banning of your account.<br><br>\r\n\r\n            Please note that this warning will be recorded in your account history. Should you receive additional warnings, the consequences may escalate as outlined in our community guidelines.<br><br>\r\n\r\n            If you believe this warning was issued in error, or if you have any questions, you may contact our support team at <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Contact us</a> and indicate this reference number: 958541 within the next 7 days.<br><br>\r\n\r\n            We value your participation in our community and hope to see you continue to contribute positively.<br><br>\r\n\r\n            Thank you for your attention to this matter.<br><br>\r\n\r\n            Best regards,<br>\r\n            CvSTagram Team<br>\r\n            <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Visit our Facebook page</a><br>\r\n            ', '2024-08-25 11:27:32', 1),
 (332, 50, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ban', '\r\n            Subject: Violation of Community Standards<br><br>\r\n\r\n            Dear JOHN PAUL NAAG,<br><br>\r\n\r\n            We hope this message finds you well. This email is to inform you that your account has been suspended due to a violation of our community guidelines.<br><br>\r\n\r\n            <h2>343644</h2>\r\n\r\n            Details of Suspension:<br><br>\r\n\r\n            Date: August 25, 2024<br>\r\n            Violation Reason: Violate community standards<br>\r\n            Ban Level: 2<br>\r\n            Ban Start Date: August 25, 2024<br>\r\n            Ban End Date: September 24, 2024<br><br>\r\n\r\n            We take our community standards very seriously and aim to ensure a positive experience for all users. This action was taken following a thorough review of the reports and your recent activity. If you believe this decision was made in error, or if you have any questions regarding this suspension, please contact our support team at <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Contact us</a> and provide the following reference number for further assistance: 343644.<br><br>\r\n\r\n            Please take this time to review our community guidelines to avoid any future issues. We appreciate your understanding and cooperation.<br><br>\r\n\r\n            Thank you for your attention to this matter.<br><br>\r\n\r\n            Best regards,<br>\r\n            CvSTagram<br>\r\n            <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Visit our Facebook page</a><br>\r\n            ', '2024-08-25 11:27:37', 1),
-(333, 50, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'Screenshot 2024-08-22 214241.png', '', 'warning', '\r\n            Subject: Warning: Violation of Community Standards<br><br>\r\n\r\n            Dear John Paul Naag,<br><br>\r\n\r\n            We hope this message finds you well. This is a formal warning regarding recent activity on your account that has been found to be in violation of our community standards.<br><br>\r\n\r\n            <h2>796104</h2>\r\n\r\n            Violation Details:<br><br>\r\n\r\n            Reported Date: August 23, 2024<br>\r\n            Description: Multiple report counts<br>\r\n            Community Standard Violated: Other<br><br>\r\n\r\n            As this is a serious matter, we ask that you review our community guidelines to ensure that your future actions align with our standards. Repeated violations may result in further action, including temporary suspension or permanent banning of your account.<br><br>\r\n\r\n            Please note that this warning will be recorded in your account history. Should you receive additional warnings, the consequences may escalate as outlined in our community guidelines.<br><br>\r\n\r\n            If you believe this warning was issued in error, or if you have any questions, you may contact our support team at <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Contact us</a> and indicate this reference number: 796104 within the next 7 days.<br><br>\r\n\r\n            We value your participation in our community and hope to see you continue to contribute positively.<br><br>\r\n\r\n            Thank you for your attention to this matter.<br><br>\r\n\r\n            Best regards,<br>\r\n            CvSTagram Team<br>\r\n            <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Visit our Facebook page</a><br>\r\n            ', '2024-08-25 13:37:22', 1);
+(333, 50, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'Screenshot 2024-08-22 214241.png', '', 'warning', '\r\n            Subject: Warning: Violation of Community Standards<br><br>\r\n\r\n            Dear John Paul Naag,<br><br>\r\n\r\n            We hope this message finds you well. This is a formal warning regarding recent activity on your account that has been found to be in violation of our community standards.<br><br>\r\n\r\n            <h2>796104</h2>\r\n\r\n            Violation Details:<br><br>\r\n\r\n            Reported Date: August 23, 2024<br>\r\n            Description: Multiple report counts<br>\r\n            Community Standard Violated: Other<br><br>\r\n\r\n            As this is a serious matter, we ask that you review our community guidelines to ensure that your future actions align with our standards. Repeated violations may result in further action, including temporary suspension or permanent banning of your account.<br><br>\r\n\r\n            Please note that this warning will be recorded in your account history. Should you receive additional warnings, the consequences may escalate as outlined in our community guidelines.<br><br>\r\n\r\n            If you believe this warning was issued in error, or if you have any questions, you may contact our support team at <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Contact us</a> and indicate this reference number: 796104 within the next 7 days.<br><br>\r\n\r\n            We value your participation in our community and hope to see you continue to contribute positively.<br><br>\r\n\r\n            Thank you for your attention to this matter.<br><br>\r\n\r\n            Best regards,<br>\r\n            CvSTagram Team<br>\r\n            <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Visit our Facebook page</a><br>\r\n            ', '2024-08-25 13:37:22', 1),
+(334, 50, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ban', '\r\n            Subject: Violation of Community Standards<br><br>\r\n\r\n            Dear JOHN PAUL NAAG,<br><br>\r\n\r\n            We hope this message finds you well. This email is to inform you that your account has been suspended due to a violation of our community guidelines.<br><br>\r\n\r\n            <h2>127828</h2>\r\n\r\n            Details of Suspension:<br><br>\r\n\r\n            Date: August 27, 2024<br>\r\n            Violation Reason: Violate community standards<br>\r\n            Ban Level: 1<br>\r\n            Ban Start Date: August 27, 2024<br>\r\n            Ban End Date: September 3, 2024<br><br>\r\n\r\n            We take our community standards very seriously and aim to ensure a positive experience for all users. This action was taken following a thorough review of the reports and your recent activity. If you believe this decision was made in error, or if you have any questions regarding this suspension, please contact our support team at <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Contact us</a> and provide the following reference number for further assistance: 127828.<br><br>\r\n\r\n            Please take this time to review our community guidelines to avoid any future issues. We appreciate your understanding and cooperation.<br><br>\r\n\r\n            Thank you for your attention to this matter.<br><br>\r\n\r\n            Best regards,<br>\r\n            CvSTagram<br>\r\n            <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Visit our Facebook page</a><br>\r\n            ', '2024-08-27 12:16:14', 0),
+(335, 55, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ban', '\r\n            Subject: Violation of Community Standards<br><br>\r\n\r\n            Dear A A,<br><br>\r\n\r\n            We hope this message finds you well. This email is to inform you that your account has been suspended due to a violation of our community guidelines.<br><br>\r\n\r\n            <h2>325014</h2>\r\n\r\n            Details of Suspension:<br><br>\r\n\r\n            Date: August 27, 2024<br>\r\n            Violation Reason: Violate community standards<br>\r\n            Ban Level: 1<br>\r\n            Ban Start Date: August 27, 2024<br>\r\n            Ban End Date: September 3, 2024<br><br>\r\n\r\n            We take our community standards very seriously and aim to ensure a positive experience for all users. This action was taken following a thorough review of the reports and your recent activity. If you believe this decision was made in error, or if you have any questions regarding this suspension, please contact our support team at <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Contact us</a> and provide the following reference number for further assistance: 325014.<br><br>\r\n\r\n            Please take this time to review our community guidelines to avoid any future issues. We appreciate your understanding and cooperation.<br><br>\r\n\r\n            Thank you for your attention to this matter.<br><br>\r\n\r\n            Best regards,<br>\r\n            CvSTagram<br>\r\n            <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Visit our Facebook page</a><br>\r\n            ', '2024-08-27 12:16:47', 0),
+(336, 50, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ban', '\r\n            Subject: Violation of Community Standards<br><br>\r\n\r\n            Dear JOHN PAUL NAAG,<br><br>\r\n\r\n            We hope this message finds you well. This email is to inform you that your account has been suspended due to a violation of our community guidelines.<br><br>\r\n\r\n            <h2>423602</h2>\r\n\r\n            Details of Suspension:<br><br>\r\n\r\n            Date: August 27, 2024<br>\r\n            Violation Reason: Violate community standards<br>\r\n            Ban Level: 3<br>\r\n            Ban Start Date: August 27, 2024<br>\r\n            Ban End Date: Permanent ban<br><br>\r\n\r\n            We take our community standards very seriously and aim to ensure a positive experience for all users. This action was taken following a thorough review of the reports and your recent activity. If you believe this decision was made in error, or if you have any questions regarding this suspension, please contact our support team at <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Contact us</a> and provide the following reference number for further assistance: 423602.<br><br>\r\n\r\n            Please take this time to review our community guidelines to avoid any future issues. We appreciate your understanding and cooperation.<br><br>\r\n\r\n            Thank you for your attention to this matter.<br><br>\r\n\r\n            Best regards,<br>\r\n            CvSTagram<br>\r\n            <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Visit our Facebook page</a><br>\r\n            ', '2024-08-27 12:42:53', 0),
+(337, 55, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ban', '\r\n            Subject: Violation of Community Standards<br><br>\r\n\r\n            Dear A A,<br><br>\r\n\r\n            We hope this message finds you well. This email is to inform you that your account has been suspended due to a violation of our community guidelines.<br><br>\r\n\r\n            <h2>586343</h2>\r\n\r\n            Details of Suspension:<br><br>\r\n\r\n            Date: August 27, 2024<br>\r\n            Violation Reason: Violate community standards<br>\r\n            Ban Level: 3<br>\r\n            Ban Start Date: August 27, 2024<br>\r\n            Ban End Date: Permanent ban<br><br>\r\n\r\n            We take our community standards very seriously and aim to ensure a positive experience for all users. This action was taken following a thorough review of the reports and your recent activity. If you believe this decision was made in error, or if you have any questions regarding this suspension, please contact our support team at <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Contact us</a> and provide the following reference number for further assistance: 586343.<br><br>\r\n\r\n            Please take this time to review our community guidelines to avoid any future issues. We appreciate your understanding and cooperation.<br><br>\r\n\r\n            Thank you for your attention to this matter.<br><br>\r\n\r\n            Best regards,<br>\r\n            CvSTagram<br>\r\n            <a href=\"https://www.facebook.com/CvSUTreceCampus\" target=\'_blank\' style=\'text-decoration: underline; color:#0000EE;\'>Visit our Facebook page</a><br>\r\n            ', '2024-08-27 13:36:35', 0);
 
 -- --------------------------------------------------------
 
@@ -227,7 +234,9 @@ INSERT INTO `post_reports` (`report_id`, `post_id`, `user_no`, `reporter_user_no
 (48, 52, 50, 55, 'Misleading or scam', '2024-08-23 12:04:43'),
 (49, 51, 50, 55, 'Violence', '2024-08-23 12:05:12'),
 (52, 46, 50, 55, 'Pretending to be someone else', '2024-08-24 07:46:12'),
-(53, 53, 55, 50, 'False news', '2024-08-24 07:46:56');
+(53, 53, 55, 50, 'False news', '2024-08-24 07:46:56'),
+(56, 53, 55, 50, 'Spam', '2024-08-27 13:44:54'),
+(57, 50, 55, 50, 'Prohibited content', '2024-08-27 13:45:22');
 
 -- --------------------------------------------------------
 
@@ -268,7 +277,27 @@ CREATE TABLE `user_bans` (
 --
 
 INSERT INTO `user_bans` (`ban_id`, `user_no`, `ban_appeal_id`, `ban_level`, `ban_start_date`, `ban_end_date`) VALUES
-(63, 55, 801007, 1, '2024-08-25', '2024-09-01');
+(66, 55, 586343, 3, '2024-08-27', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_info_visibility`
+--
+
+CREATE TABLE `user_info_visibility` (
+  `user_no` int(11) NOT NULL,
+  `info_name` varchar(50) NOT NULL,
+  `is_hidden` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_info_visibility`
+--
+
+INSERT INTO `user_info_visibility` (`user_no`, `info_name`, `is_hidden`) VALUES
+(50, 'bday', 0),
+(50, 'gender', 0);
 
 -- --------------------------------------------------------
 
@@ -298,7 +327,7 @@ CREATE TABLE `user_registration` (
 --
 
 INSERT INTO `user_registration` (`user_no`, `user_ip`, `user_ID`, `email`, `student_no`, `fname`, `lname`, `bday`, `gender`, `coverphoto`, `profilepicture`, `created_at`, `updated_at`, `user_password`) VALUES
-(50, '::1', '@john_paul848', 'tmc.johnpaul.naag@cvsu.edu.ph', '2022-100-0349', 'John Paul', 'Naag', '2024-08-21', 'Male', '', '', '2024-08-20 14:22:45', '2024-08-24 14:24:16', '$2y$10$CoECmi7nRa6mS37cWMGgLuzRnCJ9Uq922TTCiLcmU0N.5zYcVjWbG'),
+(50, '::1', '@john_paul848', 'tmc.johnpaul.naag@cvsu.edu.ph', '2022-100-0349', 'John Paul', 'Naag', '2024-08-05', 'prefered-not-to-say', '', '', '2024-08-20 14:22:45', '2024-08-27 01:42:14', '$2y$10$CoECmi7nRa6mS37cWMGgLuzRnCJ9Uq922TTCiLcmU0N.5zYcVjWbG'),
 (55, '::1', '@a901', 'tmc.test@cvsu.edu.ph', '2022-100-0341', 'A', 'A', '2024-08-07', 'Male', 'default_coverphoto.jpg', 'profile.jpg', '2024-08-21 11:38:53', '2024-08-21 11:38:53', '$2y$10$Y1cbdFPL3NZInFy1JowIPeJ5TkeBYClOCr14g/2w8H72d1E3/fjdC');
 
 -- --------------------------------------------------------
@@ -347,16 +376,16 @@ ALTER TABLE `appeal`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`comment_id`),
-  ADD KEY `post_id` (`post_id`),
-  ADD KEY `user_no` (`user_no`);
+  ADD KEY `fk_comments_post_id` (`post_id`),
+  ADD KEY `fk_comments_user_no` (`user_no`);
 
 --
 -- Indexes for table `heart_reactions`
 --
 ALTER TABLE `heart_reactions`
   ADD PRIMARY KEY (`reaction_id`),
-  ADD KEY `post_id` (`post_id`),
-  ADD KEY `user_no` (`user_no`);
+  ADD KEY `fk_heart_reactions_post_id` (`post_id`),
+  ADD KEY `fk_heart_reactions_user_no` (`user_no`);
 
 --
 -- Indexes for table `notifications`
@@ -403,6 +432,12 @@ ALTER TABLE `user_bans`
   ADD KEY `user_no` (`user_no`);
 
 --
+-- Indexes for table `user_info_visibility`
+--
+ALTER TABLE `user_info_visibility`
+  ADD PRIMARY KEY (`user_no`,`info_name`);
+
+--
 -- Indexes for table `user_registration`
 --
 ALTER TABLE `user_registration`
@@ -432,25 +467,25 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `appeal`
 --
 ALTER TABLE `appeal`
-  MODIFY `appeal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `appeal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `heart_reactions`
 --
 ALTER TABLE `heart_reactions`
-  MODIFY `reaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
+  MODIFY `reaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=146;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=334;
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=338;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -462,7 +497,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT for table `post_reports`
 --
 ALTER TABLE `post_reports`
-  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `schedules`
@@ -474,13 +509,13 @@ ALTER TABLE `schedules`
 -- AUTO_INCREMENT for table `user_bans`
 --
 ALTER TABLE `user_bans`
-  MODIFY `ban_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `ban_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `user_registration`
 --
 ALTER TABLE `user_registration`
-  MODIFY `user_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `user_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `user_warnings`
@@ -498,19 +533,23 @@ ALTER TABLE `user_warnings`
 ALTER TABLE `appeal`
   ADD CONSTRAINT `appeal_ibfk_1` FOREIGN KEY (`user_ban_no`) REFERENCES `user_bans` (`user_no`) ON DELETE CASCADE,
   ADD CONSTRAINT `appeal_ibfk_2` FOREIGN KEY (`user_warning_no`) REFERENCES `user_warnings` (`user_no`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_appeal_user_no` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_appeal_user_no` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `comments`
 --
 ALTER TABLE `comments`
   ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`),
-  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`);
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`),
+  ADD CONSTRAINT `fk_comments_post_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_comments_user_no` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `heart_reactions`
 --
 ALTER TABLE `heart_reactions`
+  ADD CONSTRAINT `fk_heart_reactions_post_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_heart_reactions_user_no` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`) ON DELETE CASCADE,
   ADD CONSTRAINT `heart_reactions_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`),
   ADD CONSTRAINT `heart_reactions_ibfk_2` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`);
 
@@ -552,6 +591,12 @@ ALTER TABLE `schedules`
 --
 ALTER TABLE `user_bans`
   ADD CONSTRAINT `user_bans_ibfk_1` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `user_info_visibility`
+--
+ALTER TABLE `user_info_visibility`
+  ADD CONSTRAINT `user_info_visibility_ibfk_1` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`);
 
 --
 -- Constraints for table `user_warnings`
