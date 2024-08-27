@@ -1,12 +1,11 @@
 <?php
-
-$user_id = $_SESSION['user_ID'];
 $error = "";
 
 if (isset($_POST['gender_submit'])) {
     $gender = $_POST['gender'];
     $customGender = isset($_POST['customGender']) ? $_POST['customGender'] : '';
     $user_password = $_POST['user_password'];
+    $hide_gender = isset($_POST['hide_gender']) ? 1 : 0;
 
     // Fetch the current hashed password from the database
     $sql = "SELECT user_password FROM user_registration WHERE user_no = ?";
@@ -34,6 +33,12 @@ if (isset($_POST['gender_submit'])) {
             $stmt->bind_param("ss", $gender, $user_id);
 
             if ($stmt->execute()) {
+                // Update visibility status in the user_info_visibility table
+                $sql_visibility = "REPLACE INTO user_info_visibility (user_no, info_name, is_hidden) VALUES (?, 'gender', ?)";
+                $stmt_visibility = $con->prepare($sql_visibility);
+                $stmt_visibility->bind_param("ii", $current_user_no, $hide_gender);
+                $stmt_visibility->execute();
+
                 $_SESSION["gender"] = $gender; // Update session variable
                 echo "<script>window.open('profile.php?editdetails','_self')</script>";
             } else {
@@ -78,7 +83,11 @@ if (isset($_POST['gender_submit'])) {
                 <option value="prefered-not-to-say">prefered not to say</option>
               </select>
             </div>
+            <div class="container mt-4 hidebday">
+                        <input type="checkbox" name="hide_gender"> hide</a>
+                </div>
           </div>
+          
 
           <div class="mb-3 px-3">
             <label for="user_password" class="form-label" style="padding-top:10px;">Confirmation</label>

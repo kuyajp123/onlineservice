@@ -7,39 +7,44 @@ $password = "";
 if (isset($_POST["submit_bday"])) {
     $bday = $_POST['bday'];
     $password = $_POST['user_password'];
+    $hide_bday = isset($_POST['hide_bday']) ? 1 : 0;
 
-            if(!empty($bday)){
-               // Fetch the current hashed password from the database
-              $sql = "SELECT user_password FROM user_registration WHERE user_no = ?";
-              $stmt = $con->prepare($sql);
-              $stmt->bind_param("s", $user_no);
-              $stmt->execute();
-              $result = $stmt->get_result();
-              $row = $result->fetch_assoc();
+    if (!empty($bday)) {
+        // Fetch the current hashed password from the database
+        $sql = "SELECT user_password FROM user_registration WHERE user_no = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("s", $current_user_no);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
 
-              $user_password = $row['user_password'];
-              if (password_verify($password, $user_password)) {
-                $sql = "UPDATE user_registration SET bday = ? WHERE user_no = ?";
+        $user_password = $row['user_password'];
+        if (password_verify($password, $user_password)) {
+            // Update the birthday in user_registration table
+            $sql = "UPDATE user_registration SET bday = ? WHERE user_no = ?";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("si", $bday, $current_user_no);
+
+            if ($stmt->execute()) {
+                // Update or insert visibility setting for birthday in user_info_visibility table
+                $sql = "INSERT INTO user_info_visibility (user_no, info_name, is_hidden) VALUES (?, 'bday', ?)
+                        ON DUPLICATE KEY UPDATE is_hidden = ?";
                 $stmt = $con->prepare($sql);
-                $stmt->bind_param("si", $bday, $current_user_no);
+                $stmt->bind_param("iii", $current_user_no, $hide_bday, $hide_bday);
+                $stmt->execute();
 
-                  if ($stmt->execute()) {
-                      $_SESSION["bday"] = $bday;
-                      echo "<script>window.location.href = 'profile.php?editdetails';</script>";
-                  } else {
-                      $error = "Update failed. Please try again.";
-                  }
-              } else {
-                  $error = "Password didn't match.";
-              }
-            }else{
-              $error = "Please select date";
+                $_SESSION["bday"] = $bday;
+                echo "<script>window.location.href = 'profile.php?editdetails';</script>";
+            } else {
+                $error = "Update failed. Please try again.";
             }
-            
-        
-    
+        } else {
+            $error = "Password didn't match.";
+        }
+    } else {
+        $error = "Please select a date.";
+    }
 }
-
 ?>
 
 <!-- Modal -->
@@ -59,11 +64,14 @@ if (isset($_POST["submit_bday"])) {
           <div class="container-fluid dateinput">
           <input id="datepicker" name="bday" class="input_el__l_VZt" readonly placeholder="Choose date" required>
           </div>
-
           </div>
         </div>
         </div>
+        
         <div class="mb-3 px-3">
+                <div class="container p-0 mt-4 hidebday">
+                        <input type="checkbox" name="hide_bday"> hide</a>
+                </div>
         <label for="formGroupExampleInput2" class="form-label" style="padding-top:10px;">Confirmation</label>
         <input type="password" class="form-control" name="user_password" id="editnamepass" placeholder="Enter your password" required="required">
         

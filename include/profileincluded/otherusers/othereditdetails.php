@@ -12,6 +12,21 @@ if ($other_user_no) {
     $timestamp = htmlspecialchars($row['bday']);
     $bday = new DateTime($timestamp);
     $formattedDate = $bday->format('F j, Y');
+
+    $query = "SELECT info_name, is_hidden FROM user_info_visibility WHERE user_no = ? AND info_name IN ('bday', 'gender')";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param('i', $other_user_no);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $visibility = [
+        'bday' => 0,
+        'gender' => 0
+    ];
+
+    while ($row1 = $result->fetch_assoc()) {
+        $visibility[$row1['info_name']] = $row1['is_hidden'];
+    }
 ?>
     <div class="container-fluid edicont">
         <div class="container-fluid editdetails">Details</div>
@@ -23,21 +38,36 @@ if ($other_user_no) {
             <div>Username</div>
             <div><?php echo htmlspecialchars($row['user_ID']); ?></div>
         </div>
-        <div class="container-fluid birthdate">
-            <div>Birthdate</div>
-            <div><?php echo htmlspecialchars($formattedDate); ?></div>
-        </div>
-        <div class="container-fluid gender">
-             <div>Gender</div>
-             <div><?php $gender = $row['gender'];
-             
-             if($gender == 'prefered-not-to-say'){
-                 echo 'Prefered not to say';
-              }else{
-                 echo $gender;
-             }
-            ?></div>
-        </div>
+        <?php if ($visibility['bday'] == 1): ?>
+    <!-- Do nothing or add any message if needed when birthdate is hidden -->
+        <?php else: ?>
+            <div class='container-fluid birthdate'>
+                <div>Birthdate</div>
+                <div>
+                    <?php echo htmlspecialchars($formattedDate); ?>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php if ($visibility['gender'] == 1): ?>
+            <!-- Gender is hidden -->
+            <?php echo " "; ?>
+        <?php else: ?>
+            <div class="container-fluid gender">
+                <div>Gender</div>
+                <div>
+                    <?php 
+                    $gender = $row['gender'];
+
+                    if ($gender == 'prefered-not-to-say') {
+                        echo 'Prefered not to say';
+                    } else {
+                        echo htmlspecialchars($gender); // Ensure the gender is safely output
+                    }
+                    ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <div class="container-fluid lineedit"></div>
         <div class="container-fluid birthdate">
             <div>Student Number</div>
