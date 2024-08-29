@@ -201,11 +201,11 @@ if (!in_array($rows_per_page, $valid_rows_per_page)) {
 
 // Fetch users and their report status with search, sorting, and pagination
 $searchFilter = !empty($search) ? " AND (ur.fname LIKE '%$search%' OR ur.lname LIKE '%$search%' OR ur.email LIKE '%$search%' OR ur.student_no LIKE '%$search%' OR ur.user_no LIKE '%$search%')" : "";
-$usersQuery = "SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.created_at, ur.email, aw.warning_level, ub.ban_level, IFNULL(COUNT(pr.report_id), 0) AS report_count 
+$usersQuery = "SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.created_at, ur.email, aw.warning_level, ab.ban_level, IFNULL(COUNT(pr.report_id), 0) AS report_count 
                FROM user_registration ur
                LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
                LEFT JOIN active_warning aw ON ur.user_no = aw.user_no
-               LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
+               LEFT JOIN active_ban ab ON ur.user_no = ab.user_no
                WHERE 1=1 $searchFilter
                GROUP BY ur.user_no
                ORDER BY $sort_column $sort_direction

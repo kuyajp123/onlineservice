@@ -24,7 +24,7 @@ if(isset($_POST['remove_ban'])){
   $remove_banpass = $_POST['remove_banpass'];
 
   if($remove_banpass == $admin_password){
-    $sql = "DELETE FROM user_bans WHERE user_no = ?";
+    $sql = "DELETE FROM active_ban WHERE user_no = ?";
     $stmt = $con->prepare($sql);
     $stmt->bind_param("i", $user_no);
     if( $stmt->execute() ){

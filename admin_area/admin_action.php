@@ -20,13 +20,13 @@ $user_no = isset($_GET['user_no']) ? $_GET['user_no'] : ''; // Retrieve user_no 
 $userQuery = 'SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, 
                      ur.profilepicture, ur.coverphoto, 
                      IFNULL(COUNT(pr.report_id), 0) AS report_count,
-                     aw.*, ub.*,
+                     aw.*, ab.*,
                      IF(COUNT(aw.warning_id) > 0, 1, 0) AS has_warning,
-           			 IF(COUNT(ub.ban_id) > 0, 1, 0) AS has_ban
+           			 IF(COUNT(ab.ban_id) > 0, 1, 0) AS has_ban
               FROM user_registration ur
               LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
               LEFT JOIN active_warning aw ON ur.user_no = aw.user_no
-              LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
+              LEFT JOIN active_ban ab ON ur.user_no = ab.user_no
               WHERE ur.user_no = ?
               GROUP BY ur.user_no';
 
@@ -243,10 +243,10 @@ if(isset($_POST['submit_ban'])){
         //getting the count user_warnings including post and to insert notif and banning level
         $query = 'SELECT ur.fname, ur.lname, ur.student_no, ur.email, 
         aw.warning_level, aw.issue_date, aw.reset_date, 
-        ub.ban_id, ub.ban_level, ub.ban_start_date, ub.ban_end_date
+        ab.ban_id, ab.ban_level, ab.ban_start_date, ab.ban_end_date
         FROM user_registration ur
         LEFT JOIN user_warnings aw ON ur.user_no = aw.user_no
-        LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
+        LEFT JOIN user_bans ab ON ur.user_no = ab.user_no
         WHERE ur.user_no = ?
         GROUP BY ur.user_no';
 
@@ -312,32 +312,47 @@ if(isset($_POST['submit_ban'])){
 
             if($ban_msg){
 
-                $query = "SELECT * FROM `user_bans` WHERE ban_id = ? and user_no = ?";
+                $query = "SELECT * FROM `active_ban` WHERE user_no = ?";
                 $stmt = $con->prepare($query);
-                $stmt->bind_param("ii", $user['ban_id'], $user_no);
+                $stmt->bind_param("i", $user_no);
                 $stmt->execute();
                 $result = $stmt->get_result();
                 
-                if($result->num_rows > 0){
-                    $sql = "UPDATE user_bans 
-                            SET ban_appeal_id = ?, ban_level = ?, ban_start_date = ?, ban_end_date = ? 
-                            WHERE user_no = ? AND ban_id = ?";
+                if($result->num_rows === 0){
+                    $sql = "INSERT INTO user_bans (user_no, ban_appeal_id, ban_level, ban_start_date, ban_end_date)
+                    VALUES (?, ?, ?, ?, ?)";
                     $stmt = $con->prepare($sql);
-                    $stmt->bind_param("iissii", $ban_appeal_id, $ban_type, $timestamp, $end_days_ban2, $user_no, $user['ban_id']);
+                    $stmt->bind_param("iiiss", $user_no, $ban_appeal_id, $ban_type, $timestamp, $end_days_ban2);
 
                     
                     if($stmt->execute()){
-                        // echo  'Successfully updated';
-                        $success = 'Successfully updated';
-                        
-                        
+                        $ban_id = $con->insert_id;
+
+                        $query = "INSERT INTO active_ban (ban_id, user_no, ban_appeal_id, ban_level, ban_start_date, ban_end_date)
+                        VALUES (?, ?, ?, ?, ?, ?)";
+                        $stmt = $con->prepare($query);
+                        $stmt->bind_param("iiiiss", $ban_id, $user_no, $ban_appeal_id, $ban_type, $timestamp, $end_days_ban2);
+                        $stmt->execute();
+
+                        $success = 'Successfully updated';                 
+                    }else{
+                        $error = "error";
                     }
                 }else{
-                    $sql = "INSERT INTO user_bans (user_no, ban_appeal_id, ban_level, ban_start_date, ban_end_date) values (?,?,?,?,?)";
-                    $stmt = $con->prepare($sql);
-                    $stmt->bind_param("iiiss", $user_no, $ban_appeal_id, $ban_type, $timestamp, $end_days_ban2);
-                    
+                    $query_update = "UPDATE `active_ban` 
+                    SET `ban_id` = ?, `user_no` = ?, `ban_appeal_id` = ?, `ban_level` = ?, `ban_start_date` = ?, `ban_end_date` = ?
+                    WHERE `user_no` = ?";
+                    $stmt = $con->prepare($query_update);
+                    $stmt->bind_param("iiiissi", $user['ban_id'], $user_no, $ban_appeal_id, $ban_type, $timestamp, $end_days_ban2, $user_no);
+                    $stmt->execute();
+
                     if($stmt->execute() ){
+                        $sql = "INSERT INTO user_bans (user_no, ban_appeal_id, ban_level, ban_start_date, ban_end_date)
+                        VALUES (?, ?, ?, ?, ?)";
+                        $stmt = $con->prepare($sql);
+                        $stmt->bind_param("iiiss", $user_no, $ban_appeal_id, $ban_type, $timestamp, $end_days_ban2);
+                        $stmt->execute();
+                        
                         $success = "Successfully inserted";
                     }
                 }
