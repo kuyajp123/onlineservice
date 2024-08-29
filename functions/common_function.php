@@ -257,7 +257,7 @@ function CheckBanStatus($user_no) {
 function WarningStatus($user_no){
     global $con;
 
-    $sql = "SELECT * from user_warnings where user_no = ?";
+    $sql = "SELECT * from active_warning where user_no = ?";
     $stmt = $con->prepare($sql);
     $stmt->bind_param("i", $user_no);
     $stmt->execute();

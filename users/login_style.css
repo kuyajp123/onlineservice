@@ -158,6 +158,8 @@ body {
     text-align: center;
     font-size: 14px;
     margin-top: 10px;
+    display: flex;
+    flex-direction: column;
   }
 .footer-right p {
     margin: 0;

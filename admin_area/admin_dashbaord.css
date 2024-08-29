@@ -389,6 +389,7 @@ ul, li, a {
     height: 60%;
     padding: 10px;
     border-top: #C0C0C0 2px solid;
+    padding: 0;
 }
 .reqdetails{
     height: 40%;
@@ -399,4 +400,29 @@ ul, li, a {
 .detailschild{
     height: 100%;
     width: 50%;
+}
+.actionsection{
+    height: 15%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: #C0C0C0 2px solid;
+}
+.action{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+}
+.match{
+    height: 100%;
+    width: 50%;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+}
+.message{
+    padding: 10px;
 }

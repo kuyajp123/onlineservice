@@ -7,6 +7,7 @@ session_start();
 $appeal_id = isset($_GET['appeal_id']) ? intval($_GET['appeal_id']) : 0;
 
 // echo "$appeal_id";
+$matched_appeal_no = '';
 
 $sql = "SELECT * FROM appeal where appeal_id = ?";
 $stmt = $con->prepare($sql);
@@ -20,6 +21,7 @@ $formattedDate = new DateTime($timeStamp);
 $formattedDate = $formattedDate->format('F j, Y');
 
 $user_no = $row['user_no'];
+$appeal_no = $row['appeal_no'];
 
 $query = "SELECT * FROM user_warnings uw WHERE uw.user_no = ?";
 $stmt = $con->prepare($query);
@@ -66,13 +68,13 @@ function formatDate($date) {
         </nav>
     </div>
     <div class="container-fluid contbody">
-        <div class="container-fluid sidenav">
+    <div class="container-fluid sidenav">
             <div class="container-fluid menubutton">
             <button onclick="toggleSidenav()"><i class="fa-solid fa-bars"></i></button>
             </div>
             <div class="container-fluid featurescont">
                 <div class="container-fluid buttonlinkside">
-                    <div class="row">
+                <div class="row">
                         <div class="col">
                             <ul>
                                 <li>
@@ -90,24 +92,7 @@ function formatDate($date) {
                             </ul>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <ul>
-                                <li>
-                                    <a href="warned_user.php">
-                                        <div class="container-fluid listofusers">
-                                            <div class="container-fluid listusericon">
-                                            <i class="fa-solid fa-circle-exclamation"></i>
-                                            </div>
-                                            <div class="container-fluid listofusersname">
-                                                Warned users
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                
                     <div class="row">
                         <div class="col">
                             <ul>
@@ -126,7 +111,7 @@ function formatDate($date) {
                             </ul>
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col">
                                 <ul>
                                     <li>
@@ -143,7 +128,7 @@ function formatDate($date) {
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row">
                             <div class="col">
                                 <ul>
@@ -162,27 +147,24 @@ function formatDate($date) {
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                <div class="container-fluid logoutcont">
                         <div class="row">
-                            <div class="col">
-                                <ul>
-                                    <li>
-                                        <a href="">
-                                            <div class="container-fluid Deletedaccounts" style="border-radius: 10px;">
-                                                <div class="container-fluid Deletedaccountsicon">
-                                                <i class="fa-solid fa-power-off"></i>
-                                                </div>
-                                                <div class="container-fluid Deletedaccountsname">
-                                                    <a href="admin_logout.php">Logout</a>
-                                                </div>
+                        <div class="col">
+                            <ul>
+                                <li>
+                                    <a href="warned_user.php">
+                                        <div class="container-fluid listofusers">
+                                            <div class="container-fluid listusericon">
+                                            <i class="fa-solid fa-circle-exclamation"></i>
                                             </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                                            <div class="container-fluid listofusersname">
+                                                Warning history
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                </div>
+                    </div>
             </div>
         </div>
         <div class="container-fluid content">
@@ -205,7 +187,7 @@ function formatDate($date) {
                             <div class="container detailschild">
                                 Appeal id: <b><?php echo htmlspecialchars($row['appeal_id']) ?></b> <br>
                                 User no: <b><?php echo htmlspecialchars($user_no) ?></b> <br>
-                                Appeal no: <b><?php echo htmlspecialchars($row['appeal_no']) ?></b> <br>
+                                Appeal no: <b><?php echo htmlspecialchars($appeal_no) ?></b> <br>
                                 Name: <b><?php echo htmlspecialchars($row['fname']. ' ' .$row['lname']) ?></b>  <br>
                                 Email: <b><?php echo htmlspecialchars($row['email']) ?></b> <br>
                                 Student no: <b><?php echo htmlspecialchars($row['student_no']) ?></b> <br>
@@ -233,9 +215,39 @@ function formatDate($date) {
                             ?>
                             </div>
                         </div>
+                        <?php
+                        if ($ub !== NULL && $ub['ban_appeal_id'] !== NULL) {
+                            // User has a ban and an appeal ID
+                            if($appeal_no === $ub['ban_appeal_id']) {
+                                $matched_appeal_no = "Ban appeal no.";
+                            }else{
+                                $matched_appeal_no = "No match found.";
+                            }
+                        } elseif ($uw !== NULL && $uw['warn_appeal_id'] !== NULL) {
+                            // User has a warning appeal ID but no ban
+                            if($appeal_no === $uw['warn_appeal_id']) {
+                                $matched_appeal_no = "Warning appeal no.";
+                            }else{
+                                $matched_appeal_no = "No match found.";
+                            }
+                        } else {
+                            // User has no ban and no warning appeal ID
+                            echo "User has no ban and warning appeal ID";
+                        }
+
+                        ?>
                         <div class="container-fluid text-break messagetext">
-                            <?php echo htmlspecialchars($row['appeal_message']) ?>
-                             
+                            <div class="container-fluid actionsection">
+                                <div class="container-fluid match">
+                                Appeal no. matched:&nbsp;<b><?php echo htmlspecialchars($matched_appeal_no); ?></b>
+                                </div>
+                                <div class="container-fluid action">
+                                <a href="admin_action.php?user_no=<?php echo htmlspecialchars($user_no); ?>" class="btn btn-primary btn-sm">Action</a>
+                                </div>
+                            </div>
+                            <div class="container-fluid message">
+                                <?php echo htmlspecialchars($row['appeal_message']) ?>
+                            </div>
                         </div>
                     </div>
                 </div>

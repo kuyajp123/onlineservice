@@ -37,13 +37,15 @@ $usersResult = $con->query($usersQuery);
         </nav>
     </div>
     <div class="container-fluid contbody">
-        <div class="container-fluid sidenav">
-            <div class="container-fluid menubutton">
-            <button onclick="toggleSidenav()"><i class="fa-solid fa-bars"></i></button>
-            </div>
-            <div class="container-fluid featurescont">
-                <div class="container-fluid buttonlinkside">
-                    <div class="row">
+    <div class="container-fluid sidenav">
+    <div class="container-fluid menubutton">
+        <button onclick="toggleSidenav()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+    <div class="container-fluid featurescont">
+    <div class="container-fluid buttonlinkside">
+                <div class="row">
                         <div class="col">
                             <ul>
                                 <li>
@@ -65,10 +67,10 @@ $usersResult = $con->query($usersQuery);
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="warned_user.php">
+                                    <a href="active_warn.php">
                                         <div class="container-fluid listofusers">
                                             <div class="container-fluid listusericon">
-                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
                                             </div>
                                             <div class="container-fluid listofusersname">
                                                 Warned users
@@ -97,7 +99,7 @@ $usersResult = $con->query($usersQuery);
                             </ul>
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col">
                                 <ul>
                                     <li>
@@ -114,7 +116,7 @@ $usersResult = $con->query($usersQuery);
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row">
                             <div class="col">
                                 <ul>
@@ -133,28 +135,47 @@ $usersResult = $con->query($usersQuery);
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                <div class="container-fluid logoutcont">
                         <div class="row">
-                            <div class="col">
-                                <ul>
-                                    <li>
-                                        <a href="">
-                                            <div class="container-fluid Deletedaccounts" style="border-radius: 10px;">
-                                                <div class="container-fluid Deletedaccountsicon">
-                                                <i class="fa-solid fa-power-off"></i>
-                                                </div>
-                                                <div class="container-fluid Deletedaccountsname">
-                                                    <a href="admin_logout.php">Logout</a>
-                                                </div>
+                        <div class="col">
+                            <ul>
+                                <li>
+                                    <a href="warned_user.php">
+                                        <div class="container-fluid listofusers">
+                                            <div class="container-fluid listusericon">
+                                            <i class="fa-solid fa-circle-exclamation"></i>
                                             </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                                            <div class="container-fluid listofusersname">
+                                                Warning history
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
+                    </div>
+                    </div>
+        <div class="container-fluid logoutcont">
+            <div class="row">
+                <div class="col">
+                    <ul>
+                        <li>
+                            <a href="admin_logout.php">
+                                <div class="container-fluid Deletedaccounts" style="border-radius: 10px;">
+                                    <div class="container-fluid Deletedaccountsicon">
+                                        <i class="fa-solid fa-power-off"></i>
+                                    </div>
+                                    <div class="container-fluid Deletedaccountsname">
+                                        Logout
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
         </div>
         <div class="container-fluid content">
             
@@ -195,7 +216,7 @@ $stmt->execute();
 $reports = $stmt->get_result();
 ?>
     <div class="container mt-4">
-        <a href="../admin_area/list_of_users.php">Back</a>
+        <!-- <a href="../admin_area/list_of_users.php">Back</a> -->
         <h1>Reported Posts for User <?php echo htmlspecialchars($user_no); ?></h1>
         <a href="admin_action.php?user_no=<?php echo htmlspecialchars($user_no); ?>"><button class="btn btn-primary">Action</button></a>
         <table class="table table-bordered table-striped">
@@ -231,26 +252,6 @@ $reports = $stmt->get_result();
             </tbody>
         </table>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -193,6 +193,8 @@ if (isset($_POST['login'])) {
                         <span>About the system</span>
                         wa
                     </p> -->
+                    <a href="t_c.php" style="color:#fff;margin-bottom:10px;">Terms of use and Condition</a>
+                    <a href="user_appeal.php" style="color:#fff;">Appeal</a>
                 </div>
                 
                 <div class="footer-left text-center">

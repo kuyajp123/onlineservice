@@ -85,10 +85,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <div class="container-fluid screen">
     <div class="container-fluid nav">
         <nav class="navbar">
-            <div class="container-fluid" >
+            <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                <img src="../images/Cavite_State_University_(CvSU).png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-                CvS Tagram
+                <img src="../images/Cavite_State_University_(CvSU).png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top">
+                CvSTagram
                 </a>
             </div>
         </nav>
@@ -104,13 +104,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="list_of_users.php">
+                                    <a href="t_c.php">
                                         <div class="container-fluid listofusers">
                                             <div class="container-fluid listusericon">
-                                                 <i class="fa-solid fa-users fa-lg"></i>
+                                            <i class="fa-solid fa-lightbulb"></i>
                                             </div>
                                             <div class="container-fluid listofusersname">
-                                                List of users
+                                                Terms of use and Condition
                                             </div>
                                         </div>
                                     </a>
@@ -125,10 +125,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                     <a href="">
                                         <div class="container-fluid listofusers">
                                             <div class="container-fluid listusericon">
-                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            <i class="fa-solid fa-circle-question"></i>
                                             </div>
                                             <div class="container-fluid listofusersname">
-                                                Warned users
+                                                Appeal
                                             </div>
                                         </div>
                                     </a>
@@ -137,6 +137,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col">
+                            <ul>
+                                <li>
+                                    <a href="login.php">
+                                        <div class="container-fluid listofusers">
+                                            <div class="container-fluid listusericon">
+                                            <i class="fa-solid fa-right-to-bracket"></i>
+                                            </div>
+                                            <div class="container-fluid listofusersname">
+                                                Login
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
                         <div class="col">
                             <ul>
                                 <li>
@@ -189,28 +207,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
-                <div class="container-fluid logoutcont">
-                        <div class="row">
-                            <div class="col">
-                                <ul>
-                                    <li>
-                                        <a href="">
-                                            <div class="container-fluid Deletedaccounts" style="border-radius: 10px;">
-                                                <div class="container-fluid Deletedaccountsicon">
-                                                <i class="fa-solid fa-power-off"></i>
-                                                </div>
-                                                <div class="container-fluid Deletedaccountsname">
-                                                        Logout
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                </div>
             </div>
         </div>
         <div class="container-fluid content">

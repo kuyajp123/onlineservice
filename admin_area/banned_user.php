@@ -38,13 +38,15 @@ $usersResult = $con->query($usersQuery);
         </nav>
     </div>
     <div class="container-fluid contbody">
-        <div class="container-fluid sidenav">
-            <div class="container-fluid menubutton">
-            <button onclick="toggleSidenav()"><i class="fa-solid fa-bars"></i></button>
-            </div>
-            <div class="container-fluid featurescont">
-                <div class="container-fluid buttonlinkside">
-                    <div class="row">
+    <div class="container-fluid sidenav">
+    <div class="container-fluid menubutton">
+        <button onclick="toggleSidenav()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+    <div class="container-fluid featurescont">
+    <div class="container-fluid buttonlinkside">
+                <div class="row">
                         <div class="col">
                             <ul>
                                 <li>
@@ -66,10 +68,10 @@ $usersResult = $con->query($usersQuery);
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="warned_user.php">
+                                    <a href="active_warn.php">
                                         <div class="container-fluid listofusers">
                                             <div class="container-fluid listusericon">
-                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
                                             </div>
                                             <div class="container-fluid listofusersname">
                                                 Warned users
@@ -84,7 +86,7 @@ $usersResult = $con->query($usersQuery);
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="">
+                                    <a href="banned_user.php">
                                         <div class="container-fluid Bannedaccounts">
                                             <div class="container-fluid Bannedaccountsicon">
                                             <i class="fa-solid fa-user-slash fa-lg"></i>
@@ -98,7 +100,7 @@ $usersResult = $con->query($usersQuery);
                             </ul>
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col">
                                 <ul>
                                     <li>
@@ -115,12 +117,12 @@ $usersResult = $con->query($usersQuery);
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row">
                             <div class="col">
                                 <ul>
                                     <li>
-                                        <a href="">
+                                        <a href="request.php">
                                             <div class="container-fluid Deletedaccounts">
                                                 <div class="container-fluid Deletedaccountsicon">
                                                 <i class="fa-solid fa-envelope fa-lg"></i>
@@ -134,28 +136,47 @@ $usersResult = $con->query($usersQuery);
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                <div class="container-fluid logoutcont">
                         <div class="row">
-                            <div class="col">
-                                <ul>
-                                    <li>
-                                        <a href="">
-                                            <div class="container-fluid Deletedaccounts" style="border-radius: 10px;">
-                                                <div class="container-fluid Deletedaccountsicon">
-                                                <i class="fa-solid fa-power-off"></i>
-                                                </div>
-                                                <div class="container-fluid Deletedaccountsname">
-                                                    <a href="admin_logout.php">Logout</a>
-                                                </div>
+                        <div class="col">
+                            <ul>
+                                <li>
+                                    <a href="warned_user.php">
+                                        <div class="container-fluid listofusers">
+                                            <div class="container-fluid listusericon">
+                                            <i class="fa-solid fa-circle-exclamation"></i>
                                             </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                                            <div class="container-fluid listofusersname">
+                                                Warning history
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
+                    </div>
+                    </div>
+        <div class="container-fluid logoutcont">
+            <div class="row">
+                <div class="col">
+                    <ul>
+                        <li>
+                            <a href="admin_logout.php">
+                                <div class="container-fluid Deletedaccounts" style="border-radius: 10px;">
+                                    <div class="container-fluid Deletedaccountsicon">
+                                        <i class="fa-solid fa-power-off"></i>
+                                    </div>
+                                    <div class="container-fluid Deletedaccountsname">
+                                        Logout
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
         </div>
         <div class="container-fluid content">
 
@@ -216,7 +237,7 @@ $totalRecords = $totalResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRecords / $rows_per_page);
 ?>
     <div class="container mt-4 ">
-        <h1>BANNED USERS</h1>
+        <h1>BAN HISTORY</h1>
         <div class="container-fluid operations">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

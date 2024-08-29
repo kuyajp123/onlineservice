@@ -35,7 +35,10 @@ ul, li, a {
     display: flex;
     flex: 1; /* Take up remaining space after the navbar */
 }
-
+.container-fluid .navbar-brand{
+    color: #fff;
+    font-size: 1.8rem;
+}
 .sidenav {
     position: fixed;
     top: 10vh; /* Align with the bottom of the navbar eedit moto mamaya! */
@@ -45,6 +48,7 @@ ul, li, a {
     transition: width 0.3s;
     background-color: #D3E0D3;
     z-index: 1000;
+    border-radius: 10px;
 }
 .navtexticon a{
     color: #fff;
@@ -194,4 +198,15 @@ ul, li, a {
 .tooltip-inner {
     background-color: #dc3545;
     color: #fff;
+}
+
+
+
+
+
+
+
+/* terms of use and condition */
+.tc{
+    width: 80%;
 }

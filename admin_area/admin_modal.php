@@ -7,7 +7,7 @@ if(isset($_POST['remove_warn'])){
   $remove_warnpass = $_POST['remove_warnpass'];
 
   if($remove_warnpass == $admin_password){
-    $sql = "DELETE FROM user_warnings WHERE user_no = ?";
+    $sql = "DELETE FROM active_warning WHERE user_no = ?";
     $stmt = $con->prepare($sql);
     $stmt->bind_param("i", $user_no);
     if( $stmt->execute() ){

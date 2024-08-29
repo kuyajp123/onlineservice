@@ -20,12 +20,12 @@ $user_no = isset($_GET['user_no']) ? $_GET['user_no'] : ''; // Retrieve user_no 
 $userQuery = 'SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, 
                      ur.profilepicture, ur.coverphoto, 
                      IFNULL(COUNT(pr.report_id), 0) AS report_count,
-                     uw.*, ub.*,
-                     IF(COUNT(uw.warning_id) > 0, 1, 0) AS has_warning,
+                     aw.*, ub.*,
+                     IF(COUNT(aw.warning_id) > 0, 1, 0) AS has_warning,
            			 IF(COUNT(ub.ban_id) > 0, 1, 0) AS has_ban
               FROM user_registration ur
               LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
-              LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
+              LEFT JOIN active_warning aw ON ur.user_no = aw.user_no
               LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
               WHERE ur.user_no = ?
               GROUP BY ur.user_no';
@@ -73,11 +73,11 @@ if(isset($_POST['submit_warn'])){
         $query = 'SELECT ur.fname, ur.lname, 
 			p.caption, p.postphoto, p.timestamp, 
             pr.post_id, pr.report_reason, pr.report_date,
-            uw.warning_id, uw.reset_date, uw.warning_level
+            aw.warning_id, aw.reset_date, aw.warning_level
             FROM user_registration ur
             LEFT JOIN posts p ON ur.user_no = p.user_no
             LEFT JOIN post_reports pr ON p.post_id = pr.post_id
-            LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
+            LEFT JOIN user_warnings aw ON ur.user_no = aw.user_no
             WHERE pr.report_id = ?';
 
         $stmt = $con->prepare($query);
@@ -126,47 +126,84 @@ if(isset($_POST['submit_warn'])){
             ";
 
 
-            $current_date = date('Y-m-d');
-            $warning_level = $user['warning_level'];
-            $reset_date = $user['reset_date'];
-            
-            // increment the warning_level
-            if ($warning_level == 0 || $current_date <= $reset_date) {
-                $warning_level++;
-            }
+            // $current_date = date('Y-m-d');
 
-
-            $query = "select * from user_warnings where user_no = ?";
+            $query = "SELECT * FROM active_warning WHERE user_no = ?";
             $stmt2 = $con->prepare($query);
-            $stmt2->bind_param("i", $user_no,);
+            $stmt2->bind_param("i", $user_no);
             $stmt2->execute();
             $result2 = $stmt2->get_result();
+            $warning = $result2->fetch_assoc();
 
-            if( $result2->num_rows === 0){
-                $query2 = "INSERT INTO `user_warnings` (`user_no`, `warn_appeal_id`, `warning_level`, `issue_date`, `reset_date`)
-                        VALUES (?, ?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 15 DAY))";
+            $warning_level = $warning['warning_level'] ?? 0;
+
+            if ($result2->num_rows === 0) {
+                // No existing active warning for the user, so start with warning level 1
+                $warning_level = 1;
             
-                $stmt3 = $con->prepare($query2);
-                $stmt3->bind_param('iii', $user_no, $warn_appeal_id, $warning_level);
-                if ($stmt3->execute()) {
-                    $success = "Warning inserted successfully.";
+                // Step 1: Insert into user_warnings table
+                $query1 = "INSERT INTO `user_warnings` (`user_no`, `warn_appeal_id`, `warning_level`, `issue_date`, `reset_date`)
+                           VALUES (?, ?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 15 DAY))";
+            
+                $stmt1 = $con->prepare($query1);
+                $stmt1->bind_param('iii', $user_no, $warn_appeal_id, $warning_level);
+            
+                if ($stmt1->execute()) {
+                    // Step 2: Get the last inserted warning_id
+                    $warning_id = $con->insert_id;
+            
+                    // Step 3: Insert into active_warning table using the retrieved warning_id
+                    $query2 = "INSERT INTO `active_warning` (`warning_id`, `user_no`, `warn_appeal_id`, `warning_level`, `issue_date`, `reset_date`)
+                               VALUES (?, ?, ?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 15 DAY))";
+            
+                    $stmt2 = $con->prepare($query2);
+                    $stmt2->bind_param('iiii', $warning_id, $user_no, $warn_appeal_id, $warning_level);
+            
+                    if ($stmt2->execute()) {
+                        $success = "Warning inserted successfully into both tables.";
+                    } else {
+                        $error = "Failed to insert into active_warning table: " . $stmt2->error;
+                    }
                 } else {
-                    $error = "Error inserting warning: " . $stmt3->error;
+                    $error = "Error inserting warning into user_warnings table: " . $stmt1->error;
                 }
-            }else{
-                $warning_id = $user['warning_id'];
-
-                $query_update = "UPDATE `user_warnings` SET `warn_appeal_id` = ?, `warning_level` = ?, `reset_date` = DATE_ADD(CURDATE(),INTERVAL 15 DAY) WHERE `user_no` = ? AND `warning_id` = ?";
+            } else {
+            
+                // Update the existing active_warning entry first
+                $query_update = "UPDATE `active_warning` 
+                SET `warn_appeal_id` = ?, `warning_level` = `warning_level` + 1, `issue_date` = CURDATE(), `reset_date` = DATE_ADD(CURDATE(), INTERVAL 15 DAY)
+                WHERE `user_no` = ?";
 
                 $stmt_update = $con->prepare($query_update);
-                $stmt_update->bind_param('iiii', $warn_appeal_id, $warning_level, $user_no, $warning_id);
+                $stmt_update->bind_param('ii', $warn_appeal_id, $user_no);
 
                 if ($stmt_update->execute()) {
-                    $success = "User warning level updated successfully.";
+                // Retrieve the incremented warning_level from active_warning
+                $query_select = "SELECT `warning_level` FROM `active_warning` WHERE `user_no` = ?";
+                $stmt_select = $con->prepare($query_select);
+                $stmt_select->bind_param('i', $user_no);
+                $stmt_select->execute();
+                $stmt_select->bind_result($warning_level);
+                $stmt_select->fetch();
+                $stmt_select->close();
+
+                // Now insert the new warning into user_warnings table
+                $query_insert = "INSERT INTO `user_warnings` (`user_no`, `warn_appeal_id`, `warning_level`, `issue_date`, `reset_date`)
+                    VALUES (?, ?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 15 DAY))";
+
+                $stmt_insert = $con->prepare($query_insert);
+                $stmt_insert->bind_param('iii', $user_no, $warn_appeal_id, $warning_level);
+
+                if ($stmt_insert->execute()) {
+                $success = "Warning updated and new warning inserted successfully.";
                 } else {
-                    $error = "Error updating user warning level: " . $stmt_update->error;
+                $error = "Error inserting new warning into user_warnings table: " . $stmt_insert->error;
+                }
+                } else {
+                $error = "Failed to update active_warning table: " . $stmt_update->error;
                 }
             }
+
 
             $caption = $user['caption'];
             $postphoto = $user['postphoto'];
@@ -205,10 +242,10 @@ if(isset($_POST['submit_ban'])){
         if($ban_pass == $admin_password){
         //getting the count user_warnings including post and to insert notif and banning level
         $query = 'SELECT ur.fname, ur.lname, ur.student_no, ur.email, 
-        uw.warning_level, uw.issue_date, uw.reset_date, 
+        aw.warning_level, aw.issue_date, aw.reset_date, 
         ub.ban_id, ub.ban_level, ub.ban_start_date, ub.ban_end_date
         FROM user_registration ur
-        LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
+        LEFT JOIN user_warnings aw ON ur.user_no = aw.user_no
         LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
         WHERE ur.user_no = ?
         GROUP BY ur.user_no';
@@ -355,13 +392,15 @@ if(isset($_POST['submit_ban'])){
         </nav>
     </div>
     <div class="container-fluid contbody">
-        <div class="container-fluid sidenav">
-            <div class="container-fluid menubutton">
-            <button onclick="toggleSidenav()"><i class="fa-solid fa-bars"></i></button>
-            </div>
-            <div class="container-fluid featurescont">
-                <div class="container-fluid buttonlinkside">
-                    <div class="row">
+    <div class="container-fluid sidenav">
+    <div class="container-fluid menubutton">
+        <button onclick="toggleSidenav()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+    <div class="container-fluid featurescont">
+    <div class="container-fluid buttonlinkside">
+                <div class="row">
                         <div class="col">
                             <ul>
                                 <li>
@@ -383,10 +422,10 @@ if(isset($_POST['submit_ban'])){
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="warned_user.php">
+                                    <a href="active_warn.php">
                                         <div class="container-fluid listofusers">
                                             <div class="container-fluid listusericon">
-                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
                                             </div>
                                             <div class="container-fluid listofusersname">
                                                 Warned users
@@ -415,7 +454,7 @@ if(isset($_POST['submit_ban'])){
                             </ul>
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col">
                                 <ul>
                                     <li>
@@ -432,12 +471,12 @@ if(isset($_POST['submit_ban'])){
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row">
                             <div class="col">
                                 <ul>
                                     <li>
-                                        <a href="">
+                                        <a href="request.php">
                                             <div class="container-fluid Deletedaccounts">
                                                 <div class="container-fluid Deletedaccountsicon">
                                                 <i class="fa-solid fa-envelope fa-lg"></i>
@@ -451,28 +490,47 @@ if(isset($_POST['submit_ban'])){
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                <div class="container-fluid logoutcont">
                         <div class="row">
-                            <div class="col">
-                                <ul>
-                                    <li>
-                                        <a href="">
-                                            <div class="container-fluid Deletedaccounts" style="border-radius: 10px;">
-                                                <div class="container-fluid Deletedaccountsicon">
-                                                <i class="fa-solid fa-power-off"></i>
-                                                </div>
-                                                <div class="container-fluid Deletedaccountsname">
-                                                    <a href="admin_logout.php">Logout</a>
-                                                </div>
+                        <div class="col">
+                            <ul>
+                                <li>
+                                    <a href="warned_user.php">
+                                        <div class="container-fluid listofusers">
+                                            <div class="container-fluid listusericon">
+                                            <i class="fa-solid fa-circle-exclamation"></i>
                                             </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                                            <div class="container-fluid listofusersname">
+                                                Warning history
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
+                    </div>
+                    </div>
+        <div class="container-fluid logoutcont">
+            <div class="row">
+                <div class="col">
+                    <ul>
+                        <li>
+                            <a href="admin_logout.php">
+                                <div class="container-fluid Deletedaccounts" style="border-radius: 10px;">
+                                    <div class="container-fluid Deletedaccountsicon">
+                                        <i class="fa-solid fa-power-off"></i>
+                                    </div>
+                                    <div class="container-fluid Deletedaccountsname">
+                                        Logout
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
         </div>
         <div class="container-fluid content">
             <div class="container-fluid actionbod">

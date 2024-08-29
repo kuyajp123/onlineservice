@@ -6,15 +6,6 @@ if (!isset($_SESSION['admin'])) {
 }
 require_once '../include/connect.php';
 require_once '../include/bootsrap.php';
-
-// Fetch users and their report status
-$usersQuery = 'SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, pr.report_reason, ur.created_at, pr.post_id, IFNULL(COUNT(pr.report_id), 0) AS report_count, uw.warning_level, ub.ban_level
-               FROM user_registration ur
-               LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
-               LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
-               LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
-               GROUP BY ur.user_no';
-$usersResult = $con->query($usersQuery);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,8 +34,8 @@ $usersResult = $con->query($usersQuery);
             <button onclick="toggleSidenav()"><i class="fa-solid fa-bars"></i></button>
             </div>
             <div class="container-fluid featurescont">
-                <div class="container-fluid buttonlinkside">
-                    <div class="row">
+            <div class="container-fluid buttonlinkside">
+                <div class="row">
                         <div class="col">
                             <ul>
                                 <li>
@@ -66,10 +57,10 @@ $usersResult = $con->query($usersQuery);
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="warned_user.php">
+                                    <a href="active_warn.php">
                                         <div class="container-fluid listofusers">
                                             <div class="container-fluid listusericon">
-                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
                                             </div>
                                             <div class="container-fluid listofusersname">
                                                 Warned users
@@ -98,7 +89,7 @@ $usersResult = $con->query($usersQuery);
                             </ul>
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col">
                                 <ul>
                                     <li>
@@ -115,12 +106,12 @@ $usersResult = $con->query($usersQuery);
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row">
                             <div class="col">
                                 <ul>
                                     <li>
-                                        <a href="">
+                                        <a href="request.php">
                                             <div class="container-fluid Deletedaccounts">
                                                 <div class="container-fluid Deletedaccountsicon">
                                                 <i class="fa-solid fa-envelope fa-lg"></i>
@@ -134,6 +125,24 @@ $usersResult = $con->query($usersQuery);
                                 </ul>
                             </div>
                         </div>
+                        <div class="row">
+                        <div class="col">
+                            <ul>
+                                <li>
+                                    <a href="warned_user.php">
+                                        <div class="container-fluid listofusers">
+                                            <div class="container-fluid listusericon">
+                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            </div>
+                                            <div class="container-fluid listofusersname">
+                                                Warning history
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     </div>
                 <div class="container-fluid logoutcont">
                         <div class="row">
@@ -192,10 +201,10 @@ if (!in_array($rows_per_page, $valid_rows_per_page)) {
 
 // Fetch users and their report status with search, sorting, and pagination
 $searchFilter = !empty($search) ? " AND (ur.fname LIKE '%$search%' OR ur.lname LIKE '%$search%' OR ur.email LIKE '%$search%' OR ur.student_no LIKE '%$search%' OR ur.user_no LIKE '%$search%')" : "";
-$usersQuery = "SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.created_at, ur.email, uw.warning_level, ub.ban_level, IFNULL(COUNT(pr.report_id), 0) AS report_count 
+$usersQuery = "SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.created_at, ur.email, aw.warning_level, ub.ban_level, IFNULL(COUNT(pr.report_id), 0) AS report_count 
                FROM user_registration ur
                LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
-               LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
+               LEFT JOIN active_warning aw ON ur.user_no = aw.user_no
                LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
                WHERE 1=1 $searchFilter
                GROUP BY ur.user_no

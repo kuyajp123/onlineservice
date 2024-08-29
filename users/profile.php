@@ -25,7 +25,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
   $_SESSION['lname'];
   $_SESSION['bday'];
   $_SESSION['gender'];
-  $_SESSION['coverphoto'];
+  $coverphoto = $_SESSION['coverphoto'];
   $profilepicture = $_SESSION['profilepicture'];
   $current_user_no = $_SESSION['user_no'];
 
