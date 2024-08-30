@@ -42,7 +42,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
       $posts[] = $post;
   }
 
-  $query2 = "SELECT * FROM user_warnings WHERE user_no = ?";
+  $query2 = "SELECT * FROM active_warning WHERE user_no = ?";
   $stmt2 = $con->prepare($query2);
   $stmt2->bind_param('i', $current_user_no);
   $stmt2->execute();

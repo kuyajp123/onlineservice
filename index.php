@@ -211,6 +211,7 @@ $unread_count = $row['unread_count'];
                           </form>
                         </div>
                         <li><a href="#" data-open-modal="createpost"><div class="container-fluid post">Create post</div></a></li>
+                        <li><a href="#" data-open-modal="createpoll"><div class="container-fluid collect">Create poll</div></a></li>
                         <li>
                           <a href="#" class="notification-icon" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
                             <div class="container-fluid notification">Notification &nbsp;
@@ -220,7 +221,6 @@ $unread_count = $row['unread_count'];
                             </div>
                           </a>
                         </li>
-                        <li><a href="additional/under_maitenance.php"><div class="container-fluid collect">Collection</div></a></li>
                         <!-- <li><div class="container-fluid services" style="padding:0;">
                           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><div class="container" >Under construction<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i></div></a>
                             <ul class="dropdown-menu">
@@ -279,6 +279,15 @@ $unread_count = $row['unread_count'];
 
 
 
+
+
+
+
+
+
+
+
+            
 <?php      
 
 // Loop through each post
@@ -329,7 +338,6 @@ foreach ($rows as $row) {
   }
 }
 ?>
-
       
 
 
@@ -372,6 +380,7 @@ foreach ($rows as $row) {
 
 <!-- create post modal -->
  <?php include 'users/user_operation/createpostmodal.php'; ?>
+ <?php include 'users/user_operation/createpollmodal.php'; ?>
  <?php include 'users/user_operation/notification_modal.php'; ?>
  
 <!-- modal profile -->

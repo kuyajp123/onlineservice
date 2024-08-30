@@ -519,8 +519,76 @@ button{
     border: 1px solid black;
 }
 
+/* create poll */
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+}
 
+.custom-file-upload:hover {
+  background-color: #e8e8e8;
+}
 
+.removeImage {
+  display: none;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.removeOption {
+  display: inline;
+  cursor: pointer;
+  margin-left: 5px;
+  border: #242526 2px solid;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: larger;
+  font-family: 'Nunito', sans-serif;
+}
+
+.iamgeselect{
+  margin-left: 5px;
+}
+.option {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.option img {
+  max-height: 40px;
+  margin-left: 10px;
+  display: none; /* Hide by default */
+}
+
+input[type="file"] {
+  margin-left: 10px;
+}
+.removeImage {
+font-family: 'Nunito', sans-serif; /* Replace with your chosen font */
+font-weight: 600; /* Adjust weight to match the icon's thickness */
+color: #e63752; /* Match the color of the icon */
+background-color: transparent;
+border-radius: 30%;
+border: 2px solid #e63752;
+font-size: larger;
+}
+#addOption{
+  background-color: #0066cc;
+  border-radius: 5px;
+  color: #fff;
+  height: 10%;
+}
+#addOption:hover{
+  background-color: #145da7;
+}
+textarea{
+  resize: none;
+}
 
 
 /* olservices */
