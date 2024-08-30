@@ -23,16 +23,16 @@ $formattedDate = $formattedDate->format('F j, Y');
 $user_no = $row['user_no'];
 $appeal_no = $row['appeal_no'];
 
-$query = "SELECT * FROM user_warnings uw WHERE uw.user_no = ?";
+$query = "SELECT * FROM active_warning uw WHERE uw.warn_appeal_id = ?";
 $stmt = $con->prepare($query);
-$stmt->bind_param("i", $user_no);
+$stmt->bind_param("i", $appeal_no);
 $stmt->execute();
 $result_uw = $stmt->get_result();
 $uw = $result_uw->fetch_assoc();
 
-$sql = "SELECT * FROM user_bans uw WHERE uw.user_no = ?";
+$sql = "SELECT * FROM active_ban uw WHERE uw.ban_appeal_id = ?";
 $stmt = $con->prepare($sql);
-$stmt->bind_param("i", $user_no);
+$stmt->bind_param("i", $appeal_no);
 $stmt->execute();
 $result_ub = $stmt->get_result();
 $ub = $result_ub->fetch_assoc();
@@ -73,6 +73,8 @@ function formatDate($date) {
             <button onclick="toggleSidenav()"><i class="fa-solid fa-bars"></i></button>
             </div>
             <div class="container-fluid featurescont">
+                <!-- side links -->
+
                 <div class="container-fluid buttonlinkside">
                 <div class="row">
                         <div class="col">
@@ -92,18 +94,17 @@ function formatDate($date) {
                             </ul>
                         </div>
                     </div>
-                
                     <div class="row">
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="banned_user.php">
-                                        <div class="container-fluid Bannedaccounts">
-                                            <div class="container-fluid Bannedaccountsicon">
-                                            <i class="fa-solid fa-user-slash fa-lg"></i>
+                                    <a href="active_warn.php">
+                                        <div class="container-fluid listofusers">
+                                            <div class="container-fluid listusericon">
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
                                             </div>
-                                            <div class="container-fluid Bannedaccountsname">
-                                                Banned accounts
+                                            <div class="container-fluid listofusersname">
+                                                Warned users
                                             </div>
                                         </div>
                                     </a>
@@ -111,24 +112,24 @@ function formatDate($date) {
                             </ul>
                         </div>
                     </div>
-                    <!-- <div class="row">
+                    <div class="row">
                         <div class="col">
-                                <ul>
-                                    <li>
-                                        <a href="">
-                                            <div class="container-fluid Deletedaccounts">
-                                                <div class="container-fluid Deletedaccountsicon">
-                                                <i class="fa-solid fa-trash fa-lg"></i>
-                                                </div>
-                                                <div class="container-fluid Deletedaccountsname">
-                                                    Deleted accounts
-                                                </div>
+                            <ul>
+                                <li>
+                                    <a href="active_ban.php">
+                                        <div class="container-fluid Bannedaccounts">
+                                            <div class="container-fluid Bannedaccountsicon">
+                                            <i class="fa-solid fa-user-slash fa-lg"></i>
                                             </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> -->
+                                            <div class="container-fluid Bannedaccountsname">
+                                                Banned users
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                         <div class="row">
                             <div class="col">
                                 <ul>
@@ -165,7 +166,49 @@ function formatDate($date) {
                             </ul>
                         </div>
                     </div>
-            </div>
+                    <div class="row">
+                        <div class="col">
+                            <ul>
+                                <li>
+                                    <a href="banned_user.php">
+                                        <div class="container-fluid Bannedaccounts">
+                                            <div class="container-fluid Bannedaccountsicon">
+                                                <i class="fa-solid fa-ban"></i>
+                                            </div>
+                                            <div class="container-fluid Bannedaccountsname">
+                                                Ban history
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    </div>
+
+
+<!-- side links end -->
+                    <div class="container-fluid logoutcont">
+                                <div class="row">
+                                    <div class="col">
+                                        <ul>
+                                            <li>
+                                                <a href="admin_logout.php">
+                                                    <div class="container-fluid Deletedaccounts" style="border-radius: 10px;">
+                                                        <div class="container-fluid Deletedaccountsicon">
+                                                            <i class="fa-solid fa-power-off"></i>
+                                                        </div>
+                                                        <div class="container-fluid Deletedaccountsname">
+                                                            Logout
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
         </div>
         <div class="container-fluid content">
             
@@ -232,7 +275,7 @@ function formatDate($date) {
                             }
                         } else {
                             // User has no ban and no warning appeal ID
-                            echo "User has no ban and warning appeal ID";
+                            $matched_appeal_no = "No match found.";
                         }
 
                         ?>

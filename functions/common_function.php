@@ -222,7 +222,7 @@ function getUserProfile($user_no) {
 function CheckBanStatus($user_no) {
     global $con;
 
-    $sql = "SELECT user_no, ban_level, ban_start_date, ban_end_date FROM user_bans WHERE user_no = ?";
+    $sql = "SELECT user_no, ban_level, ban_start_date, ban_end_date FROM active_ban WHERE user_no = ?";
     $stmt = $con->prepare($sql);
     $stmt->bind_param("i", $user_no);
     $stmt->execute();

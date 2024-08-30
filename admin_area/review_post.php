@@ -44,6 +44,8 @@ $usersResult = $con->query($usersQuery);
         </button>
     </div>
     <div class="container-fluid featurescont">
+    <!-- side links -->
+
     <div class="container-fluid buttonlinkside">
                 <div class="row">
                         <div class="col">
@@ -85,13 +87,13 @@ $usersResult = $con->query($usersQuery);
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="banned_user.php">
+                                    <a href="active_ban.php">
                                         <div class="container-fluid Bannedaccounts">
                                             <div class="container-fluid Bannedaccountsicon">
                                             <i class="fa-solid fa-user-slash fa-lg"></i>
                                             </div>
                                             <div class="container-fluid Bannedaccountsname">
-                                                Banned accounts
+                                                Banned users
                                             </div>
                                         </div>
                                     </a>
@@ -99,24 +101,6 @@ $usersResult = $con->query($usersQuery);
                             </ul>
                         </div>
                     </div>
-                    <!-- <div class="row">
-                        <div class="col">
-                                <ul>
-                                    <li>
-                                        <a href="">
-                                            <div class="container-fluid Deletedaccounts">
-                                                <div class="container-fluid Deletedaccountsicon">
-                                                <i class="fa-solid fa-trash fa-lg"></i>
-                                                </div>
-                                                <div class="container-fluid Deletedaccountsname">
-                                                    Deleted accounts
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> -->
                         <div class="row">
                             <div class="col">
                                 <ul>
@@ -153,7 +137,28 @@ $usersResult = $con->query($usersQuery);
                             </ul>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <ul>
+                                <li>
+                                    <a href="banned_user.php">
+                                        <div class="container-fluid Bannedaccounts">
+                                            <div class="container-fluid Bannedaccountsicon">
+                                                <i class="fa-solid fa-ban"></i>
+                                            </div>
+                                            <div class="container-fluid Bannedaccountsname">
+                                                Ban history
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+                    </div>
+
+
+<!-- side links end -->
         <div class="container-fluid logoutcont">
             <div class="row">
                 <div class="col">

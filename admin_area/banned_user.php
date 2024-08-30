@@ -6,15 +6,6 @@ if (!isset($_SESSION['admin'])) {
 }
 require_once '../include/connect.php';
 require_once '../include/bootsrap.php';
-
-// Fetch users and their report status
-$usersQuery = 'SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, pr.report_reason, ur.created_at, pr.post_id, IFNULL(COUNT(pr.report_id), 0) AS report_count, uw.warning_level, ub.ban_level
-               FROM user_registration ur
-               LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
-               LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
-               LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
-               GROUP BY ur.user_no';
-$usersResult = $con->query($usersQuery);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +36,11 @@ $usersResult = $con->query($usersQuery);
         </button>
     </div>
     <div class="container-fluid featurescont">
-    <div class="container-fluid buttonlinkside">
+
+
+<!-- side links -->
+
+<div class="container-fluid buttonlinkside">
                 <div class="row">
                         <div class="col">
                             <ul>
@@ -86,13 +81,13 @@ $usersResult = $con->query($usersQuery);
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="banned_user.php">
+                                    <a href="active_ban.php">
                                         <div class="container-fluid Bannedaccounts">
                                             <div class="container-fluid Bannedaccountsicon">
                                             <i class="fa-solid fa-user-slash fa-lg"></i>
                                             </div>
                                             <div class="container-fluid Bannedaccountsname">
-                                                Banned accounts
+                                                Banned users
                                             </div>
                                         </div>
                                     </a>
@@ -100,24 +95,6 @@ $usersResult = $con->query($usersQuery);
                             </ul>
                         </div>
                     </div>
-                    <!-- <div class="row">
-                        <div class="col">
-                                <ul>
-                                    <li>
-                                        <a href="">
-                                            <div class="container-fluid Deletedaccounts">
-                                                <div class="container-fluid Deletedaccountsicon">
-                                                <i class="fa-solid fa-trash fa-lg"></i>
-                                                </div>
-                                                <div class="container-fluid Deletedaccountsname">
-                                                    Deleted accounts
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> -->
                         <div class="row">
                             <div class="col">
                                 <ul>
@@ -154,7 +131,32 @@ $usersResult = $con->query($usersQuery);
                             </ul>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <ul>
+                                <li>
+                                    <a href="banned_user.php">
+                                        <div class="container-fluid Bannedaccounts">
+                                            <div class="container-fluid Bannedaccountsicon">
+                                                <i class="fa-solid fa-ban"></i>
+                                            </div>
+                                            <div class="container-fluid Bannedaccountsname">
+                                                Ban history
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+                    </div>
+
+
+<!-- side links end -->
+
+
+
+
         <div class="container-fluid logoutcont">
             <div class="row">
                 <div class="col">
@@ -182,16 +184,11 @@ $usersResult = $con->query($usersQuery);
 
 <!-- content -->
 <?php
-// if (!isset($_SESSION['admin_logged_in'])) {
-//     header('Location: ../login.php');
-//     exit;
-// }
-
 // Handle search input
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
 // Determine the sort column and direction
-$sort_column = isset($_GET['sort']) ? $_GET['sort'] : 'lname';
+$sort_column = isset($_GET['sort']) ? $_GET['sort'] : 'ban_id';
 $sort_direction = isset($_GET['direction']) && $_GET['direction'] == 'desc' ? 'desc' : 'asc';
 
 // Determine the number of rows per page and current page
@@ -200,9 +197,9 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $offset = ($page - 1) * $rows_per_page;
 
 // Validate sort column
-$valid_columns = ['fname', 'lname', 'user_no', 'student_no', 'email', 'created_at', 'warning_level', 'ban_level', 'report_count'];
+$valid_columns = ['ban_id', 'user_no', 'ban_appeal_id', 'ban_level', 'ban_start_date', 'ban_end_date'];
 if (!in_array($sort_column, $valid_columns)) {
-    $sort_column = 'lname'; // default sort column
+    $sort_column = 'ban_id'; // default sort column
 }
 
 // Validate rows per page
@@ -211,31 +208,27 @@ if (!in_array($rows_per_page, $valid_rows_per_page)) {
     $rows_per_page = 10; // default rows per page
 }
 
-// Fetch users and their report status with search, sorting, and pagination
-$searchFilter = !empty($search) ? " AND (ur.fname LIKE '%$search%' OR ur.lname LIKE '%$search%' OR ur.email LIKE '%$search%' OR ur.student_no LIKE '%$search%' OR ur.user_no LIKE '%$search%')" : "";
-$usersQuery = "SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.created_at, ur.email, uw.warning_level, ub.ban_level, IFNULL(COUNT(pr.report_id), 0) AS report_count 
-               FROM user_registration ur
-               LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
-               LEFT JOIN user_warnings uw ON ur.user_no = uw.user_no
-               LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
-               WHERE 1=1 $searchFilter
-               GROUP BY ur.user_no
+$searchFilter = !empty($search) ? " AND (ban_id LIKE '%$search%' OR user_no LIKE '%$search%' OR ban_appeal_id LIKE '%$search%' OR ban_start_date LIKE '%$search%' OR ban_end_date LIKE '%$search%')" : "";
+
+$query = "SELECT ban_id, user_no, ban_appeal_id, ban_level, ban_start_date, ban_end_date from user_bans
+WHERE 1=1 $searchFilter
                ORDER BY $sort_column $sort_direction
                LIMIT $rows_per_page OFFSET $offset";
-$usersResult = $con->query($usersQuery);
+$usersResult = $con->query($query);
 
 // Fetch total number of records for pagination
-$totalQuery = "SELECT COUNT(*) AS total FROM user_registration";
+$totalQuery = "SELECT COUNT(*) AS total FROM user_bans";
 $totalResult = $con->query($totalQuery);
+
+$totalRecords = $totalResult->fetch_assoc()['total'];
+$totalPages = ceil($totalRecords / $rows_per_page);
 
 // Check for query errors
 if (!$totalResult) {
     die('Error in total records query: ' . $con->error);
-}
-
-$totalRecords = $totalResult->fetch_assoc()['total'];
-$totalPages = ceil($totalRecords / $rows_per_page);
+}   
 ?>
+
     <div class="container mt-4 ">
         <h1>BAN HISTORY</h1>
         <div class="container-fluid operations">
@@ -260,60 +253,48 @@ $totalPages = ceil($totalRecords / $rows_per_page);
         </div>
 
         <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">No</th>
-                    <th scope="col" class="sortable <?php echo ($sort_column == 'fname') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('fname')">Name<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                    <th scope="col" class="sortable <?php echo ($sort_column == 'user_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('user_no')">User No<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                    <th scope="col" class="sortable <?php echo ($sort_column == 'student_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('student_no')">Student No<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                    <th scope="col" class="sortable <?php echo ($sort_column == 'email') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('email')">Email<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                    <th scope="col" class="sortable <?php echo ($sort_column == 'ban_level') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('ban_level')">Ban level<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                    <th scope="col">Review posts</th>
-                    <th scope="col">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $line_number = $offset + 1;
-                while ($user = $usersResult->fetch_assoc()): ?>
-                <?php
-                $timestamp = htmlspecialchars($user['created_at']);
-                $created_at = new DateTime($timestamp);
+        <thead>
+            <tr>
+                <th scope="col" class="sortable <?php echo ($sort_column == 'ban_id') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('fname')">ID<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
 
-                $formattedDate = $created_at->format('F j, Y'); // e.g., July 24, 2023
-                $formattedTime = $created_at->format('g:i a'); // e.g., 6:27 pm
-                ?>
-                    <tr>
-                        <th scope="row"><?php echo htmlspecialchars($line_number++); ?></th>
-                        <td><?php echo htmlspecialchars($user['fname'] . ' ' . $user['lname']); ?></td>
-                        <td><?php echo htmlspecialchars($user['user_no']); ?></td>
-                        <td><?php echo htmlspecialchars($user['student_no']); ?></td>
-                        <td><?php echo htmlspecialchars($user['email']); ?></td>
-                        <td><?php echo htmlspecialchars($user['ban_level']); ?></td>
-                        <td>
-                        <?php if ($user['report_count'] > 0): ?>
-                            <a class="Review_posts text-primary" href="../admin_area/review_post.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>">View post</a>
-                            <?php else: ?>
-                                <!-- leave blank here to get space for no report -->
-                            <?php endif; ?>
-                            
-                        </td>
+                <th scope="col" class="sortable <?php echo ($sort_column == 'user_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('user_no')">User no<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
 
-                        <td>
-                            <?php if ($user['report_count'] > 0): ?>
-                                <a href="admin_action.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>" class="btn btn-primary btn-sm">Action</a>
-                            <?php else: ?>
-                                <!-- leave blank here to get space for no report -->
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
+                <th scope="col" class="sortable <?php echo ($sort_column == 'ban_appeal_id') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('ban_appeal_id')">Ban appeal no<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
+
+                <th scope="col" class="sortable <?php echo ($sort_column == 'ban_level') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('ban_level')">Ban level<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
+
+                <th scope="col" class="sortable <?php echo ($sort_column == 'ban_start_date') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('ban_start_date')">Ban start date<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
+
+                <th scope="col" class="sortable <?php echo ($sort_column == 'ban_end_date') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('ban_end_date')">Ban end date<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
+            </tr>
+        </thead>
+                <tbody>
+                    <?php
+                        if ($usersResult) {
+                            while ($row = $usersResult->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<th scope='row'>" . htmlspecialchars($row['ban_id']) . "</th>";
+                                echo "<td>" . htmlspecialchars($row['user_no']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['ban_appeal_id']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['ban_level']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['ban_start_date']) . "</td>";
+                                if($row['ban_end_date'] === NULL){
+                                    echo "<td> Permanent </td>";
+                                }else{
+                                    echo "<td>" . htmlspecialchars($row['ban_end_date']) . "</td>";
+                                }
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "No results found or an error occurred.";
+                        }
+                    ?>
+                </tbody>
         </table>
 
         <nav aria-label="Page navigation">
             <ul class="pagination">
-                <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
+            <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
                     <a class="page-link" href="?rows=<?php echo $rows_per_page; ?>&page=<?php echo max(1, $page - 1); ?>&sort=<?php echo $sort_column; ?>&direction=<?php echo $sort_direction; ?>">Previous</a>
                 </li>
                 <?php for ($i = 1; $i <= $totalPages; $i++): ?>
@@ -326,6 +307,7 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                 </li>
             </ul>
         </nav>
+
     </div>
 
 <script>

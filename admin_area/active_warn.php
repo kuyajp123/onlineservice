@@ -34,7 +34,9 @@ require_once '../include/bootsrap.php';
             <button onclick="toggleSidenav()"><i class="fa-solid fa-bars"></i></button>
             </div>
             <div class="container-fluid featurescont">
-                <div class="container-fluid buttonlinkside">
+                <!-- side links -->
+
+    <div class="container-fluid buttonlinkside">
                 <div class="row">
                         <div class="col">
                             <ul>
@@ -75,13 +77,13 @@ require_once '../include/bootsrap.php';
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="banned_user.php">
+                                    <a href="active_ban.php">
                                         <div class="container-fluid Bannedaccounts">
                                             <div class="container-fluid Bannedaccountsicon">
                                             <i class="fa-solid fa-user-slash fa-lg"></i>
                                             </div>
                                             <div class="container-fluid Bannedaccountsname">
-                                                Banned accounts
+                                                Banned users
                                             </div>
                                         </div>
                                     </a>
@@ -89,24 +91,6 @@ require_once '../include/bootsrap.php';
                             </ul>
                         </div>
                     </div>
-                    <!-- <div class="row">
-                        <div class="col">
-                                <ul>
-                                    <li>
-                                        <a href="">
-                                            <div class="container-fluid Deletedaccounts">
-                                                <div class="container-fluid Deletedaccountsicon">
-                                                <i class="fa-solid fa-trash fa-lg"></i>
-                                                </div>
-                                                <div class="container-fluid Deletedaccountsname">
-                                                    Deleted accounts
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> -->
                         <div class="row">
                             <div class="col">
                                 <ul>
@@ -143,7 +127,28 @@ require_once '../include/bootsrap.php';
                             </ul>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <ul>
+                                <li>
+                                    <a href="banned_user.php">
+                                        <div class="container-fluid Bannedaccounts">
+                                            <div class="container-fluid Bannedaccountsicon">
+                                                <i class="fa-solid fa-ban"></i>
+                                            </div>
+                                            <div class="container-fluid Bannedaccountsname">
+                                                Ban history
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+                    </div>
+
+
+<!-- side links end -->
                 <div class="container-fluid logoutcont">
                         <div class="row">
                             <div class="col">
@@ -179,7 +184,7 @@ require_once '../include/bootsrap.php';
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
 // Determine the sort column and direction
-$sort_column = isset($_GET['sort']) ? $_GET['sort'] : 'lname';
+$sort_column = isset($_GET['sort']) ? $_GET['sort'] : 'warning_id';
 $sort_direction = isset($_GET['direction']) && $_GET['direction'] == 'desc' ? 'desc' : 'asc';
 
 // Determine the number of rows per page and current page
@@ -188,9 +193,9 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $offset = ($page - 1) * $rows_per_page;
 
 // Validate sort column
-$valid_columns = ['fname', 'lname', 'user_no', 'student_no', 'email', 'created_at', 'warning_level', 'ban_level', 'report_count'];
+$valid_columns = ['fname', 'lname', 'user_no', 'student_no', 'email', 'warning_id', 'warning_level', 'warning_level', 'report_count'];
 if (!in_array($sort_column, $valid_columns)) {
-    $sort_column = 'lname'; // default sort column
+    $sort_column = 'warning_id'; // default sort column
 }
 
 // Validate rows per page
@@ -200,14 +205,11 @@ if (!in_array($rows_per_page, $valid_rows_per_page)) {
 }
 
 // Fetch users and their report status with search, sorting, and pagination
-$searchFilter = !empty($search) ? " AND (ur.fname LIKE '%$search%' OR ur.lname LIKE '%$search%' OR ur.email LIKE '%$search%' OR ur.student_no LIKE '%$search%' OR ur.user_no LIKE '%$search%')" : "";
-$usersQuery = "SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.created_at, ur.email, aw.warning_level, ub.ban_level, IFNULL(COUNT(pr.report_id), 0) AS report_count 
-               FROM user_registration ur
-               LEFT JOIN post_reports pr ON ur.user_no = pr.user_no
-               LEFT JOIN active_warning aw ON ur.user_no = aw.user_no
-               LEFT JOIN user_bans ub ON ur.user_no = ub.user_no
+$searchFilter = !empty($search) ? " AND (ur.fname LIKE '%$search%' OR aw.warning_id LIKE '%$search%' OR ur.lname LIKE '%$search%' OR ur.email LIKE '%$search%' OR ur.student_no LIKE '%$search%' OR ur.user_no LIKE '%$search%')" : "";
+$usersQuery = "SELECT aw.warning_id, ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, aw.warning_level 
+FROM `active_warning`aw 
+LEFT JOIN user_registration ur ON aw.user_no = ur.user_no
                WHERE 1=1 $searchFilter
-               GROUP BY ur.user_no
                ORDER BY $sort_column $sort_direction
                LIMIT $rows_per_page OFFSET $offset";
 $usersResult = $con->query($usersQuery);
@@ -250,12 +252,12 @@ $totalPages = ceil($totalRecords / $rows_per_page);
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th scope="col">No</th>
+                    <th scope="col" class="sortable <?php echo ($sort_column == 'warning_id') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('warning_id')">ID<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'fname') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('fname')">Name<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'user_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('user_no')">User No<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'student_no') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('student_no')">Student No<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col" class="sortable <?php echo ($sort_column == 'email') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('email')">Email<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
-                    <th scope="col" class="sortable <?php echo ($sort_column == 'ban_level') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('ban_level')">Warning level<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
+                    <th scope="col" class="sortable <?php echo ($sort_column == 'warning_level') ? ($sort_direction == 'asc' ? 'asc' : 'desc') : ''; ?>" onclick="sortTable('warning_level')">Warning level<i class="fa-solid fa-sort-up"></i><i class="fa-solid fa-sort-down"></i></th>
                     <th scope="col">Review posts</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -264,35 +266,18 @@ $totalPages = ceil($totalRecords / $rows_per_page);
                 <?php
                 $line_number = $offset + 1;
                 while ($user = $usersResult->fetch_assoc()): ?>
-                <?php
-                $timestamp = htmlspecialchars($user['created_at']);
-                $created_at = new DateTime($timestamp);
-
-                $formattedDate = $created_at->format('F j, Y'); // e.g., July 24, 2023
-                $formattedTime = $created_at->format('g:i a'); // e.g., 6:27 pm
-                ?>
                     <tr>
-                        <th scope="row"><?php echo htmlspecialchars($line_number++); ?></th>
+                        <th scope="row"><?php echo htmlspecialchars($user['warning_id']); ?></th>
                         <td><?php echo htmlspecialchars($user['fname'] . ' ' . $user['lname']); ?></td>
                         <td><?php echo htmlspecialchars($user['user_no']); ?></td>
                         <td><?php echo htmlspecialchars($user['student_no']); ?></td>
                         <td><?php echo htmlspecialchars($user['email']); ?></td>
                         <td><?php echo htmlspecialchars($user['warning_level']); ?></td>
                         <td>
-                        <?php if ($user['report_count'] > 0): ?>
-                            <a class="Review_posts text-primary" href="../admin_area/review_post.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>">View post</a>
-                            <?php else: ?>
-                                <!-- leave blank here to get space for no report -->
-                            <?php endif; ?>
-                            
+                            <a class="Review_posts text-primary" href="../admin_area/review_post.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>">View post</a> 
                         </td>
-
                         <td>
-                            <?php if ($user['report_count'] > 0): ?>
-                                <a href="admin_action.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>" class="btn btn-primary btn-sm">Action</a>
-                            <?php else: ?>
-                                <!-- leave blank here to get space for no report -->
-                            <?php endif; ?>
+                            <a href="admin_action.php?user_no=<?php echo htmlspecialchars($user['user_no']); ?>" class="btn btn-primary btn-sm">Action</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>

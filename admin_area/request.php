@@ -40,6 +40,8 @@ require_once '../include/bootsrap.php';
         </button>
     </div>
     <div class="container-fluid featurescont">
+    <!-- side links -->
+
     <div class="container-fluid buttonlinkside">
                 <div class="row">
                         <div class="col">
@@ -81,13 +83,13 @@ require_once '../include/bootsrap.php';
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="banned_user.php">
+                                    <a href="active_ban.php">
                                         <div class="container-fluid Bannedaccounts">
                                             <div class="container-fluid Bannedaccountsicon">
                                             <i class="fa-solid fa-user-slash fa-lg"></i>
                                             </div>
                                             <div class="container-fluid Bannedaccountsname">
-                                                Banned accounts
+                                                Banned users
                                             </div>
                                         </div>
                                     </a>
@@ -95,24 +97,6 @@ require_once '../include/bootsrap.php';
                             </ul>
                         </div>
                     </div>
-                    <!-- <div class="row">
-                        <div class="col">
-                                <ul>
-                                    <li>
-                                        <a href="">
-                                            <div class="container-fluid Deletedaccounts">
-                                                <div class="container-fluid Deletedaccountsicon">
-                                                <i class="fa-solid fa-trash fa-lg"></i>
-                                                </div>
-                                                <div class="container-fluid Deletedaccountsname">
-                                                    Deleted accounts
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> -->
                         <div class="row">
                             <div class="col">
                                 <ul>
@@ -149,7 +133,28 @@ require_once '../include/bootsrap.php';
                             </ul>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <ul>
+                                <li>
+                                    <a href="banned_user.php">
+                                        <div class="container-fluid Bannedaccounts">
+                                            <div class="container-fluid Bannedaccountsicon">
+                                                <i class="fa-solid fa-ban"></i>
+                                            </div>
+                                            <div class="container-fluid Bannedaccountsname">
+                                                Ban history
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+                    </div>
+
+
+<!-- side links end -->
         <div class="container-fluid logoutcont">
             <div class="row">
                 <div class="col">
@@ -216,14 +221,14 @@ $query = "SELECT
     a.lname, 
     a.student_no, 
     a.email, 
-    COALESCE(uw.warning_level, ' ') AS warning_level, 
-    COALESCE(ub.ban_level, ' ') AS ban_level
+    COALESCE(aw.warning_level, ' ') AS warning_level, 
+    COALESCE(ab.ban_level, ' ') AS ban_level
 FROM 
     appeal a
 LEFT JOIN 
-    user_warnings uw ON a.user_no = uw.user_no
+    active_warning aw ON a.user_no = aw.user_no
 LEFT JOIN 
-    user_bans ub ON a.user_no = ub.user_no
+    active_ban ab ON a.user_no = ab.user_no
     WHERE 1=1 $searchFilter
     ORDER BY $sort_column $sort_direction
     LIMIT $rows_per_page OFFSET $offset

@@ -86,13 +86,13 @@ $usersResult = $con->query($usersQuery);
                         <div class="col">
                             <ul>
                                 <li>
-                                    <a href="banned_user.php">
+                                    <a href="active_ban.php">
                                         <div class="container-fluid Bannedaccounts">
                                             <div class="container-fluid Bannedaccountsicon">
                                             <i class="fa-solid fa-user-slash fa-lg"></i>
                                             </div>
                                             <div class="container-fluid Bannedaccountsname">
-                                                Banned accounts
+                                                Banned users
                                             </div>
                                         </div>
                                     </a>
@@ -100,24 +100,6 @@ $usersResult = $con->query($usersQuery);
                             </ul>
                         </div>
                     </div>
-                    <!-- <div class="row">
-                        <div class="col">
-                                <ul>
-                                    <li>
-                                        <a href="">
-                                            <div class="container-fluid Deletedaccounts">
-                                                <div class="container-fluid Deletedaccountsicon">
-                                                <i class="fa-solid fa-trash fa-lg"></i>
-                                                </div>
-                                                <div class="container-fluid Deletedaccountsname">
-                                                    Deleted accounts
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> -->
                         <div class="row">
                             <div class="col">
                                 <ul>
@@ -147,6 +129,24 @@ $usersResult = $con->query($usersQuery);
                                             </div>
                                             <div class="container-fluid listofusersname">
                                                 Warning history
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <ul>
+                                <li>
+                                    <a href="banned_user.php">
+                                        <div class="container-fluid Bannedaccounts">
+                                            <div class="container-fluid Bannedaccountsicon">
+                                                <i class="fa-solid fa-ban"></i>
+                                            </div>
+                                            <div class="container-fluid Bannedaccountsname">
+                                                Ban history
                                             </div>
                                         </div>
                                     </a>
@@ -215,16 +215,16 @@ if (!in_array($rows_per_page, $valid_rows_per_page)) {
 $searchFilter = !empty($search) ? " AND (ur.fname LIKE '%$search%' OR ur.lname LIKE '%$search%' OR ur.email LIKE '%$search%' OR ur.student_no LIKE '%$search%' OR ur.user_no LIKE '%$search%' OR ab.ban_level LIKE '%$search%' OR ab.ban_id LIKE '%$search%)" : "";
 
 $usersQuery = "SELECT ab.ban_id, ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, ab.ban_level 
-FROM `active_ban`ab 
+FROM active_ban ab 
 LEFT JOIN user_registration ur ON ab.user_no = ur.user_no
 WHERE 1=1 $searchFilter
-               WHERE 1=1 $searchFilter
-               ORDER BY $sort_column $sort_direction
-               LIMIT $rows_per_page OFFSET $offset";
+ORDER BY $sort_column $sort_direction
+LIMIT $rows_per_page OFFSET $offset";
 $usersResult = $con->query($usersQuery);
 
+
 // Fetch total number of records for pagination
-$totalQuery = "SELECT COUNT(*) AS total FROM user_registration";
+$totalQuery = "SELECT COUNT(*) AS total FROM active_ban";
 $totalResult = $con->query($totalQuery);
 
 // Check for query errors
@@ -236,7 +236,7 @@ $totalRecords = $totalResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRecords / $rows_per_page);
 ?>
     <div class="container mt-4 ">
-        <h1>BAN HISTORY</h1>
+        <h1>BANNED USERS</h1>
         <div class="container-fluid operations">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -370,53 +370,3 @@ $totalPages = ceil($totalRecords / $rows_per_page);
     // Load the sidenav state when the page loads
     window.onload = loadSidenavState;
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
