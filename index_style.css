@@ -495,8 +495,29 @@ button{
 .temporary{
   height: 5vh;
 }
-
-
+.banposttemplate{
+  height: 30%;
+  width: 100%;
+}
+.banpostmesstemplate{
+  height: 70%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.banpostmesstemplate a{
+  color: #0066cc;
+}
+.bantextcontainerpost{
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    max-height: 100vh;
+    max-width: 100%;
+    border: 1px solid black;
+}
 
 
 

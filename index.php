@@ -282,7 +282,7 @@ $unread_count = $row['unread_count'];
 <?php      
 
 // Loop through each post
-foreach ($rows as $row):
+foreach ($rows as $row) {
   // Extract data
   $post_id = htmlspecialchars($row['post_id']);
   $user_no = htmlspecialchars($row['user_no']);
@@ -292,6 +292,13 @@ foreach ($rows as $row):
   $postphoto = htmlspecialchars($row['postphoto']);
   $caption = htmlspecialchars($row['caption']);
 
+  // Check if the user is banned
+  $sql = "SELECT user_no FROM `active_ban` WHERE user_no = ?";
+  $stmt = $con->prepare($sql);
+  $stmt->bind_param("i", $user_no);
+  $stmt->execute();
+  $result = $stmt->get_result();
+
   // Create DateTime object
   $dateTime = new DateTime($timestamp);
 
@@ -299,21 +306,28 @@ foreach ($rows as $row):
   $formattedDate = $dateTime->format('F j, Y'); // e.g., July 24, 2023
   $formattedTime = $dateTime->format('g:i a'); // e.g., 6:27 pm
 
-  // Determine which template to include
-  $hasText = !empty(trim($caption));
-  $hasImage = !empty(trim($postphoto));
+  if ($result->num_rows > 0) {
+      // User is banned; display the banned post template
+      require 'include/posttemplate/bannedpost.php';
+  } else {
+      // User is not banned; display the post
 
-  if ($hasText && $hasImage) {
-      // Post with both text and image
-      require 'include/posttemplate/post.php';
-  } elseif ($hasText) {
-      // Post with text only
-      require 'include/posttemplate/textpost.php';
-  } elseif ($hasImage) {
-      // Post with image only
-      require 'include/posttemplate/imagepost.php';
+      // Determine which template to include
+      $hasText = !empty(trim($caption));
+      $hasImage = !empty(trim($postphoto));
+
+      if ($hasText && $hasImage) {
+          // Post with both text and image
+          require 'include/posttemplate/post.php';
+      } elseif ($hasText) {
+          // Post with text only
+          require 'include/posttemplate/textpost.php';
+      } elseif ($hasImage) {
+          // Post with image only
+          require 'include/posttemplate/imagepost.php';
+      }
   }
-endforeach;
+}
 ?>
 
       
