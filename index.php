@@ -278,64 +278,96 @@ $unread_count = $row['unread_count'];
             <div class="container-fluid content">
 
 
-
-
-
-
-
-
-
-
-
             
 <?php      
 
-// Loop through each post
+// Initialize an array to store banned users
+$banned_users = [];
+$banned_sql = "SELECT user_no FROM `active_ban`";
+$banned_stmt = $con->prepare($banned_sql);
+$banned_stmt->execute();
+$banned_result = $banned_stmt->get_result();
+
+while ($banned_row = $banned_result->fetch_assoc()) {
+    $banned_users[] = $banned_row['user_no'];
+}
+
+// Loop through each post or poll
 foreach ($rows as $row) {
-  // Extract data
-  $post_id = htmlspecialchars($row['post_id']);
-  $user_no = htmlspecialchars($row['user_no']);
-  $fname = htmlspecialchars($row['fname']);
-  $lname = htmlspecialchars($row['lname']);
-  $timestamp = htmlspecialchars($row['timestamp']);
-  $postphoto = htmlspecialchars($row['postphoto']);
-  $caption = htmlspecialchars($row['caption']);
+    // Extract common data
+    $type = htmlspecialchars($row['type']); // 'post' or 'poll'
+    $user_no = htmlspecialchars($row['user_no']);
+    $fname = htmlspecialchars($row['fname']);
+    $lname = htmlspecialchars($row['lname']);
+    $timestamp = htmlspecialchars($row['timestamp']);
+    $caption = htmlspecialchars($row['caption']);
 
-  // Check if the user is banned
-  $sql = "SELECT user_no FROM `active_ban` WHERE user_no = ?";
-  $stmt = $con->prepare($sql);
-  $stmt->bind_param("i", $user_no);
-  $stmt->execute();
-  $result = $stmt->get_result();
+     // Create DateTime object
+     $dateTime = new DateTime($timestamp);
 
-  // Create DateTime object
-  $dateTime = new DateTime($timestamp);
+     // Format date and time
+     $formattedDate = $dateTime->format('F j, Y'); // e.g., July 24, 2023
+     $formattedTime = $dateTime->format('g:i a'); // e.g., 6:27 pm
 
-  // Format date and time
-  $formattedDate = $dateTime->format('F j, Y'); // e.g., July 24, 2023
-  $formattedTime = $dateTime->format('g:i a'); // e.g., 6:27 pm
+    // Check if the user is banned
+    $is_banned = in_array($user_no, $banned_users);
 
-  if ($result->num_rows > 0) {
-      // User is banned; display the banned post template
-      require 'include/posttemplate/bannedpost.php';
-  } else {
-      // User is not banned; display the post
+    if ($type === 'post') {
+        // Extract post-specific data
+        $post_id = htmlspecialchars($row['post_id']);
+        $postphoto = htmlspecialchars($row['postphoto']);
 
-      // Determine which template to include
-      $hasText = !empty(trim($caption));
-      $hasImage = !empty(trim($postphoto));
+        if ($is_banned) {
+            // User is banned; display the banned post template
+            require 'include/posttemplate/bannedpost.php';
+        } else {
+            // Determine which post template to include
+            $hasText = !empty(trim($caption));
+            $hasImage = !empty(trim($postphoto));
 
-      if ($hasText && $hasImage) {
-          // Post with both text and image
-          require 'include/posttemplate/post.php';
-      } elseif ($hasText) {
-          // Post with text only
-          require 'include/posttemplate/textpost.php';
-      } elseif ($hasImage) {
-          // Post with image only
-          require 'include/posttemplate/imagepost.php';
-      }
-  }
+            if ($hasText && $hasImage) {
+                // Post with both text and image
+                require 'include/posttemplate/post.php';
+            } elseif ($hasText) {
+                // Post with text only
+                require 'include/posttemplate/textpost.php';
+            } elseif ($hasImage) {
+                // Post with image only
+                require 'include/posttemplate/imagepost.php';
+            }
+        }
+    } elseif ($type === 'poll') {
+        if ($is_banned) {
+            // User is banned; display the banned post template
+            require 'include/posttemplate/bannedpost.php';
+        } else {
+            // Extract poll-specific data
+            $poll_id = htmlspecialchars($row['post_id']); // Use 'post_id' for poll_id
+            $poll_question = htmlspecialchars($row['caption']);
+            $postphoto = null; // Polls do not use this
+
+            // Fetch poll options
+            $options_sql = "SELECT po.options_id, po.option_text, po.image_path
+                FROM poll_options po
+                WHERE po.poll_id = ?";
+            $options_stmt = $con->prepare($options_sql);
+            $options_stmt->bind_param("i", $poll_id);
+            $options_stmt->execute();
+            $options_result = $options_stmt->get_result();
+            $options = [];
+
+            while ($option_row = $options_result->fetch_assoc()) {
+                $options[] = [
+                    'id' => htmlspecialchars($option_row['options_id']),
+                    'text' => htmlspecialchars($option_row['option_text']),
+                    'image' => htmlspecialchars($option_row['image_path'])
+                ];
+            }
+
+            // Include the poll template with options
+            require 'include/posttemplate/poll_post.php';
+        }
+    }
 }
 ?>
       

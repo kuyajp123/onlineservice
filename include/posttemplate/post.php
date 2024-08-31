@@ -27,7 +27,8 @@ $defaultProfilePic = 'profile.jpg';
                         <a href="users/other_profile.php?user_no=<?php echo htmlspecialchars($user_no); ?>" style="font-size:1rem; text-decoration: none; color: black;">
                         <img src="users/images/profilepicture/<?php echo !empty($profilePic) ? $profilePic : $defaultProfilePic; ?>"  style="object-fit:contain; width: 40px; height: 40px; border-radius: 50%;" alt="">
                         </a>
-                    <?php endif; ?></div></a>
+                    <?php endif; ?>
+                  </div></a>
       </div>
       <div class="container-fluid pangalan">
         <!-- profile name in post -->

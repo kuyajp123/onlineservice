@@ -170,10 +170,31 @@ function getOldCoverPhoto($user_no, $con) {
 // function to get post from database
 function getPosts($con) {
     // Define the SQL query with ORDER BY clause to sort by timestamp in descending order
-    $sql = "SELECT p.post_id, p.user_no, u.fname, u.lname, p.timestamp, p.postphoto, p.caption
-    FROM posts p
-    JOIN user_registration u ON p.user_no = u.user_no
-    ORDER BY p.timestamp DESC"; // Added ORDER BY clause
+    $sql = "SELECT 'post' AS type, 
+       p.post_id AS post_id, 
+       p.user_no AS user_no, 
+       u.fname AS fname, 
+       u.lname AS lname, 
+       p.timestamp AS timestamp, 
+       p.postphoto AS postphoto, 
+       p.caption AS caption
+FROM posts p
+JOIN user_registration u ON p.user_no = u.user_no
+
+UNION ALL
+
+SELECT 'poll' AS type, 
+       pl.poll_id AS poll_id, 
+       pl.user_no AS user_no, 
+       u.fname AS fname, 
+       u.lname AS lname, 
+       pl.created_at AS timestamp, 
+       NULL AS postphoto, 
+       pl.question AS caption
+FROM polls pl
+JOIN user_registration u ON pl.user_no = u.user_no
+
+ORDER BY timestamp DESC"; // Added ORDER BY clause
 
     // Prepare and execute the SQL statement
     $stmt = $con->prepare($sql);
