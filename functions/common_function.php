@@ -193,7 +193,6 @@ SELECT 'poll' AS type,
        pl.question AS caption
 FROM polls pl
 JOIN user_registration u ON pl.user_no = u.user_no
-
 ORDER BY timestamp DESC"; // Added ORDER BY clause
 
     // Prepare and execute the SQL statement

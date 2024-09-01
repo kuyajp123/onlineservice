@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 31, 2024 at 02:35 PM
+-- Generation Time: Sep 01, 2024 at 05:24 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -127,7 +127,8 @@ INSERT INTO `appeal` (`appeal_id`, `user_no`, `fname`, `lname`, `email`, `studen
 
 CREATE TABLE `comments` (
   `comment_id` int(11) NOT NULL,
-  `post_id` int(11) NOT NULL,
+  `post_id` int(11) DEFAULT NULL,
+  `poll_id` int(11) DEFAULT NULL,
   `user_no` int(11) NOT NULL,
   `comment_text` text NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
@@ -137,20 +138,24 @@ CREATE TABLE `comments` (
 -- Dumping data for table `comments`
 --
 
-INSERT INTO `comments` (`comment_id`, `post_id`, `user_no`, `comment_text`, `timestamp`) VALUES
-(17, 45, 50, 'test', '2024-08-23 12:02:19'),
-(18, 39, 50, 'test', '2024-08-23 12:02:25'),
-(19, 47, 50, 'test', '2024-08-23 12:02:33'),
-(20, 45, 50, 'Hi', '2024-08-24 07:54:03'),
-(21, 53, 50, 'Ikaw yan?', '2024-08-24 08:35:06'),
-(22, 53, 55, 'comment', '2024-08-24 14:42:22'),
-(23, 49, 50, 'ssd', '2024-08-25 02:49:10'),
-(29, 53, 50, 'a', '2024-08-27 13:44:03'),
-(30, 54, 50, 'qwe', '2024-08-27 13:44:10'),
-(31, 64, 50, 'asdfasfsdfsdf', '2024-08-28 13:40:33'),
-(32, 67, 50, 'comment', '2024-08-28 14:12:12'),
-(33, 67, 50, 'ljkhlkj', '2024-08-28 14:12:36'),
-(34, 67, 50, 'hello', '2024-08-28 15:32:12');
+INSERT INTO `comments` (`comment_id`, `post_id`, `poll_id`, `user_no`, `comment_text`, `timestamp`) VALUES
+(17, 45, NULL, 50, 'test', '2024-08-23 12:02:19'),
+(18, 39, NULL, 50, 'test', '2024-08-23 12:02:25'),
+(19, 47, NULL, 50, 'test', '2024-08-23 12:02:33'),
+(20, 45, NULL, 50, 'Hi', '2024-08-24 07:54:03'),
+(21, 53, NULL, 50, 'Ikaw yan?', '2024-08-24 08:35:06'),
+(22, 53, NULL, 55, 'comment', '2024-08-24 14:42:22'),
+(23, 49, NULL, 50, 'ssd', '2024-08-25 02:49:10'),
+(29, 53, NULL, 50, 'a', '2024-08-27 13:44:03'),
+(30, 54, NULL, 50, 'qwe', '2024-08-27 13:44:10'),
+(31, 64, NULL, 50, 'asdfasfsdfsdf', '2024-08-28 13:40:33'),
+(32, 67, NULL, 50, 'comment', '2024-08-28 14:12:12'),
+(33, 67, NULL, 50, 'ljkhlkj', '2024-08-28 14:12:36'),
+(34, 67, NULL, 50, 'hello', '2024-08-28 15:32:12'),
+(35, 70, NULL, 50, 'qwer', '2024-09-01 00:59:59'),
+(36, 66, NULL, 50, 'safsdf', '2024-09-01 03:18:57'),
+(37, NULL, 15, 50, 'hi', '2024-09-01 03:20:12'),
+(38, 67, NULL, 50, 'low', '2024-09-01 03:20:28');
 
 -- --------------------------------------------------------
 
@@ -160,7 +165,8 @@ INSERT INTO `comments` (`comment_id`, `post_id`, `user_no`, `comment_text`, `tim
 
 CREATE TABLE `heart_reactions` (
   `reaction_id` int(11) NOT NULL,
-  `post_id` int(11) NOT NULL,
+  `post_id` int(11) DEFAULT NULL,
+  `poll_id` int(11) DEFAULT NULL,
   `user_no` int(11) NOT NULL,
   `reaction_type` enum('heart') NOT NULL DEFAULT 'heart',
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
@@ -170,29 +176,25 @@ CREATE TABLE `heart_reactions` (
 -- Dumping data for table `heart_reactions`
 --
 
-INSERT INTO `heart_reactions` (`reaction_id`, `post_id`, `user_no`, `reaction_type`, `timestamp`) VALUES
-(117, 39, 55, '', '2024-08-23 11:58:05'),
-(118, 45, 55, '', '2024-08-23 11:58:06'),
-(119, 46, 55, '', '2024-08-23 11:58:08'),
-(120, 39, 50, '', '2024-08-23 12:02:14'),
-(121, 45, 50, '', '2024-08-23 12:02:15'),
-(122, 53, 55, '', '2024-08-23 13:15:03'),
-(123, 52, 55, '', '2024-08-23 13:15:05'),
-(124, 52, 50, '', '2024-08-24 07:53:11'),
-(129, 51, 55, '', '2024-08-24 14:42:28'),
-(134, 53, 50, '', '2024-08-25 02:36:47'),
-(136, 51, 50, '', '2024-08-25 02:49:01'),
-(137, 54, 55, '', '2024-08-25 03:04:03'),
-(145, 50, 50, '', '2024-08-27 13:44:14'),
-(147, 64, 50, '', '2024-08-28 13:40:30'),
-(150, 66, 50, '', '2024-08-28 14:11:30'),
-(152, 67, 50, '', '2024-08-28 15:32:03'),
-(154, 68, 55, '', '2024-08-29 00:13:56'),
-(157, 70, 71, '', '2024-08-30 01:08:18'),
-(158, 70, 50, '', '2024-08-30 01:08:38'),
-(159, 65, 50, '', '2024-08-30 03:54:22'),
-(160, 54, 50, '', '2024-08-30 03:54:25'),
-(162, 67, 71, '', '2024-08-30 06:10:36');
+INSERT INTO `heart_reactions` (`reaction_id`, `post_id`, `poll_id`, `user_no`, `reaction_type`, `timestamp`) VALUES
+(247, 70, NULL, 50, 'heart', '2024-09-01 01:55:29'),
+(248, NULL, 15, 71, 'heart', '2024-09-01 01:55:52'),
+(249, NULL, 14, 71, 'heart', '2024-09-01 01:55:59'),
+(250, 67, NULL, 71, 'heart', '2024-09-01 01:56:27'),
+(251, 66, NULL, 71, 'heart', '2024-09-01 01:56:29'),
+(252, 64, NULL, 71, 'heart', '2024-09-01 01:56:35'),
+(253, 63, NULL, 71, 'heart', '2024-09-01 01:56:36'),
+(254, 54, NULL, 71, 'heart', '2024-09-01 01:56:38'),
+(255, NULL, 13, 71, 'heart', '2024-09-01 01:56:50'),
+(257, NULL, 12, 71, 'heart', '2024-09-01 01:57:25'),
+(258, NULL, 15, 50, 'heart', '2024-09-01 03:08:35'),
+(259, NULL, 14, 50, 'heart', '2024-09-01 03:08:36'),
+(260, NULL, 13, 50, 'heart', '2024-09-01 03:08:39'),
+(262, NULL, 12, 50, 'heart', '2024-09-01 03:08:41'),
+(263, 67, NULL, 50, 'heart', '2024-09-01 03:08:44'),
+(264, 54, NULL, 50, 'heart', '2024-09-01 03:08:46'),
+(265, 52, NULL, 50, 'heart', '2024-09-01 03:08:48'),
+(266, 39, NULL, 50, 'heart', '2024-09-01 03:08:51');
 
 -- --------------------------------------------------------
 
@@ -309,10 +311,11 @@ INSERT INTO `poll_votes` (`vote_id`, `poll_id`, `user_no`, `options_id`, `voted_
 (1, 14, 50, 39, '2024-08-31 12:03:36'),
 (2, 13, 50, 37, '2024-08-31 12:12:45'),
 (3, 14, 71, 39, '2024-08-31 12:15:11'),
-(4, 12, 71, 34, '2024-08-31 12:16:25'),
+(4, 12, 71, 35, '2024-08-31 12:16:25'),
 (5, 13, 71, 37, '2024-08-31 12:17:11'),
-(6, 12, 50, 34, '2024-08-31 12:25:20'),
-(7, 15, 50, 43, '2024-08-31 12:25:50');
+(6, 12, 50, 35, '2024-08-31 12:25:20'),
+(7, 15, 50, 41, '2024-08-31 12:25:50'),
+(8, 15, 71, 43, '2024-08-31 13:35:57');
 
 -- --------------------------------------------------------
 
@@ -559,7 +562,8 @@ ALTER TABLE `appeal`
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`comment_id`),
   ADD KEY `fk_comments_post_id` (`post_id`),
-  ADD KEY `fk_comments_user_no` (`user_no`);
+  ADD KEY `fk_comments_user_no` (`user_no`),
+  ADD KEY `fk_comments_poll` (`poll_id`);
 
 --
 -- Indexes for table `heart_reactions`
@@ -567,7 +571,8 @@ ALTER TABLE `comments`
 ALTER TABLE `heart_reactions`
   ADD PRIMARY KEY (`reaction_id`),
   ADD KEY `fk_heart_reactions_post_id` (`post_id`),
-  ADD KEY `fk_heart_reactions_user_no` (`user_no`);
+  ADD KEY `fk_heart_reactions_user_no` (`user_no`),
+  ADD KEY `fk_heart_reactions_poll` (`poll_id`);
 
 --
 -- Indexes for table `notifications`
@@ -691,13 +696,13 @@ ALTER TABLE `appeal`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `heart_reactions`
 --
 ALTER TABLE `heart_reactions`
-  MODIFY `reaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=170;
+  MODIFY `reaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -721,7 +726,7 @@ ALTER TABLE `poll_options`
 -- AUTO_INCREMENT for table `poll_votes`
 --
 ALTER TABLE `poll_votes`
-  MODIFY `vote_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `vote_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -790,6 +795,7 @@ ALTER TABLE `appeal`
 ALTER TABLE `comments`
   ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`),
   ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`),
+  ADD CONSTRAINT `fk_comments_poll` FOREIGN KEY (`poll_id`) REFERENCES `polls` (`poll_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_comments_post_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_comments_user_no` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`) ON DELETE CASCADE;
 
@@ -797,6 +803,7 @@ ALTER TABLE `comments`
 -- Constraints for table `heart_reactions`
 --
 ALTER TABLE `heart_reactions`
+  ADD CONSTRAINT `fk_heart_reactions_poll` FOREIGN KEY (`poll_id`) REFERENCES `polls` (`poll_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_heart_reactions_post_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_heart_reactions_user_no` FOREIGN KEY (`user_no`) REFERENCES `user_registration` (`user_no`) ON DELETE CASCADE,
   ADD CONSTRAINT `heart_reactions_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`),
