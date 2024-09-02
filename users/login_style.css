@@ -110,7 +110,26 @@ body {
   }
   .toggle-password{
     cursor: pointer;
-  }
+    position: absolute;
+    right: 16%;
+    margin-top: 15px;
+    border-radius: 50%;
+    padding: 3px;
+    transition: all 0.3s ease;
+}
+
+.toggle-password:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Subtle background change */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
+}
+.toggle-password i {
+  color: #888; /* Default color for the eye icon */
+  transition: color 0.3s ease;
+}
+
+.toggle-password:hover i {
+  color: #000; /* Change to a darker color on hover */
+}
   .line{
     border-bottom: 1px solid #dadde1;
     width: 100%;
@@ -268,6 +287,9 @@ border: 1px solid #dadde1;
     .content1{
       height: 30vh;
       margin-bottom: 20px;
+    }
+    .toggle-password{
+      right: 8%;
     }
   }
   

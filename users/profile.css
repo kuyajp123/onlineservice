@@ -4,7 +4,33 @@ body{
     overflow-x: hidden;
     font-family: Arial, Helvetica, sans-serif;
     background: linear-gradient(89.9deg, rgb(208, 246, 255) 0.1%, rgb(255, 237, 237) 47.9%, rgb(255, 255, 231) 100.2%);
+    transition: background-color 0.3s ease; /* Smooth  Smooth transition */
 }
+/* Dark Mode */
+body.dark-mode {
+    background: #18191a  !important; /* Facebook-like dark background */
+    color: #e4e6eb;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  }
+  
+  /* Pseudo-element for Gradient Layer */
+  body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(89.9deg, rgb(208, 246, 255) 0.1%, rgb(255, 237, 237) 47.9%, rgb(255, 255, 231) 100.2%);
+    z-index: -1;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  }
+  
+  /* Hide the gradient in Dark Mode */
+  body.dark-mode::before {
+    opacity: 0;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  }
 .body{
     height: 100vh;
     padding: 0;
@@ -42,6 +68,10 @@ body{
     border-radius: 10px;
     border: 5px solid #367934;
 }
+/* Dark Mode */
+body.dark-mode .header {
+    border: 5px solid #2d6a4f; /* Darker green border for dark mode */
+  }
 .imgcontainer{
     position: relative;
     display: flex;
@@ -106,7 +136,11 @@ body{
     justify-content: flex-start;
     background-color: #fff;
     border: 5px solid #367934;
-
+}
+/* Dark Mode */
+body.dark-mode .content {
+    background-color: #242526; /* Dark background for dark mode */
+    border: 5px solid #2d6a4f; /* Darker green border for dark mode */
 }
 .contcontent{
     min-height: 50vh;
@@ -135,6 +169,11 @@ body{
     background-color: #fff;
     border: 5px solid #367934;
 }
+/* Dark Mode */
+body.dark-mode .rightnavcont {
+    background-color: #2c2c2c; /* Dark background for dark mode */
+    border: 5px solid #4b7a4a; /* Darker green border for dark mode */
+}
 .displayprof{
     height: 100%;
     width: 100%;
@@ -152,10 +191,10 @@ body{
     align-items: center;
     justify-content: center;
 }
-.follow .btn{
+/* .follow .btn{
     background-color: #3EA6A6;
     border: none;
-}
+} */
 .settingsicon{
     height: 10%;
     display: flex;
@@ -182,6 +221,57 @@ body{
     background-color: none;
     border: none;
     box-shadow: none;
+}
+/* Light Mode */
+.btn-secondary {
+    background-color: #6c757d; /* Default grey for light mode */
+    border-color: #6c757d; /* Border color to match background */
+    color: #fff; /* White text color for contrast */
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Darker grey for hover effect */
+    border-color: #545b62; /* Darker border for hover effect */
+}
+
+/* Dark Mode */
+body.dark-mode .btn-secondary {
+    background-color: #444; /* Dark background for dark mode */
+    border-color: #555; /* Slightly lighter border for dark mode */
+    color: #fff; /* White text color for contrast */
+}
+
+body.dark-mode .btn-secondary:hover {
+    background-color: #333; /* Even darker background for hover effect */
+    border-color: #444; /* Slightly lighter border for hover effect */
+}
+
+/* Dropdown Menu Light Mode */
+.dropdown-menu {
+    background-color: #fff; /* White background for light mode */
+    border: 1px solid #ddd; /* Light border for light mode */
+}
+
+.dropdown-menu .dropdown-item {
+    color: #000; /* Black text color for dropdown items */
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #f0f0f0; /* Light grey for hover effect */
+}
+
+/* Dropdown Menu Dark Mode */
+body.dark-mode .dropdown-menu {
+    background-color: #333; /* Dark background for dropdown in dark mode */
+    border: 1px solid #444; /* Darker border for dropdown in dark mode */
+}
+
+body.dark-mode .dropdown-menu .dropdown-item {
+    color: #f8f9fa; /* Light text color for dropdown items */
+}
+
+body.dark-mode .dropdown-menu .dropdown-item:hover {
+    background-color: #444; /* Darker grey for hover effect */
 }
 .name{
     height: auto;
@@ -246,6 +336,302 @@ body{
     justify-content: center;
     flex-direction: column;
 }
+
+
+
+
+
+
+
+
+
+
+
+/* bootstrap components */
+/* Light Mode */
+.card {
+    width: 18rem;
+    margin-bottom: 1rem;
+    border-radius: 10px; /* Adjust as needed */
+    background-color: #fff; /* White background for light mode */
+    border: 1px solid #ddd; /* Light border for light mode */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for light mode */
+}
+
+/* Dark Mode */
+body.dark-mode .card {
+    background-color: #2c2c2c; /* Dark background for dark mode */
+    border: 1px solid #444; /* Darker border for dark mode */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Darker shadow for dark mode */
+}
+/* Light Mode */
+.card-body {
+    color: #333; /* Dark text for light mode */
+}
+
+.card-body .card-body .card-text .timedate {
+    color: #6c757d; /* Slightly darker color for muted text in dark mode */
+}
+
+/* Dark Mode */
+body.dark-mode .card-body {
+    color: #e4e6eb; /* Light text color for dark mode */
+}
+
+body.dark-mode .card-body .card-text .timedate {
+    color: #a1a1a1; /* Slightly darker color for muted text in dark mode */
+}
+
+/* Light Mode */
+.alert-warning {
+    background-color: #fff3cd; /* Light yellow background for warning */
+    color: black; /* Dark yellow text color */
+    border: 1px solid #ffeeba; /* Light yellow border */
+}
+
+.alert-warning .fa-exclamation {
+    color: #ff6600; /* Dark yellow icon color */
+}
+
+/* Dark Mode */
+body.dark-mode .alert-warning {
+    background-color: #f8d7da; /* Slightly darkened yellow for dark mode to match container */
+    color: #721c24; /* Dark red text color for contrast */
+    border: 1px solid #f5c6cb; /* Lighter red border for dark mode */
+}
+
+body.dark-mode .alert-warning .fa-exclamation {
+    color: #721c24; /* Dark red icon color for dark mode */
+}
+
+body.dark-mode .warningalert {
+    background-color: #2c2c2c; /* Dark background for the alert container */
+}
+
+body.dark-mode .warningtext {
+    color: #f8f9fa; /* Light text color inside the alert */
+}
+
+/* Optional: Adjust the span text style */
+body.dark-mode .alert-warning span {
+    color: #e9ecef; /* Slightly lighter text color for the span in dark mode */
+}
+
+/* Light Mode */
+.btn-primary {
+    background-color: #367934; /* Primary green color */
+    border-color: #367934; /* Border color to match background */
+    color: #fff; /* White text color for contrast */
+}
+
+.btn-primary:hover {
+    background-color: #2c6130; /* Darker green for hover effect */
+    border-color: #2c6130; /* Border color to match hover background */
+}
+
+/* Dark Mode */
+body.dark-mode .btn-primary {
+    background-color: #2d6a4f; /* Dark green for dark mode */
+    border-color: #2d6a4f; /* Border color to match background */
+    color: #fff; /* White text color for contrast */
+}
+
+body.dark-mode .btn-primary:hover {
+    background-color: #1b4d2a; /* Even darker green for hover effect */
+    border-color: #1b4d2a; /* Border color to match hover background */
+}
+
+/* Specific Styles for Button in .backbutton2 */
+.backbutton2 .btn-primary {
+    background-color: #367934; /* Primary green color */
+    border-color: #367934; /* Border color to match background */
+    color: #fff; /* White text color for contrast */
+}
+
+.backbutton2 .btn-primary:hover {
+    background-color: #2c6130; /* Darker green for hover effect */
+    border-color: #2c6130; /* Border color to match hover background */
+}
+
+/* Light Mode */
+.modal-content {
+    background-color: #fff; /* White background for light mode */
+    border: 1px solid #367934; /* Border color to match your container post */
+    border-radius: 10px; /* Rounded corners */
+    color: #000; /* Text color for contrast */
+}
+
+.modal-header {
+    border-bottom: 1px solid #ddd; /* Light border for header */
+}
+
+.modal-footer {
+    border-top: 1px solid #ddd; /* Light border for footer */
+}
+
+.modal-title {
+    color: #000; /* Title color for light mode */
+}
+
+/* Dark Mode */
+body.dark-mode .modal-content {
+    background-color: #2c2c2c; /* Dark background for dark mode */
+    border: 1px solid #444; /* Darker border to match your container post */
+    color: #f8f9fa; /* Light text color for contrast */
+}
+
+body.dark-mode .modal-header {
+    border-bottom: 1px solid #555; /* Darker border for header */
+}
+
+body.dark-mode .modal-footer {
+    border-top: 1px solid #555; /* Darker border for footer */
+}
+
+body.dark-mode .modal-title {
+    color: #f8f9fa; /* Title color for dark mode */
+}
+
+body.dark-mode .btn-secondary {
+    background-color: #444; /* Dark background for dark mode buttons */
+    border-color: #555; /* Border color for dark mode buttons */
+    color: #fff; /* White text color for contrast */
+}
+
+body.dark-mode .btn-secondary:hover {
+    background-color: #333; /* Even darker background for hover effect */
+    border-color: #444; /* Slightly lighter border for hover effect */
+}
+.modal-content {
+    background-color: #fff; /* Light background color like the post container */
+    border-radius: 10px;
+    color: black; /* Text color */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  }
+  
+  .modal-header, .modal-footer {
+    border-bottom: 1px solid #dadde1; /* Light gray border */
+    border-top: 1px solid #dadde1; /* Light gray border */
+  }
+  
+  .line {
+    border-bottom: 1px solid #dadde1; /* Light gray border */
+  }
+  
+  .modal-header .btn-close {
+    filter: invert(0); /* Default color, no inversion for light mode */
+  }
+  
+  body.dark-mode .modal-content {
+    background-color: #242526; /* Dark background color */
+    color: #e4e6eb; /* Light text color */
+  }
+  
+  body.dark-mode .modal-header .btn-close {
+    filter: invert(1); /* Inverts color to make the close button light in dark mode */
+  }
+  
+  body.dark-mode .modal-content {
+    background-color: #242526; /* Dark background color similar to the post container */
+    color: #e4e6eb; /* Light text color */
+  }
+  
+  body.dark-mode .modal-header, 
+  body.dark-mode .modal-footer {
+    border-bottom: 1px solid #444; /* Darker gray border */
+    border-top: 1px solid #444; /* Darker gray border */
+  }
+/* Default Off-Canvas Styling */
+.offcanvas {
+    background-color: #f8f9fa; /* Light background color for light mode */
+    color: #000; /* Default text color */
+  }
+  
+  /* Dark Mode Styling */
+  body.dark-mode .offcanvas {
+    background-color: #242526; /* Dark background color matching container post */
+    color: #e4e6eb; /* Light text color for better contrast */
+  }
+  
+  /* Off-Canvas Header */
+  .offcanvas-header {
+    border-bottom: 1px solid #dee2e6; /* Light gray border for light mode */
+  }
+  
+  body.dark-mode .offcanvas-header {
+    border-bottom: 1px solid #444; /* Darker border color for dark mode */
+  }
+  
+  /* Optional: Off-Canvas Body Styling */
+  .offcanvas-body {
+    color: #e4e6eb; /* Ensure text color matches the dark mode theme */
+  }
+  
+  /* Optional: Close Button Styling */
+  .btn-close {
+    filter: invert(1); /* Invert the color of the close button in dark mode for better visibility */
+  }
+
+/* Light Mode */
+.form-control {
+    border: 1px solid #ced4da; /* Light border for light mode */
+    background-color: #fff; /* White background for light mode */
+    color: #000; /* Text color for light mode */
+}
+
+.form-control:focus {
+    border-color: #367934; /* Theme color border on focus */
+    box-shadow: 0 0 0 0.2rem rgba(54, 121, 52, 0.25); /* Theme color shadow on focus */
+}
+
+.form-label {
+    color: #000; /* Label color for light mode */
+}
+
+/* Dark Mode */
+body.dark-mode .form-control {
+    border: 1px solid #495057; /* Dark border for dark mode */
+    background-color: #343a40; /* Dark background for dark mode */
+    color: #f8f9fa; /* Text color for dark mode */
+}
+
+body.dark-mode .form-control:focus {
+    border-color: #2d6a4f; /* Dark green border on focus for dark mode */
+    box-shadow: 0 0 0 0.2rem rgba(45, 106, 79, 0.25); /* Dark green shadow on focus */
+}
+
+body.dark-mode .form-label {
+    color: #f8f9fa; /* Label color for dark mode */
+}
+/* Light Mode */
+input::placeholder {
+    color: #6c757d; /* Default light gray placeholder text */
+}
+
+/* Dark Mode */
+body.dark-mode input::placeholder {
+    color: #e9ecef; /* Lighter gray placeholder text for dark mode */
+}
+
+/* Adjustments for different input field states */
+input:focus::placeholder {
+    color: #adb5bd; /* Slightly darker placeholder when input is focused in light mode */
+}
+
+body.dark-mode input:focus::placeholder {
+    color: #ced4da; /* Slightly darker placeholder when input is focused in dark mode */
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -350,6 +736,39 @@ a .container{
     text-decoration: none;
     color: black;
   }
+  /* Light Mode */
+.buttonlinks ul li a .container-fluid:hover, 
+.services a:hover {
+    background-color: #F0F0F0; /* Light background on hover */
+    border-radius: 10px 0 0 10px; /* Rounded corners on hover */
+    padding-right: 0; /* Adjust padding as needed */
+}
+
+li .services .dropdown-toggle::after {
+    display: none; /* Hide dropdown arrow */
+}
+
+.buttonlinks ul li a {
+    text-decoration: none; /* Remove underline from links */
+    color: black; /* Link color */
+}
+
+/* Dark Mode */
+body.dark-mode .buttonlinks ul li a .container-fluid:hover, 
+body.dark-mode .services a:hover {
+    background-color: #444; /* Darker background on hover */
+    border-radius: 10px 0 0 10px; /* Rounded corners on hover */
+    padding-right: 0; /* Adjust padding as needed */
+}
+
+body.dark-mode li .services .dropdown-toggle::after {
+    display: none; /* Ensure dropdown arrow is hidden */
+}
+
+body.dark-mode .buttonlinks ul li a {
+    text-decoration: none; /* Remove underline from links */
+    color: #e9ecef; /* Light text color for links in dark mode */
+}
   ul{
     list-style-type: none;
     padding-left: 0;

@@ -84,6 +84,13 @@ $unread_count = $row['unread_count'];
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+        (function() {
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+            }
+        })();
+    </script>
 <link rel="stylesheet" href="index_style.css?v=<?php echo time(); ?>">
 <link rel="stylesheet" href="users/profilemodal.css?v=3">
 <link rel="stylesheet" href="./users/user_operation/createpost.css?v=3">
@@ -204,12 +211,12 @@ $unread_count = $row['unread_count'];
                       <div class="container-fluid buttonlinks">
                        <ul>
                                 <!-- search bar -->
-                        <div class="container-fluid searchbar">
+                        <!-- <div class="container-fluid searchbar">
                           <form class="d-flex" role="search">
                             <input class="form-control me-2" type="search" placeholder="Under construction" aria-label="Search">
                             <button class="btn btn-outline-success" type="submit">Search</button>
                           </form>
-                        </div>
+                        </div> -->
                         <li><a href="#" data-open-modal="createpost"><div class="container-fluid post">Create post</div></a></li>
                         <li><a href="#" data-open-modal="createpoll"><div class="container-fluid collect">Create poll</div></a></li>
                         <li>
@@ -244,6 +251,7 @@ $unread_count = $row['unread_count'];
                         <ul class="dropdown-menu">
                           <li><a class="dropdown-item" href="users/profile.php?sideprof=<?php echo urlencode($current_user_no); ?>"><div class="container">Profile</div></a></li>
                           <a href="users/logout.php"><button class="logoutbut" name="logoutbut"><div class="container">Logout</div></button></a>
+                          <a href="#"><button class="logoutbut" id="toggle-dark-mode"><div class="container">Dark mode</div></button></a>
                         </ul>
                       </div>
                     </div>
@@ -417,7 +425,7 @@ foreach ($rows as $row) {
  
 <!-- modal profile -->
 <script src="functions/JsFunction.js"></script>
-
+<script src="functions/js.js"></script>
 </body>
 
 </html>

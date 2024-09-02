@@ -31,7 +31,7 @@ if (!empty($posts)): ?>
                 <?php if ($hasText): ?>
                     <p class="card-text"><?php echo nl2br(htmlspecialchars($caption)); ?></p>
                 <?php endif; ?>
-                <p class="card-text"><small class="text-muted"><?php echo htmlspecialchars($formattedDate . ' at ' . $formattedTime); ?></small></p>
+                <p class="card-text"><small class="timedate"><?php echo htmlspecialchars($formattedDate . ' at ' . $formattedTime); ?></small></p>
                 <a href="#" class="btn btn-primary">View Post</a>
             </div>
         </div>

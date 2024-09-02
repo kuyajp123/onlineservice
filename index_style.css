@@ -1,10 +1,60 @@
 
-body{
+body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  overflow-x: hidden;
   background: linear-gradient(89.9deg, rgb(208, 246, 255) 0.1%, rgb(255, 237, 237) 47.9%, rgb(255, 255, 231) 100.2%);
+  color: black;
+  position: relative;
+  min-height: 100vh;
+  transition: background-color 0.3s ease; /* Smooth  Smooth transition */
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background: #18191a  !important; /* Facebook-like dark background */
+  color: #e4e6eb;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+/* Pseudo-element for Gradient Layer */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(89.9deg, rgb(208, 246, 255) 0.1%, rgb(255, 237, 237) 47.9%, rgb(255, 255, 231) 100.2%);
+  z-index: -1;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+/* Hide the gradient in Dark Mode */
+body.dark-mode::before {
+  opacity: 0;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+/* Optional: Adjust button style for light and dark modes */
+#toggle-dark-mode {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  color: black;
+  border-radius: 5px;
+  position: relative;
+  z-index: 1;
+}
+
+body.dark-mode #toggle-dark-mode {
+  color: #e4e6eb !important;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+body.dark-mode #toggle-dark-mode:hover {
+  background-color: #3a3b3c; /* Dark mode button color */
 }
 a{
   text-decoration: none;
@@ -41,6 +91,11 @@ button{
   background-color:  #367934;
   padding: 0;
       -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+/* Dark Mode Specific Styling */
+body.dark-mode .bcon {
+  background-color: #1b6d3f; /* Adjust to a darker shade if needed for better contrast */
+  color: #e4e6eb; /* Light text color for better contrast in dark mode */
 }
 .bcon::-webkit-scrollbar {
   display: none; /* For Chrome, Safari, and Opera */
@@ -101,6 +156,12 @@ button{
   max-width: 100vh;
   background-color: #fff;
   border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+body.dark-mode .container_post {
+  background-color: #242526; /* Dark background color matching the dark mode container post color */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
 }
 .name{
   gap: 1%;
@@ -120,12 +181,18 @@ button{
   width: 100%;
   padding: 0;
 }
-.image::after{
+.image::after {
   width: 90%;
-  border-bottom: 1px solid #dadde1;  
+  border-bottom: 1px solid #dadde1; /* Light gray border for light mode */
   display: flex;
   margin-left: 5%;
   content: '';
+  transition: border-bottom 0.3s ease; /* Smooth transition for border color */
+}
+
+body.dark-mode .image::after {
+  border-bottom: 1px solid #444; /* Darker border for dark mode */
+  transition: border-bottom 0.3s ease; /* Smooth transition for border color */
 }
 /* .image::before{
   width: 90%;
@@ -230,11 +297,6 @@ button{
   justify-content: flex-end;
   align-content: flex-end;
 }
-.line{
-  width: 100%;
-  height: 1px;
-  border-bottom: 1px solid #dadde1;
-}
 .container_cap{
   height: 10vh;
   max-height: 80px;
@@ -265,7 +327,16 @@ button{
   justify-content: flex-end;
   padding: 0;
 }
-.pangalan{
+
+.pangalantextpost{
+  color: black; /* Text color for light mode */
+  transition: color 0.3s ease; /* Smooth transition for color */
+}
+body.dark-mode .pangalantextpost{
+  color: #e4e6eb;
+}
+/* Light Mode */
+.pangalan {
   height: 100%;
   width: 100%;
   display: flex;
@@ -273,6 +344,13 @@ button{
   justify-content: flex-start;
   padding-top: 10px;
   flex-direction: column;
+  color: black; /* Text color for light mode */
+  transition: color 0.3s ease; /* Smooth transition for color */
+}
+
+/* Dark Mode */
+body.dark-mode .pangalan {
+  color: #e4e6eb; /* Light text color for dark mode */
 }
 .dots{
   display: flex;
@@ -288,11 +366,25 @@ button{
   justify-content: center;
   padding: 0;
   height: 100%;
+   
 }
 .picture{
   height: 60vh;
   width: 60vh;
 }
+/* Light Mode */
+.mgatuldok {
+  background-color: #ffffff; /* White background for light mode */
+  border: none;
+  color: #575b60; /* Text color for light mode */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+/* Dark Mode */
+body.dark-mode .mgatuldok {
+  background-color: #242526; /* Same dark background color as the container post */
+}
+
 
 
 
@@ -309,6 +401,11 @@ button{
   align-items: center;
   background-color: #fff;
   padding: 0;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+body.dark-mode .sidenav {
+  background-color: #242526; /* Dark mode background color for post container */
+  color: #e4e6eb;
 }
 .considenav{
   max-height: 87vh;
@@ -329,6 +426,10 @@ button{
 .linesidenav{
   border-bottom: 1px solid #dadde1;
 }
+/* Dark Mode */
+body.dark-mode .linesidenav {
+  border-bottom: 1px solid #444; /* Dark gray color for dark mode */
+}
 .profile{
   height: 100%; 
   width: 100%;
@@ -348,6 +449,10 @@ button{
   align-items: center;
   border-radius: 10px;
   box-shadow: 1px 1px 30px #aaaaaa;
+}
+/* Dark Mode */
+body.dark-mode .contprofname {
+  box-shadow: 1px 1px 30px rgba(255, 255, 255, 0.3); /* Light shadow for dark mode */
 }
 .profile a{
   height: 80%;
@@ -370,23 +475,47 @@ button{
   outline: 5px solid #242526;
   outline-offset: -2px;
 }
+body.dark-mode .profilepicture img {
+  outline: 5px solid #e4e6eb; /* Light color for dark mode */
+}
 .nameusername{
   display: flex;
   padding: 0;
   flex-direction: column;
 }
 .username, .nameko{
+  color: black;
   display: flex;
   justify-content: center;
+  transition: color 0.3s ease; /* Smooth transition for color */
 }
-.logout{
-  border-top: 1px solid #dadde1;
+/* Dark Mode */
+body.dark-mode .username,
+body.dark-mode .nameko {
+  color: #e4e6eb; /* Color for dark mode */
+}
+/* Light Mode */
+.logout {
+  border-top: 1px solid #dadde1; /* Light gray border for light mode */
   height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #fff; /* Light background color */
+  color: black; /* Text color */
+  transition: background-color 0.3s ease, color 0.3s ease, border-top 0.3s ease; /* Smooth transition */
 }
+
+/* Dark Mode */
+body.dark-mode .logout {
+  border-top: 1px solid #444; /* Darker border for dark mode */
+  background-color: #242526; /* Dark background color matching the container post */
+  color: #e4e6eb; /* Light text color */
+  transition: background-color 0.3s ease, color 0.3s ease, border-top 0.3s ease; /* Smooth transition */
+}
+
+
 .contbuttons{
   display: flex;
   align-items: center;
@@ -415,18 +544,111 @@ button{
   border-radius: 10px;
 
 }
-.dropup .btn{
-  background-color: #367934;
+/* Light Mode Custom Styles */
+.searchbar .search-input {
+  background-color: #fff; /* Light background for the input field */
+  color: #000; /* Dark text color for the input field */
+  border: 1px solid #ced4da; /* Light border color */
 }
-.dropup .btn:hover{
-  background-color: #2c6130;
+
+.searchbar .search-button {
+  background-color: #28a745; /* Green background for the button */
+  color: #fff; /* White text color for the button */
+  border-color: #28a745; /* Green border color for the button */
 }
+
+/* Button hover effect */
+.searchbar .search-button:hover {
+  background-color: #218838; /* Darker green on hover */
+  border-color: #1e7e34; /* Darker green border on hover */
+}
+
+/* Light Mode */
+.dropup .btn {
+  background-color: #367934; /* Original green for light mode */
+}
+
+.dropup .btn:hover {
+  background-color: #2c6130; /* Darker green for hover effect in light mode */
+}
+
+/* Dark Mode */
+body.dark-mode .dropup .btn {
+  background-color: #1b6d3f;
+  /* background-color: #1b6d3f; */
+}
+
+body.dark-mode .dropup .btn:hover {
+  background-color: #144e2a; /* Darker green for hover effect in dark mode */
+}
+
 .dropup .dropdown-menu .logoutbut:hover, .dropup .dropdown-menu .dropdown-item:hover {
   background-color: #F0F0F0;
+}
+
+body.dark-mode .dropup .dropdown-menu .logoutbut {
+  color: #e4e6eb;
+}
+
+body.dark-mode .dropup .dropdown-menu .logoutbut:hover {
+  background-color: #333333;
 }
 .btn-group.dropup .dropdown-toggle::after {
   display: none;
 }
+
+/* Light Mode */
+.btn-group .btn-secondary {
+  background-color: #367934;
+  color: #fff; /* Text color */
+  border: none; /* Remove border */
+}
+
+.btn-group .btn-secondary:hover {
+  background-color: #2c6130;/* Darker shade for hover effect */
+}
+
+.dropdown-menu {
+  background-color: #fff; /* Light background for dropdown */
+  color: #000; /* Text color for dropdown items */
+}
+
+.dropdown-menu .dropdown-item {
+  color: #000; /* Text color for dropdown items */
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #f8f9fa; /* Light gray background for hover effect */
+}
+
+/* Dark Mode */
+body.dark-mode .btn-group .btn-secondary {
+  background-color: #004d00; /* Dark green background for dark mode */
+  color: #e4e6eb; /* Light text color */
+}
+
+body.dark-mode .btn-group .btn-secondary:hover {
+  background-color: #003300; /* Slightly darker green for hover effect */
+}
+
+body.dark-mode .dropdown-menu {
+  background-color: #1b1b1b; /* Dark green background for dropdown */
+  color: #e4e6eb; /* Light text color for dropdown items */
+}
+
+body.dark-mode .dropdown-menu .dropdown-item {
+  color: #e4e6eb; /* Light text color for dropdown items */
+}
+
+body.dark-mode .dropdown-menu .dropdown-item:hover {
+  background-color: #333333; /* Darker green background for hover effect */
+}
+
+
+
+
+
+
 .dropup ul li{
   height: 3rem;
   width: 100%;
@@ -443,13 +665,26 @@ button{
   height: 3rem;
   width: 100%;
 }
-.buttonlinks ul li a .container-fluid:hover, .services a:hover{
-  background-color: #F0F0F0;
+/* Light Mode */
+.buttonlinks ul li a .container-fluid:hover, 
+.services a:hover {
+  background-color: #F0F0F0; /* Light gray color for hover effect */
+  border-radius: 10px 0 0 10px;
+}
+
+/* Dark Mode */
+body.dark-mode .buttonlinks ul li a .container-fluid:hover, 
+body.dark-mode .services a:hover {
+  background-color: #333; /* Dark gray color for hover effect */
   border-radius: 10px 0 0 10px;
 }
 .buttonlinks ul li a{
   text-decoration: none;
   color: black;
+}
+/* Dark Mode */
+body.dark-mode .buttonlinks ul li a {
+  color: #e4e6eb; /* Link color for dark mode */
 }
 .logoutcont{
   width: 90%;
@@ -516,7 +751,13 @@ button{
     padding: 0;
     max-height: 100vh;
     max-width: 100%;
-    border: 1px solid black;
+    border: 1px solid black; /* Black border for light mode */
+    transition: border 0.3s ease; /* Smooth transition for border color */
+}
+
+body.dark-mode .bantextcontainerpost {
+  border: 1px solid #444; /* Darker border color for dark mode */
+  transition: border 0.3s ease; /* Smooth transition for border color */
 }
 
 /* create poll */
@@ -533,10 +774,15 @@ button{
   background-color: #e8e8e8;
 }
 
-.removeImage {
-  display: none;
-  cursor: pointer;
-  margin-left: 5px;
+/* Dark Mode Styles */
+body.dark-mode .custom-file-upload {
+  border: 1px solid #444; /* Dark gray border for contrast */
+  background-color: #333; /* Dark background for better visibility */
+  color: #e4e6eb; /* Light text color for readability */
+}
+
+body.dark-mode .custom-file-upload:hover {
+  background-color: #444; /* Slightly lighter dark gray on hover */
 }
 
 .removeOption {
@@ -548,6 +794,23 @@ button{
   font-weight: 600;
   font-size: larger;
   font-family: 'Nunito', sans-serif;
+  background-color: #fff; /* Light background for light mode */
+    color: #000; /* Dark text color for light mode */
+}
+/* Dark Mode Styles */
+body.dark-mode .removeOption {
+  background-color: #333; /* Dark background for dark mode */
+  color: #e4e6eb; /* Light text color for dark mode */
+  border: #555 2px solid; /* Darker border for dark mode */
+}
+
+/* Hover Effect */
+.removeOption:hover {
+  background-color: #f0f0f0; /* Light hover background for light mode */
+}
+
+body.dark-mode .removeOption:hover {
+  background-color: #444; /* Dark hover background for dark mode */
 }
 
 .iamgeselect{
@@ -569,6 +832,9 @@ input[type="file"] {
   margin-left: 10px;
 }
 .removeImage {
+  display: none;
+  cursor: pointer;
+  margin-left: 5px;
 font-family: 'Nunito', sans-serif; /* Replace with your chosen font */
 font-weight: 600; /* Adjust weight to match the icon's thickness */
 color: #e63752; /* Match the color of the icon */
@@ -576,6 +842,12 @@ background-color: transparent;
 border-radius: 30%;
 border: 2px solid #e63752;
 font-size: larger;
+}
+/* Dark Mode Styles */
+body.dark-mode .removeImage {
+  color: #e63752; /* Red color for the icon */
+  background-color: #333; /* Dark background for better contrast */
+  border: 2px solid #e63752; /* Red border to maintain consistency */
 }
 #addOption{
   background-color: #0066cc;
@@ -612,6 +884,12 @@ textarea{
 .pollactions{
   padding: 0;
   border-top: 1px solid #dadde1;
+  transition: border-top-color 0.3s ease;
+}
+
+body.dark-mode .pollactions {
+  border-top: 1px solid #444; /* Darker gray line separator for dark mode */
+  transition: border-top-color 0.3s ease;
 }
 
 .see-more-btn{
@@ -630,6 +908,9 @@ textarea{
   margin: 5px 0 10px;
   border-radius: 10px;
   padding: 10px 0 10px 10px;
+  background-color: #fff; /* Default background color for light mode */
+  color: black; /* Default text color */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
 }
 
 .optiontext:hover{
@@ -639,7 +920,18 @@ textarea{
 .optiontext.selected {
   background-color: #f0f0f0; /* Background color for selected option */
 }
+body.dark-mode .optiontext {
+  background-color: #242526; /* Dark background color matching the container post in dark mode */
+  color: #e4e6eb; /* Light text color for dark mode */
+}
 
+body.dark-mode .optiontext:hover {
+  background-color: #333; /* Slightly lighter dark mode hover effect */
+}
+
+body.dark-mode .optiontext.selected {
+  background-color: #333; /* Background color for selected option in dark mode */
+}
 .optionpoll{
   cursor: pointer;
   padding: 0;
@@ -693,11 +985,209 @@ textarea{
 
 
 
+/* bootstrapconent dark theme */
+.modal-content {
+  background-color: #fff; /* Light background color like the post container */
+  border-radius: 10px;
+  color: black; /* Text color */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
 
+.modal-header, .modal-footer {
+  border-bottom: 1px solid #dadde1; /* Light gray border */
+  border-top: 1px solid #dadde1; /* Light gray border */
+}
 
+.line {
+  border-bottom: 1px solid #dadde1; /* Light gray border */
+}
 
+.modal-header .btn-close {
+  filter: invert(0); /* Default color, no inversion for light mode */
+}
 
+body.dark-mode .modal-content {
+  background-color: #242526; /* Dark background color */
+  color: #e4e6eb; /* Light text color */
+}
 
+body.dark-mode .modal-header .btn-close {
+  filter: invert(1); /* Inverts color to make the close button light in dark mode */
+}
+
+body.dark-mode .modal-content {
+  background-color: #242526; /* Dark background color similar to the post container */
+  color: #e4e6eb; /* Light text color */
+}
+
+body.dark-mode .modal-header, 
+body.dark-mode .modal-footer {
+  border-bottom: 1px solid #444; /* Darker gray border */
+  border-top: 1px solid #444; /* Darker gray border */
+}
+
+body.dark-mode .line {
+  border-bottom: 1px solid #444; /* Darker gray border */
+}
+
+/* Light Mode */
+.inputcomments {
+  background-color: #fff; /* Light background for input fields */
+  color: black; /* Text color for input fields */
+  border: 1px solid #dadde1; /* Light gray border */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+.inputcomments::placeholder {
+  color: #575b60; /* Placeholder text color */
+}
+
+.btn-outline-primary {
+  border-color: #367934; /* Green border color */
+  color: #367934; /* Text color */
+}
+
+.btn-outline-primary:hover {
+  background-color: #2c6130; /* Darker green background on hover */
+  color: #fff; /* Text color on hover */
+}
+
+/* Dark Mode */
+body.dark-mode .inputcomments {
+  background-color: #242526; /* Dark background for input fields */
+  color: #e4e6eb; /* Light text color for input fields */
+  border: 1px solid #444; /* Darker border */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+body.dark-mode .inputcomments::placeholder {
+  color: #888; /* Placeholder text color in dark mode */
+}
+
+/* Dark Mode */
+body.dark-mode .btn-outline-primary {
+  border-color: #009700; /* Lighter green border color for better visibility */
+  color: #009700; /* Lighter green text color */
+}
+
+body.dark-mode .btn-outline-primary:hover {
+  background-color: #006400; /* Slightly lighter green background on hover */
+  color: #fff; /* Text color on hover */
+}
+/* Light Mode */
+.card {
+  background-color: #fff; /* Light background for cards in light mode */
+  color: black; /* Text color for cards in light mode */
+  border: none; /* Remove border */
+}
+
+/* Dark Mode */
+body.dark-mode .card {
+  background-color: #242526; /* Dark background color for cards in dark mode */
+  color: #e4e6eb; /* Light text color for cards in dark mode */
+  border: none; /* Remove border */
+}
+
+/* Add transition for smooth effect */
+.card {
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for background and text color */
+}
+
+.progress {
+  background-color: #e9ecef; /* Light gray background for the progress container */
+  border-radius: 10px;
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+.progress-bar {
+  background-color: #28a745; /* Green color for the progress bar */
+  transition: width 0.3s ease;
+}
+
+body.dark-mode .optionprogress .progress {
+  background-color: #333; /* Dark background for the progress container in dark mode */
+}
+
+body.dark-mode .optionprogress .progress-bar {
+  background-color: #00ff00; /* Brighter green color for the progress bar in dark mode */
+}
+
+/* Default Off-Canvas Styling */
+.offcanvas {
+  background-color: #f8f9fa; /* Light background color for light mode */
+  color: #000; /* Default text color */
+}
+
+/* Dark Mode Styling */
+body.dark-mode .offcanvas {
+  background-color: #242526; /* Dark background color matching container post */
+  color: #e4e6eb; /* Light text color for better contrast */
+}
+
+/* Off-Canvas Header */
+.offcanvas-header {
+  border-bottom: 1px solid #dee2e6; /* Light gray border for light mode */
+}
+
+body.dark-mode .offcanvas-header {
+  border-bottom: 1px solid #444; /* Darker border color for dark mode */
+}
+
+/* Optional: Off-Canvas Body Styling */
+.offcanvas-body {
+  color: #e4e6eb; /* Ensure text color matches the dark mode theme */
+}
+
+/* Optional: Close Button Styling */
+body.dark-mode .offcanvas-header .btn-close {
+  filter: invert(1); /* Inverts color to make the close button light in dark mode */
+}
+/* Default Textarea Styling */
+textarea.form-control {
+  background-color: #fff; /* Light background color for light mode */
+  color: #000; /* Dark text color */
+  border: 1px solid #ced4da; /* Default border color */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
+}
+
+/* Dark Mode Styling */
+body.dark-mode textarea.form-control {
+  background-color: #333; /* Dark background for inputs */
+  color: #e4e6eb; /* Light text color for better contrast */
+  border: 1px solid #444; /* Darker border color */
+}
+/* Default File Input Styling */
+input[type="file"].form-control {
+  background-color: #fff; /* Light background color for light mode */
+  color: #000; /* Dark text color */
+  border: 1px solid #ced4da; /* Default border color */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
+}
+
+/* Dark Mode Styling */
+body.dark-mode input[type="file"].form-control {
+  background-color: #242526; /* Dark background color matching container post */
+  color: #e4e6eb; /* Light text color for better contrast */
+  border: 1px solid #444; /* Darker border color */
+}
+/* Default Styles for Inputs and Icons */
+.form-control {
+  background-color: #fff; /* Light background for inputs */
+  color: #000; /* Dark text color for inputs */
+  border: 1px solid #ced4da; /* Light border for inputs */
+}
+
+/* Dark Mode Styles */
+body.dark-mode .form-control {
+  background-color: #333; /* Dark background for inputs */
+  color: #e4e6eb; /* Light text color for inputs */
+  border: 1px solid #555; /* Darker border for inputs */
+}
+
+body.dark-mode .previewImage {
+  border: 1px solid #555; /* Darker border for preview image */
+}
 
 
 
@@ -728,6 +1218,18 @@ textarea{
   background-color: #fff;
   border-radius: 10px;
 }
+/* Dark Mode Styles */
+body.dark-mode .cvsustore, 
+body.dark-mode .books {
+  background-color: #242526; /* Dark background color for dark mode */
+  color: #e4e6eb; /* Light text color for better contrast */
+}
+
+/* Optional: If you need to adjust text color inside the containers */
+body.dark-mode .cvsustore p, 
+body.dark-mode .books p {
+  color: #e4e6eb; /* Light text color for paragraphs */
+}
 
 
 
@@ -744,16 +1246,26 @@ textarea{
 
 
 /* ************************************************text post content ****************************************************/
-.containertextpostpost{
+/* Light Mode */
+.containertextpostpost {
   margin-top: 10px;
   padding: 0;
   height: 28vh;
   max-height: 30vh;
   width: 100%;
   max-width: 100vh;
-  background-color: #fff;
+  background-color: #fff; /* Light background color */
   border-radius: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
 }
+
+/* Dark Mode */
+body.dark-mode .containertextpostpost {
+  background-color: #242526; /* Dark background color to match dark mode theme */
+  color: #e4e6eb; /* Light text color */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
 .nametextpost{
   gap: 1%;
   display: flex;
@@ -776,6 +1288,12 @@ textarea{
   border-bottom: 1px solid #dadde1;  
   display: flex;
   content: '';
+  transition: border-bottom 0.3s ease, color 0.3s ease;
+}
+/* Dark Mode */
+body.dark-mode .captiontextpost::after {
+  border-bottom: 1px solid #3a3b3c; /* Darker gray line for dark mode */
+  transition: border-bottom 0.3s ease, color 0.3s ease; /* Smooth transition for border color */
 }
 .textcontainerpost{
   height: 100%;
@@ -837,12 +1355,72 @@ textarea{
   width: 100%;
   background-color: #f0f2f5;
 }
+/* Dark Mode */
+body.dark-mode .commenttext {
+  background-color: #3a3b3c; /* Slightly lighter than container post color for better visibility */
+  color: #e4e6eb; /* Light text color for better contrast */
+}
 .formcommentdiv{
   height: 100%;
   width: 100%;
   padding: 0;
   margin: 0;
 }
+
+.fa-heart, .fa-comment-dots {
+  color: #4a4e54; /* Slightly darker shade of the original color */
+  transition: color 0.3s ease; /* Smooth transition */
+}
+
+/* Dark Mode */
+body.dark-mode .fa-heart, 
+body.dark-mode .fa-comment-dots {
+    color: #e4e6eb; /* Light color for icons in dark mode */
+    transition: color 0.3s ease; /* Smooth transition */
+}
+/* Light Mode Styles */
+.notificon i {
+  color: inherit; /* Use the color set inline or from parent elements */
+}
+
+/* Dark Mode Styles */
+body.dark-mode .notificon i.fa-triangle-exclamation {
+  color: #f7d66e; /* Adjusted color for warning icon in dark mode */
+}
+
+body.dark-mode .notificon i.fa-circle-exclamation {
+  color: #f28c8c; /* Adjusted color for ban icon in dark mode */
+}
+
+body.dark-mode .notificon i.fa-heart {
+  color: #f27f7f; /* Adjusted color for reaction icon in dark mode */
+}
+
+body.dark-mode .notificon i.fa-comment {
+  color: #62d876; /* Adjusted color for comment icon in dark mode */
+}
+
+body.dark-mode .notificon i.fa-bell {
+  color: #b0b0b0; /* Adjusted color for bell icon in dark mode */
+}
+
+/* Light Mode Styles */
+.notificondots i {
+  color: #000; /* Dark color for ellipsis icon in light mode */
+}
+
+/* Dark Mode Styles */
+body.dark-mode .notificondots i {
+  color: #e4e6eb; /* Light color for ellipsis icon in dark mode */
+}
+
+/* Dropdown Menu Styles */
+.dropdown-menu {
+  background-color: #fff; /* Light background color for light mode */
+  color: #000; /* Dark text color for light mode */
+}
+
+
 
 
 
@@ -876,6 +1454,9 @@ textarea{
 }
 .notifbody:hover {
   background-color: #f0f0f0; /* Change background color on hover */
+}
+body.dark-mode .notifbody:hover {
+  background-color: #444; /* Darker gray background color on hover */
 }
 .notificonnotifmessage{
   height: 100%;
@@ -911,6 +1492,12 @@ textarea{
   width: 100%;
   /* flex-wrap: wrap; */
   padding: 0;
+  color: #000; /* Default text color in light mode */
+
+}
+/* Dark Mode Styles */
+body.dark-mode .notifmessage {
+  color: #e4e6eb; /* Light text color for better contrast in dark mode */
 }
 .notifdots{
   height: 100%;

@@ -62,7 +62,7 @@ if (isset($_POST['post_id'])) {
                 </div>
             </div>
             <div class='container-fluid dots'>
-                <button class='btn btn-secondary dropdown-toggle bg-white' style='border:none;' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
+                <button class='btn dropdown-toggle mgatuldok' style='border:none;' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
                     <i class='fa-solid fa-ellipsis fa-xl' style='color: #575b60; font-size:20px;'></i>
                 </button>
                 <ul class='dropdown-menu'>";

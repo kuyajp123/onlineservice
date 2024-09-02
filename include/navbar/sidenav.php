@@ -62,6 +62,7 @@
                         </div>
                        <ul>
                         <li><a href="#" data-open-modal="createpost"><div class="container-fluid post">Create post</div></a></li>
+                        <li><a href="#" data-open-modal="createpoll"><div class="container-fluid collect">Create poll</div></a></li>
                         <li><a href="#" class="notification-icon" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
                             <div class="container-fluid notification">Notification &nbsp;
                               <?php if ($unread_count > 0): ?>
@@ -70,7 +71,7 @@
                             </div>
                           </a>
                         </li>
-                        <li><a href="additional/under_maitenance.php"><div class="container-fluid collect">Collection</div></a></li>
+                        
                         <!-- <li><div class="container-fluid services" style="padding:0;">
                           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><div class="container" >Under construction<i class="fa-solid fa-angle-right" style="margin-left:5px;"></i></div></a>
                             <ul class="dropdown-menu">
@@ -94,6 +95,11 @@
                         <ul class="dropdown-menu">
                           <li><a class="dropdown-item" href="users/profile.php?sideprof=<?php echo urlencode($current_user_no); ?>"><div class="container">Profile</div></a></li>
                           <a href="users/logout.php"><button class="logoutbut" name="logoutbut"><div class="container">Logout</div></button></a>
+                          <a href="#">
+                              <button class="logoutbut" id="toggle-dark-mode-mobile">
+                                  <div class="container">Dark mode</div>
+                              </button>
+                          </a>
                         </ul>
                       </div>
                     </div>
@@ -106,3 +112,41 @@
     </div>
   </div>
 </div>
+<script>
+// Save user preference to local storage
+function setDarkModePreference(isDarkMode) {
+    localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
+}
+
+// Get user preference from local storage
+function getDarkModePreference() {
+    return localStorage.getItem('darkMode') === 'enabled';
+}
+
+// Apply the dark mode based on the user's preference
+function applyDarkMode() {
+    const isDarkMode = getDarkModePreference();
+    document.body.classList.toggle('dark-mode', isDarkMode);
+
+    const toggleButtonMobile = document.getElementById('toggle-dark-mode-mobile');
+    if (toggleButtonMobile) {
+        const buttonTextMobile = isDarkMode ? 'Light mode' : 'Dark mode';
+        toggleButtonMobile.querySelector('.container').textContent = buttonTextMobile;
+    }
+}
+
+// Toggle dark mode on button click
+document.addEventListener('DOMContentLoaded', () => {
+    applyDarkMode(); // Apply the theme when the page loads
+
+    const toggleDarkModeButtonMobile = document.getElementById('toggle-dark-mode-mobile');
+    if (toggleDarkModeButtonMobile) {
+        toggleDarkModeButtonMobile.addEventListener('click', () => {
+            const isDarkMode = !getDarkModePreference();
+            setDarkModePreference(isDarkMode);
+            applyDarkMode(); // Reapply the mode and update button text
+        });
+    }
+});
+
+</script>

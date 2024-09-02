@@ -70,7 +70,7 @@ $votes_stmt->close();
         <!-- 3 dots section -->
         <div class="container-fluid dots">
             <div class="dropdown dot">
-                <button class="btn btn-secondary dropdown-toggle bg-white" style="border:none;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn dropdown-toggle" style="border:none;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-ellipsis fa-xl" style="color: #575b60; font-size:20px;"></i>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Under maintenance</a></li>

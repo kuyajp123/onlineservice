@@ -105,9 +105,9 @@ if (isset($_POST['notification_id'])) {
         </div>
         <?php endif; ?>
       </div>
-      <div class="modal-footer">
-        <!-- Footer content -->
-      </div>
+      <!-- <div class="modal-footer">
+
+      </div> -->
     </div>
   </div>
 </div>

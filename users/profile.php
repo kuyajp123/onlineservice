@@ -57,6 +57,13 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+        (function() {
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+            }
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo "".$_SESSION['fname']."" ?>'s Profile</title>
@@ -74,16 +81,16 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
             <div class="container-fluid grid2">
                 <div class="container-fluid gri1cont">
                     <div class="container-fluid sticky-top sidenavprofile">
-                    <div class="container-fluid backbutton2"><a href="../index.php?newsfeed=<?php echo urlencode($current_user_no) ?>"><button style="height:5vh;background-color: #4BCBCB;border:none;" type="button" class="btn btn-primary">Back</button></a>
+                    <div class="container-fluid backbutton2"><a href="../index.php?newsfeed=<?php echo urlencode($current_user_no) ?>"><button type="button" class="btn btn-primary">Back</button></a>
                     </div>
-                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="height:5vh;background-color: #4BCBCB;border:none;"><i class="fa-solid fa-bars"></i></button>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="fa-solid fa-bars"></i></button>
                     </div>
                     <div class="container-fluid header">
                         <!-- background photo here -->
                         <div class="container-fluid imgcontainer"><img src="../users/images/coverphoto/<?php echo $coverphoto; ?>" style="position:absolute;"><a href="#" class="editcoverphotolink" data-open-modal="editcoverphoto"><i class="fa-solid fa-pen-to-square" style="position:absolute;"></i></a></div>
                         <!-- profile photo here -->
                         <div class="container-fluid profilecontainer"><img src="../users/images/profilepicture/<?php echo $profilepicture; ?>"><a href="#" class="editprofilephotolink" data-open-modal="editprofile"><i class="fa-solid fa-pen-to-square" style="position:absolute; left:0;"></i></a></div>
-                        <div class="container-fluid backbutton"><a href="../index.php?newsfeed=<?php echo urlencode($current_user_no) ?>"><button type="button" class="btn btn-primary"  style="background-color: #4BCBCB;border:none;">Back</button></a>
+                        <div class="container-fluid backbutton"><a href="../index.php?newsfeed=<?php echo urlencode($current_user_no) ?>"><button type="button" class="btn btn-primary">Back</button></a>
                         </div>
                     </div>
                     <!-- navbar -->
@@ -335,6 +342,7 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
 
     </div>
 </div>
+<script src="../functions/js.js"></script>
 </body>
 </html>
 <script>
