@@ -8,6 +8,10 @@ session_start();
 require_once '../include/connect.php';
 require_once '../include/bootsrap.php';
 
+$admin = $_SESSION['admin'];
+$admin_id = $_SESSION['admin_id'];
+$admin_password = $_SESSION['admin_password'];
+
 // Fetch users and their report status
 $usersQuery = 'SELECT ur.fname, ur.lname, ur.user_no, ur.student_no, ur.email, pr.report_reason, pr.post_id, IFNULL(COUNT(pr.report_id), 0) AS report_count 
                FROM user_registration ur
@@ -201,12 +205,14 @@ $query = "SELECT
     pr.reporter_user_no,
     pr.report_reason,
     pr.report_date,
+    pr.user_no,
     p.post_id,
     ur.user_no,
     ur.fname,
     ur.lname,
     p.postphoto,
-    p.caption
+    p.caption,
+    p.deleted_at
 FROM 
     post_reports pr
 JOIN 
@@ -219,6 +225,7 @@ $stmt = $con->prepare($query);
 $stmt->bind_param('i', $user_no);
 $stmt->execute();
 $reports = $stmt->get_result();
+
 ?>
     <div class="container mt-4">
         <!-- <a href="../admin_area/list_of_users.php">Back</a> -->
@@ -234,16 +241,22 @@ $reports = $stmt->get_result();
                     <th scope="col">Post ID</th>
                     <th scope="col">Post Photo</th>
                     <th scope="col">Caption</th>
+                    <th scope="col">Post status</th>
+                    <th scope="col">Delete post</th>
                 </tr>
             </thead>
             <tbody>
                 <?php while ($report = $reports->fetch_assoc()): ?>
+                    <?php
+                        $post_id = $report['post_id'];
+                        $user_no = $report['user_no'];
+                    ?>
                     <tr>
                         <td><?php echo htmlspecialchars($report['report_id']); ?></td>
                         <td><?php echo htmlspecialchars($report['reporter_user_no']); ?></td>
                         <td><?php echo htmlspecialchars($report['report_reason']); ?></td>
                         <td><?php echo htmlspecialchars($report['report_date']); ?></td>
-                        <td><?php echo htmlspecialchars($report['post_id']); ?></td>
+                        <td><?php echo htmlspecialchars($post_id); ?></td>
                         <td>
                             <?php if ($report['postphoto']): ?>
                                 <img src="../include/posts_images/<?php echo htmlspecialchars($report['postphoto']); ?>" alt="Post Photo" width="100">
@@ -252,12 +265,27 @@ $reports = $stmt->get_result();
                             <?php endif; ?>
                         </td>
                         <td><?php echo htmlspecialchars($report['caption']); ?></td>
+                        <td><?php echo htmlspecialchars($report['deleted_at']); ?></td>
+                        <td>
+                            <button type="button" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#exampleModal5" 
+                                    class="btn btn-danger" 
+                                    data-post-id="<?php echo htmlspecialchars($post_id); ?>" 
+                                    data-user-no="<?php echo htmlspecialchars($user_no); ?>" 
+                                    data-admin-id="<?php echo htmlspecialchars($admin_id); ?>"
+                                    data-report-id="<?php echo htmlspecialchars($report['report_id']); ?>"
+                                    data-post-photo="<?php echo htmlspecialchars($report['postphoto'] ? '../include/posts_images/' . $report['postphoto'] : ''); ?>" 
+                                    data-post-caption="<?php echo htmlspecialchars($report['caption'] ?: ''); ?>">
+                                Delete
+                            </button>
+                        </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
     </div>
-
+    
 
 
 
@@ -273,7 +301,7 @@ $reports = $stmt->get_result();
         </div>
     </div>
 </div>
-
+<?php include 'admin_modal.php' ?>
 </body>
 </html>
 <script>
@@ -321,6 +349,41 @@ $reports = $stmt->get_result();
     // Load the sidenav state when the page loads
     window.onload = loadSidenavState;
 </script>
+<script>
+// Listen for the modal to be shown
+$('#exampleModal5').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var userNo = button.data('user-no'); // Extract info from data-* attributes
+    var adminId = button.data('admin-id');
+    var postId = button.data('post-id');
+    var reportId = button.data('report-id');
+    var postPhoto = button.data('post-photo'); // Extract photo URL from data-* attributes
+    var postCaption = button.data('post-caption'); // Extract caption from data-* attributes
 
+    // Now you can use userNo, adminId, postId, postPhoto, and postCaption within the modal
+    console.log("User No: " + userNo);
+    console.log("Admin ID: " + adminId);
+    console.log("Post ID: " + postId);
+    console.log("Post Photo: " + postPhoto);
+    console.log("Post Caption: " + postCaption);
+    console.log("Report ID: " + reportId);
+
+    // Update modal fields
+    $(this).find('input[name="user_no"]').val(userNo);
+    $(this).find('input[name="post_id"]').val(postId);
+    $(this).find('input[name="admin_id"]').val(adminId);
+    $(this).find('input[name="report_id"]').val(reportId);
+
+
+    // Handle photo and caption visibility
+    if (postPhoto) {
+        $(this).find('#post-photo').attr('src', postPhoto).show();
+    } else {
+        $(this).find('#post-photo').hide(); // Hide if no photo
+    }
+    
+    $(this).find('#post-caption').text(postCaption || ''); // Default text if no caption
+});
+</script>
 
 

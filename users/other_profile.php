@@ -50,7 +50,7 @@ if ($other_user_no) {
 
     // Fetch posts if 'user_no' is set
     $posts = [];
-    $query = "SELECT * FROM posts WHERE user_no = ? ORDER BY timestamp DESC";
+    $query = "SELECT * FROM posts WHERE user_no = ? AND deleted_at IS NULL ORDER BY timestamp DESC";
     $stmt = $con->prepare($query);
     $stmt->bind_param('i', $other_user_no);
     $stmt->execute();

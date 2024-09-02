@@ -30,7 +30,8 @@ if(!isset($_SESSION['user_ID']) && (!isset($_SESSION['email'])) && (!isset($_SES
   $current_user_no = $_SESSION['user_no'];
 
 
-  $query = "SELECT * FROM posts WHERE user_no = ? ORDER BY timestamp DESC";
+  $query = "SELECT * FROM posts WHERE user_no = ? AND deleted_at IS NULL
+ ORDER BY timestamp DESC";
   $stmt = $con->prepare($query);
   $stmt->bind_param('i', $current_user_no);
   $stmt->execute();

@@ -180,6 +180,7 @@ function getPosts($con) {
        p.caption AS caption
 FROM posts p
 JOIN user_registration u ON p.user_no = u.user_no
+WHERE p.deleted_at IS NULL
 
 UNION ALL
 

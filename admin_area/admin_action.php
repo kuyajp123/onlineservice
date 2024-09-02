@@ -713,10 +713,8 @@ $('#exampleModal, #exampleModal2, #exampleModal3, #exampleModal4').on('show.bs.m
     console.log("User No: " + userNo);
     console.log("Admin ID: " + adminId);
 
-    // Example: Set these values in hidden inputs within the modal (if needed)
     $(this).find('input[name="user_no"]').val(userNo);
     $(this).find('input[name="admin_id"]').val(adminId);
+    
 });
-
-
 </script>

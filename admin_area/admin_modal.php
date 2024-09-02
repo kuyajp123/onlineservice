@@ -37,6 +37,73 @@ if(isset($_POST['remove_ban'])){
   }
 }
 
+if (isset($_POST['delete_post'])) {
+  $delete_banpass = $_POST['delete_banpass'];
+  $post_id = $_POST['post_id'];
+  $user_no = $_POST['user_no'];
+  $admin_id = $_POST['admin_id'];
+  $report_id = $_POST['report_id'];
+
+  // Fetch post details for notification
+  $postSql = "SELECT postphoto, caption FROM posts WHERE post_id = ?";
+  $postStmt = $con->prepare($postSql);
+  $postStmt->bind_param("i", $post_id);
+  $postStmt->execute();
+  $postResult = $postStmt->get_result()->fetch_assoc();
+
+  $postPhoto = $postResult['postphoto'] ? $postResult['postphoto'] : '';
+  $postCaption = $postResult['caption'] ?: '';
+
+  if ($delete_banpass == $admin_password) {
+      $sql = "UPDATE posts SET deleted_at = NOW() WHERE post_id = ?";
+      $stmt = $con->prepare($sql);
+      $stmt->bind_param("i", $post_id);
+      if ($stmt->execute()) {
+          $query = "SELECT pr.user_no, pr.report_reason, pr.report_date, u.fname, u.lname, p.postphoto, p.caption 
+          FROM post_reports pr
+          LEFT JOIN user_registration u ON pr.user_no = u.user_no
+          LEFT JOIN posts p ON p.user_no = pr.user_no
+          WHERE pr.report_id = ?";
+          $stmt = $con->prepare($query);
+          $stmt->bind_param("i", $report_id);
+          $stmt->execute();
+          $result = $stmt->get_result();
+          $row = $result->fetch_assoc();
+
+          $notification = '
+          <h2>Important Notice: Post Termination Due to Community Standards Violation</h2>
+          <p>Dear ' . $row['fname'] . ' ' . $row['lname'] . ',</p>
+          <p>We hope this message finds you well. We want to inform you that one of your recent posts has been terminated or deleted due to a violation of our community standards.</p>
+          <p><strong>Reason for Action:</strong> The content was found to be ' . $row['report_reason'] . '</p>
+          <p><strong>Reported Post Details:</strong></p>
+          <p><strong>Photo:</strong></p>
+          <img src="' . $row['postphoto'] . '" alt="Reported Post Photo">
+          <p><strong>Caption:</strong> ' . $row['caption'] . '</p>
+          <p>We take these matters seriously to maintain a positive and respectful environment for all users. Please review our community standards <a href="users/t_c.php">here</a> to better understand our guidelines and ensure future compliance.</p>
+          <p>If you believe this action was taken in error or if you have any questions, please feel free to contact our support team at <a href="users/user_appeal.php">CVStagram support</a>.</p>
+          <p>Thank you for your understanding and cooperation.</p>
+          <p>Best regards,<br>
+          CVStagram</p>
+      ';
+          
+          // Insert notification
+          $notificationSql = "INSERT INTO notifications (user_no, admin_id, post_id, notification_type, notification_text, notification_photo, notification_caption, timestamp) 
+                    VALUES (?, ?, ?, 'Post deleted', ?, ?, ?, NOW())";
+          $notificationStmt = $con->prepare($notificationSql);
+          $notificationStmt->bind_param("iiisss", $user_no, $admin_id, $post_id, $notification, $postPhoto, $postCaption);
+          $notificationStmt->execute();
+
+          
+          echo '<script>window.open("review_post.php?user_no=' . htmlspecialchars($user_no) . '", "_self")</script>';
+      } else {
+          $error = "There was a problem deleting the post.";
+      }
+  } else {
+      $error = 'Password didn’t match.';
+  }
+}
+
+
 ?>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -155,6 +222,38 @@ if(isset($_POST['remove_ban'])){
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="submit" name="remove_ban" class="btn btn-primary">Save changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal5 -->
+<div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete post</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <form action="" method="post">
+        <input type="hidden" name="user_no" value="">
+        <input type="hidden" name="post_id" value="">
+        <input type="hidden" name="admin_id" value="">
+        <input type="hidden" name="report_id" value="">
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid warnmodalbod">
+            <div id="post-photo-container">
+                <!-- Photo will be inserted here -->
+                <img id="post-photo" src="" alt="Post Photo" width="100" style="display: none;">
+            </div>
+            <p id="post-caption"></p>
+            Enter your password to confirm
+            <input type="password" name="delete_banpass" class="form-control">
+        </div>  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" name="delete_post" class="btn btn-primary">Save changes</button>
         </form>
       </div>
     </div>
