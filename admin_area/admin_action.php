@@ -114,7 +114,7 @@ if(isset($_POST['submit_warn'])){
 
             Please note that this warning will be recorded in your account history. Should you receive additional warnings, the consequences may escalate as outlined in our community guidelines.<br><br>
 
-            If you believe this warning was issued in error, or if you have any questions, you may contact our support team at <a href=\"$url\" target='_blank' style='text-decoration: underline; color:#0000EE;'>$message_link</a> and indicate this reference number: $warn_appeal_id within the next 7 days.<br><br>
+            If you believe this warning was issued in error, or if you have any questions, you may contact our support team at <a href=\"$url\" target='_blank'>$message_link</a> and indicate this reference number: $warn_appeal_id within the next 7 days.<br><br>
 
             We value your participation in our community and hope to see you continue to contribute positively.<br><br>
 
@@ -122,7 +122,7 @@ if(isset($_POST['submit_warn'])){
 
             Best regards,<br>
             CvSTagram Team<br>
-            <a href=\"$url\" target='_blank' style='text-decoration: underline; color:#0000EE;'>Visit our Facebook page</a><br>
+            <a href=\"$url\" target='_blank'>Visit our Facebook page</a><br>
             ";
 
 
@@ -299,7 +299,7 @@ if(isset($_POST['submit_ban'])){
             Ban Start Date: $formattedReportDate<br>
             Ban End Date: $end_days_ban<br><br>
 
-            We take our community standards very seriously and aim to ensure a positive experience for all users. This action was taken following a thorough review of the reports and your recent activity. If you believe this decision was made in error, or if you have any questions regarding this suspension, please contact our support team at <a href=\"$url\" target='_blank' style='text-decoration: underline; color:#0000EE;'>$message_link</a> and provide the following reference number for further assistance: $ban_appeal_id.<br><br>
+            We take our community standards very seriously and aim to ensure a positive experience for all users. This action was taken following a thorough review of the reports and your recent activity. If you believe this decision was made in error, or if you have any questions regarding this suspension, please contact our support team at <a href=\"$url\"target='_blank'>$message_link</a> and provide the following reference number for further assistance: $ban_appeal_id.<br><br>
 
             Please take this time to review our community guidelines to avoid any future issues. We appreciate your understanding and cooperation.<br><br>
 
@@ -307,7 +307,7 @@ if(isset($_POST['submit_ban'])){
 
             Best regards,<br>
             CvSTagram<br>
-            <a href=\"$url\" target='_blank' style='text-decoration: underline; color:#0000EE;'>Visit our Facebook page</a><br>
+            <a href=\"$url\" target='_blank'>Visit our Facebook page</a><br>
             ";
 
             if($ban_msg){

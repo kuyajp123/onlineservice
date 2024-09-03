@@ -66,19 +66,19 @@ if (isset($_POST['notification_id'])) {
                   <?php elseif ($notification['notification_type'] == 'comment'): ?>
                   <i class="fa-solid fa-comment" style="color: #1fa836;"></i>
                   <?php else: ?>
-                  <i class="fa-solid fa-bell" style="color: #000;"></i>
+                    <i class="fa-regular fa-bell"></i>
                   <?php endif; ?>
                 </div>
 
                 <div class="container-fluid notifmessage">
                   <div class="container-fluid titlenotif">
-                    <?php echo ucfirst($notification['notification_type']); ?>
+                    <b><?php echo ucfirst($notification['notification_type']); ?></b>
                   </div>
                   <div class="container-fluid text-wrap text-break d-inline-block text-truncate textnotif">
                     <?php 
                     $notification_text = $notification['notification_text'];
-                    $limited_text = substr($notification_text, 0, 80); // Limit to first 95 characters
-                    if(strlen($notification_text) > 80) {
+                    $limited_text = substr($notification_text, 0, 100); // Limit to first 95 characters
+                    if(strlen($notification_text) > 100) {
                         $limited_text .= '...'; // Add ellipsis if text is longer than the limit
                     }
                     echo $limited_text;
@@ -121,10 +121,12 @@ if (isset($_POST['notification_id'])) {
       </div>
       <div class="modal-body ">
 
+      <div class="notificationcont">
         <div class="container-fluid notiffull" id="fullComment">
             <!-- Full comment will be dynamically inserted here -->
         </div>
-
+      </div>
+      
       </div>
       <div class="modal-footer">
       </div>
@@ -133,6 +135,13 @@ if (isset($_POST['notification_id'])) {
 </div>
 
 <!-- JavaScript -->
+<script>
+    // Get the div element
+    var notificationDiv = document.getElementById('notifmessage');
+
+    // Strip HTML tags and replace the content with plain text
+    notificationDiv.textContent = notificationDiv.textContent; 
+</script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var messageLinks = document.querySelectorAll('.messagelink');

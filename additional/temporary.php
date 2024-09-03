@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Important Notice</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warning: Violation of Community Standards</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,36 +19,36 @@
         .notification h2 {
             color: #333;
         }
-        .notification img {
-            max-width: 15%;
-            height: auto;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        .notification p {
+            margin: 10px 0;
         }
         .notification a {
             color: #1a73e8;
-            text-decoration: none;
+  text-decoration: none;
         }
         .notification a:hover {
-            text-decoration: underline;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
     <div class="notification">
-        <h2>Important Notice: Post Termination Due to Community Standards Violation</h2>
+        <h2>Warning: Violation of Community Standards</h2>
         <p>Dear [User’s First Name] [User’s Last Name],</p>
-        <p>We hope this message finds you well. We want to inform you that one of your recent posts has been terminated or deleted due to a violation of our community standards.</p>
-        <p><strong>Reason for Action:</strong> The content was found to be [Reason for Violation]</p>
-        <p><strong>Reported Post Details:</strong></p>
-        <p><strong>Photo:</strong></p>
-        <img src="logo 1.png" alt="Reported Post Photo">
-        <p><strong>Caption:</strong> [Caption of the Post]</p>
-        <p>We take these matters seriously to maintain a positive and respectful environment for all users. Please review our community standards <a href="users/t_c.php">here</a> to better understand our guidelines and ensure future compliance.</p>
-        <p>If you believe this action was taken in error or if you have any questions, please feel free to contact our support team at <a href="users/user_appeal.php">CVStagram support</a>.</p>
-        <p>Thank you for your understanding and cooperation.</p>
+        <p>We hope this message finds you well. This is a formal warning regarding recent activity on your account that has been found to be in violation of our community standards.</p>
+        <h2>[Warning Appeal ID]</h2>
+        <p><strong>Violation Details:</strong></p>
+        <p><strong>Reported Date:</strong> [Formatted Report Date]</p>
+        <p><strong>Description:</strong> Multiple report counts</p>
+        <p><strong>Community Standard Violated:</strong> [Violation Reason]</p>
+        <p>As this is a serious matter, we ask that you review our community guidelines to ensure that your future actions align with our standards. Repeated violations may result in further action, including temporary suspension or permanent banning of your account.</p>
+        <p>Please note that this warning will be recorded in your account history. Should you receive additional warnings, the consequences may escalate as outlined in our community guidelines.</p>
+        <p>If you believe this warning was issued in error, or if you have any questions, you may contact our support team at <a href="[Support URL]" target="_blank">[Support Link Text]</a> and indicate this reference number: [Warning Appeal ID] within the next 7 days.</p>
+        <p>We value your participation in our community and hope to see you continue to contribute positively.</p>
+        <p>Thank you for your attention to this matter.</p>
         <p>Best regards,<br>
-        CVStagram</p>
+        CvSTagram Team</p>
+        <p><a href="[Support URL]" target="_blank">Visit our Facebook page</a></p>
     </div>
 </body>
 </html>

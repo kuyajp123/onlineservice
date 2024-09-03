@@ -60,7 +60,7 @@ if (isset($_POST['login'])) {
                                         </div>
                                         <div class="form-group">
                                             <input type="password" id="user_password" name="admin_password" placeholder="Password" class="form-control" required>
-                                            <span class="toggle-password"><i class="fa-solid fa-eye"></i></span>
+                                            <span class="toggle-password" style="right: 11%;"><i class="fa-solid fa-eye"></i></span>
                                         </div>
                                         <div>
                                             <button style="margin-top:15px;" type="submit" name="login" class="btn btn-primary">Login</button>

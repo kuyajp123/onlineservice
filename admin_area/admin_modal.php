@@ -59,32 +59,49 @@ if (isset($_POST['delete_post'])) {
       $stmt = $con->prepare($sql);
       $stmt->bind_param("i", $post_id);
       if ($stmt->execute()) {
-          $query = "SELECT pr.user_no, pr.report_reason, pr.report_date, u.fname, u.lname, p.postphoto, p.caption 
+          $query = "SELECT pr.report_id, pr.user_no, pr.report_reason, p.timestamp , u.fname, u.lname, p.postphoto, p.caption 
           FROM post_reports pr
           LEFT JOIN user_registration u ON pr.user_no = u.user_no
-          LEFT JOIN posts p ON p.user_no = pr.user_no
-          WHERE pr.report_id = ?";
+          LEFT JOIN posts p ON p.post_id = pr.post_id
+          WHERE pr.report_id = ?
+          ";
           $stmt = $con->prepare($query);
           $stmt->bind_param("i", $report_id);
           $stmt->execute();
           $result = $stmt->get_result();
           $row = $result->fetch_assoc();
 
+          $formattedTimestamp = date('F j, Y, g:i a', strtotime($row['timestamp']));
+
           $notification = '
-          <h2>Important Notice: Post Termination Due to Community Standards Violation</h2>
-          <p>Dear ' . $row['fname'] . ' ' . $row['lname'] . ',</p>
+          <p>Important Notice: Post Termination Due to Community Standards Violation </p>
+          <p>Dear ' . htmlspecialchars($row['fname']) . ' ' . htmlspecialchars($row['lname']) . ',</p>
           <p>We hope this message finds you well. We want to inform you that one of your recent posts has been terminated or deleted due to a violation of our community standards.</p>
-          <p><strong>Reason for Action:</strong> The content was found to be ' . $row['report_reason'] . '</p>
+          <p><strong>Reason for Action:</strong> ' . htmlspecialchars($row['report_reason']) . '</p>
           <p><strong>Reported Post Details:</strong></p>
-          <p><strong>Photo:</strong></p>
-          <img src="' . $row['postphoto'] . '" alt="Reported Post Photo">
-          <p><strong>Caption:</strong> ' . $row['caption'] . '</p>
-          <p>We take these matters seriously to maintain a positive and respectful environment for all users. Please review our community standards <a href="users/t_c.php">here</a> to better understand our guidelines and ensure future compliance.</p>
+          <p><strong>Posted On:</strong> ' . htmlspecialchars($formattedTimestamp) . '</p>';
+
+          // Add photo if it exists
+          if (!empty($row['postphoto'])) {
+              $notification .= '
+              <p><strong>Photo:</strong></p>
+              <img src="include/posts_images/' . htmlspecialchars($row['postphoto']) . '" alt="Reported Post Photo">
+              <br><br>';
+          }
+
+          // Add caption if it exists
+          if (!empty($row['caption'])) {
+              $notification .= '
+              <p><strong>Caption:</strong> ' . htmlspecialchars($row['caption']) . '</p>';
+          }
+
+          $notification .= '
+          <p>We take these matters seriously to maintain a positive and respectful environment for all users. Please review our community standards <a href="users/t_c.php" target="_blank">here</a> to better understand our guidelines and ensure future compliance.</p>
           <p>If you believe this action was taken in error or if you have any questions, please feel free to contact our support team at <a href="users/user_appeal.php">CVStagram support</a>.</p>
           <p>Thank you for your understanding and cooperation.</p>
           <p>Best regards,<br>
-          CVStagram</p>
-      ';
+          CVStagram</p>';
+
           
           // Insert notification
           $notificationSql = "INSERT INTO notifications (user_no, admin_id, post_id, notification_type, notification_text, notification_photo, notification_caption, timestamp) 
