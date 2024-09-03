@@ -241,7 +241,7 @@ $reports = $stmt->get_result();
                     <th scope="col">Post ID</th>
                     <th scope="col">Post Photo</th>
                     <th scope="col">Caption</th>
-                    <th scope="col">Post status</th>
+                    <th scope="col">Deleted at</th>
                     <th scope="col">Delete post</th>
                 </tr>
             </thead>

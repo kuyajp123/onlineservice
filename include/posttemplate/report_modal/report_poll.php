@@ -5,9 +5,9 @@ $message = "";
 $messageType = ""; // To hold the type of message (success or error)
 
 // Check if the form was submitted
-if (isset($_POST['submit_report_imagepost'])) {
+if (isset($_POST['submit_report_pollpost'])) {
     // Retrieve and sanitize form data
-    $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+    $poll_id = isset($_POST['poll_id']) ? intval($_POST['poll_id']) : 0;
     $user_no = isset($_POST['user_no']) ? intval($_POST['user_no']) : 0;
     $report_reason = isset($_POST['report_reason']) ? htmlspecialchars($_POST['report_reason']) : '';
     $reporter_user_no = isset($_POST['reporter_user_no']) ? intval($_POST['reporter_user_no']) : 0;
@@ -15,10 +15,10 @@ if (isset($_POST['submit_report_imagepost'])) {
     
 
     // Validate input
-    if ($post_id > 0 && $user_no > 0 && !empty($report_reason) && $reporter_user_no > 0) {
+    if ($poll_id > 0 && $user_no > 0 && !empty($report_reason) && $reporter_user_no > 0) {
         // Prepare SQL query to insert the report
-        $stmt = $con->prepare("INSERT INTO post_reports (post_id, user_no, reporter_user_no, report_reason) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param('iiis', $post_id, $user_no, $reporter_user_no, $report_reason);
+        $stmt = $con->prepare("INSERT INTO post_reports (poll_id, user_no, reporter_user_no, report_reason) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param('iiis', $poll_id, $user_no, $reporter_user_no, $report_reason);
 
         if ($stmt->execute()) {
             // Set success message and type
@@ -60,7 +60,7 @@ unset($_SESSION['messageType']);
 
 
 <!-- Modal -->
-<div class="modal fade" id="reportmodal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="reportmodal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -71,7 +71,7 @@ unset($_SESSION['messageType']);
       </div>
       <div class="modal-body">
         <form action="" method="post">
-        <input type="hidden" id="modal_post_id" name="post_id">
+        <input type="hidden" id="modal_poll_id" name="poll_id">
         <input type="hidden" id="modal_user_no" name="user_no">
         <input type="hidden" id="modal_reporter_user_no" name="reporter_user_no">
           <div class="container">
@@ -113,7 +113,7 @@ unset($_SESSION['messageType']);
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" name="submit_report_imagepost" class="btn btn-primary">Send</button>
+            <button type="submit" name="submit_report_pollpost" class="btn btn-primary">Send</button>
           </div>
         </form>
       </div>

@@ -81,8 +81,9 @@ $votes_stmt->close();
                             <!-- Pass the post_id and user_no as data attributes for the report option -->
                             <li><a class="dropdown-item" href="#" 
                                 data-bs-toggle="modal" 
-                                data-bs-target="#reportmodal2"
-                                data-post-id="<?php echo htmlspecialchars($poll_id); ?>" 
+                                data-bs-target="#reportmodal3"
+                                data-poll-id="<?php echo htmlspecialchars($poll_id); ?>" 
+                                data-modal-reporter-user-no="<?php echo htmlspecialchars($loggedInUserNo); ?>" 
                                 data-user-no="<?php echo htmlspecialchars($user_no); ?>">Report</a></li>
                             <!-- <li><a class="dropdown-item" href="#">Copy post</a></li> -->
                         <?php endif; ?>
@@ -179,6 +180,9 @@ $votes_stmt->close();
     </div>
   </div>
 </div>
+<?php include 'include/posttemplate/report_modal/report_poll.php'; ?>
+
+<!-- script for report modal poll -->
 
             <script>
   function toggleSeeMore(container, limit) {
