@@ -83,6 +83,7 @@ $defaultProfilePic = 'profile.jpg';
                                 data-bs-toggle="modal" 
                                 data-bs-target="#reportmodal2"
                                 data-post-id="<?php echo htmlspecialchars($post_id); ?>" 
+                                data-reporter-user="<?php echo htmlspecialchars($loggedInUserNo); ?>" 
                                 data-user-no="<?php echo htmlspecialchars($user_no); ?>">Report</a></li>
                             <!-- <li><a class="dropdown-item" href="#">Copy post</a></li> -->
                         <?php endif; ?>
@@ -136,6 +137,26 @@ $defaultProfilePic = 'profile.jpg';
 </div>
 <?php include 'include/posttemplate/report_modal/report_post.php'; ?>
 <!-- fetching post details for modal comment -->
+
+<script>
+// Listen for the modal to be shown
+$('#reportmodal2').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var userNo = button.data('user-no'); // Extract info from data-* attributes
+    var postId = button.data('post-id');
+    var reporter_user = button.data('reporter-user');
+
+    // Now you can use userNo, adminId, postId, postPhoto, and postCaption within the modal
+    console.log("User No: " + userNo);
+    console.log("Post ID: " + postId);
+    console.log("current user ID: " + reporter_user);
+
+    // Update modal fields
+    $(this).find('input[name="user_no"]').val(userNo);
+    $(this).find('input[name="post_id"]').val(postId);
+    $(this).find('input[name="reporter_user_no"]').val(reporter_user);
+});
+</script>
 <script>
  document.addEventListener('DOMContentLoaded', function () {
     var exampleModal = document.getElementById('exampleModal');

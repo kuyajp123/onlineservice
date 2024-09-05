@@ -71,18 +71,34 @@ if (isset($_POST['notification_id'])) {
                 </div>
 
                 <div class="container-fluid notifmessage">
+                <?php if ($notification['notification_type'] === 'ban'): ?>
+                    <div class="container-fluid titlenotif">
+                        <b><?php echo ucfirst($notification['notification_type']); ?></b>
+                    </div>
+                    <div class="container-fluid text-wrap text-break d-inline-block text-truncate textnotif">
+                        <?php 
+                        $notification_text = $notification['notification_text'];
+                        $limited_text = substr($notification_text, 0, 90); // Limit to first 60 characters
+                        if (strlen($notification_text) > 60) {
+                            $limited_text .= '...'; // Add ellipsis if text is longer than the limit
+                        }
+                        echo $limited_text;
+                        ?>
+                    </div>
+                <?php else: ?>
                   <div class="container-fluid titlenotif">
                     <b><?php echo ucfirst($notification['notification_type']); ?></b>
                   </div>
                   <div class="container-fluid text-wrap text-break d-inline-block text-truncate textnotif">
                     <?php 
                     $notification_text = $notification['notification_text'];
-                    $limited_text = substr($notification_text, 0, 100); // Limit to first 95 characters
-                    if(strlen($notification_text) > 100) {
+                    $limited_text = substr($notification_text, 0, 95); // Limit to first 95 characters
+                    if(strlen($notification_text) > 90) {
                         $limited_text .= '...'; // Add ellipsis if text is longer than the limit
                     }
                     echo $limited_text;
                     ?>
+                    <?php endif; ?>
                   </div>
                 </div>
               </a>
