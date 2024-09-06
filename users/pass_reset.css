@@ -1,0 +1,64 @@
+body {
+    margin: 0; /* Removes default margins */
+    padding: 0; /* Removes default padding */
+    background: linear-gradient(89.9deg, rgb(208, 246, 255) 0.1%, rgb(255, 237, 237) 47.9%, rgb(255, 255, 231) 100.2%);
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .bod2{
+    height: 100%;
+    width: auto;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  .forms{
+    background-color: aliceblue;
+    box-shadow: 1px 1px 30px #aaaaaa;
+    border-radius: 10px;
+    padding: 0;
+    margin: 0;
+    width: 30%;
+    height: 35vh;
+  }
+  .inputpass{
+    width: 100%;
+    height: 25%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    
+  }
+  .output{
+    padding: 0;
+    width: 100%;
+    height: auto;
+    min-height: 10%;
+  }
+  .lagyan{
+    margin-top: 25px;
+    height: 100%;
+    width: 100%;
+  }
+  .toggle-password{
+    cursor: pointer;
+    position: absolute;
+    left: 62%;
+    border-radius: 50%;
+    padding: 3px;
+    transition: all 0.3s ease;
+}
+
+.toggle-password:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Subtle background change */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
+}
+.toggle-password i {
+  color: #888; /* Default color for the eye icon */
+  transition: color 0.3s ease;
+}
+
+.toggle-password:hover i {
+  color: #000; /* Change to a darker color on hover */
+}

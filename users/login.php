@@ -269,10 +269,26 @@ if (isset($_POST['login'])) {
   </div>
 </div>
 
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-50 start-50 translate-middle">
+    <div id="liveToastresetpass" class="toast">
+        <div class="toast-header">
+            <strong class="me-auto">Notification</strong>
+            <small>Just now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body-report text-center">
+            <!-- Toast message will be inserted here -->
+        </div>
+    </div>
+</div>
 <?php
 require '../vendor/autoload.php';  // Load Composer's autoloader
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
+$message = "";
+$messageType = ""; // To hold the type of message (success or error)
 
 if (isset($_POST['submit_resetpass'])) {
     $email_reset = $_POST['email_reset'];
@@ -302,10 +318,10 @@ if (isset($_POST['submit_resetpass'])) {
         try {
             //Server settings
             $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
+            $mail->Host       = 'smtp.example.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'johnpaulnaag10@gmail.com';
-            $mail->Password   = 'vnjt pjlz oeer mupj';
+            $mail->Username   = 'your_email@gmail.com';
+            $mail->Password   = 'your_app_password_here';
             $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
 
@@ -321,12 +337,48 @@ if (isset($_POST['submit_resetpass'])) {
             $mail->AltBody = "Copy and paste the following URL into your browser: $resetLink";
 
             $mail->send();
-            echo 'Password reset link has been sent.';
+            $message = "Password reset link has been sent. Please check your email.";
+            $messageType = "success";
         } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            $message = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            $messageType = "error";
         }
     } else {
-        echo 'No user found with this email.';
+        $message = "No user found with this email.";
+        $messageType = "error";
     }
 }
 ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = "<?php echo $message; ?>";
+    const messageType = "<?php echo $messageType; ?>"; // 'success' or 'error'
+
+    if (message) {
+        // Set the toast message and type
+        const toastBody = document.querySelector('#liveToastresetpass .toast-body-report');
+        toastBody.textContent = message;
+
+        // // Remove any previous alert classes
+        // toastBody.classList.remove('alert', 'alert-success', 'alert-danger');
+
+        // // Set toast class based on type
+        // if (messageType === 'success') {
+        //     toastBody.classList.add('alert', 'alert-success');
+        // } else if (messageType === 'error') {
+        //     toastBody.classList.add('alert', 'alert-danger');
+        // }
+
+        // Initialize and show the toast
+        const toastEl = document.getElementById('liveToastresetpass');
+        const toast = new bootstrap.Toast(toastEl, { 
+            autohide: messageType === 'error', // Auto-hide only for errors
+            delay: messageType === 'error' ? 5000 : 20000 // 5 seconds for errors, longer for success
+        });
+        toast.show();
+    }
+});
+</script>
