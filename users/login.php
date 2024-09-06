@@ -155,13 +155,16 @@ if (isset($_POST['login'])) {
                                     <?php endif; ?>
                                 </div>
                                 <div class="line"></div>
+                                <div class="container-fluid resetlinkdiv">
+                                    <a style="text-decoration: none;" href="#" data-bs-toggle="modal" data-bs-target="#resetpassword">Forgot password?</a>
+                                </div>
                                 <div class="container form-container3">
                                     <!-- Button to Open the Register Modal -->
                                     <button type="button" id="btn-signup" class="btn btn-primary" onclick="openRegisterModal()" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Sign up</button>
                                 </div>
                             </div>
                             <div class="container-fluid appeal">
-                                <a href="user_appeal.php" target="_blank">Click here</a> to appeal
+                                <a style="text-decoration: none;" href="user_appeal.php" target="_blank">Click here</a> to appeal
                             </div>
                         </div>
                         
@@ -244,3 +247,86 @@ if (isset($_POST['login'])) {
         });
     </script>
 <?php endif; ?>
+<!-- reset password Modal -->
+<div class="modal fade" id="resetpassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Password reset</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post">
+            <label for="email_reset">Enter your email:</label><br>
+            <input class="form-control" type="email" name="email_reset" id="email_reset" required style="margin-top:10px">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" name="submit_resetpass">Send</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<?php
+require '../vendor/autoload.php';  // Load Composer's autoloader
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+if (isset($_POST['submit_resetpass'])) {
+    $email_reset = $_POST['email_reset'];
+
+    // Check if the email exists in the database
+    $query = 'SELECT user_no FROM user_registration WHERE email = ?';
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("s", $email_reset);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+
+    if ($user) {
+        $userNo = $user['user_no'];
+        $token = bin2hex(random_bytes(50)); // Generate a unique token
+        $expiration = date("Y-m-d H:i:s", strtotime("+1 hour"));
+
+        // Save the token in the database
+        $sql = "INSERT INTO password_resets (user_no, email, token, expires_at) VALUES (?, ?, ?, ?)";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("isss", $userNo, $email_reset, $token, $expiration);
+        $stmt->execute();
+
+        // Send the password reset email
+        $mail = new PHPMailer(true);
+
+        try {
+            //Server settings
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'johnpaulnaag10@gmail.com';
+            $mail->Password   = 'vnjt pjlz oeer mupj';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port       = 587;
+
+            //Recipients
+            $mail->setFrom('johnpaulnaag10@gmail.com', 'CvStagram');
+            $mail->addAddress($email_reset);
+
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = 'Password Reset Request';
+            $resetLink = "localhost/onlineservice/users/reset_password.php?token=$token";
+            $mail->Body    = "Click <a href=\"$resetLink\">here</a> to reset your password.";
+            $mail->AltBody = "Copy and paste the following URL into your browser: $resetLink";
+
+            $mail->send();
+            echo 'Password reset link has been sent.';
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+    } else {
+        echo 'No user found with this email.';
+    }
+}
+?>
