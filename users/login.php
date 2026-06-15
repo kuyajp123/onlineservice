@@ -321,7 +321,7 @@ if (isset($_POST['submit_resetpass'])) {
             $mail->Host       = 'smtp.example.com';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'your_email@gmail.com';
-            $mail->Password   = 'your_app_password_here';
+            $mail->Password = getenv('SMTP_PASSWORD');
             $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
 
